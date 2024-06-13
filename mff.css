@@ -1,0 +1,270 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Mulish:wght@200&family=Pacifico&display=swap');
+body{
+    background-color: rgb(14, 14, 19)
+}
+*{
+    margin: 0;
+    padding: 0;
+}
+
+nav{
+    width: 100%;
+    height: 60px;
+    background-color: rgb(25,25,25);
+    position: fixed;
+    top: 0px;
+
+}
+ul{
+    font-family: 'Gloria Hallelujah', cursive;
+    font-family: 'Pacifico', cursive;
+}
+
+ul li{
+    list-style: none;
+    display: inline-block;
+    line-height: 60px;
+}
+
+ul li a{
+    display: block;
+    text-decoration: none;
+    font-size: 14px;
+    color: aliceblue;
+    padding: 0 20px;
+}
+
+ul li a:hover{
+        color: pink;
+}
+.fiha{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 60px;
+}
+.title{
+    text-align: center;
+    color: pink;
+    font-family: 'Pacifico', cursive;
+    font-size: 300%;
+    padding-bottom: 50px;
+}
+
+
+.container1{
+  justify-content: center;
+  display: flex;
+}
+.container2{
+  justify-content: center;
+  display: flex;
+}
+
+
+
+.yt{
+    text-align: center;
+    width: 300px;
+    height: 150px;
+    line-height: 150px;
+    border: 1px solid rgb(25,25,25);
+    background-color: rgb(25,25,25);
+    padding: 10px;
+    margin: 10px;
+    border-radius: 8px;
+    font-family: 'Gloria Hallelujah', cursive;
+    font-family: 'Pacifico', cursive;
+}
+.tw{
+    text-align: center;
+    width: 300px;
+    height: 150px;
+    line-height: 150px;
+    border: 1px solid rgb(25,25,25);
+    background-color: rgb(25,25,25);
+    padding: 10px;
+    margin: 10px;
+    border-radius: 8px;
+    font-family: 'Gloria Hallelujah', cursive;
+    font-family: 'Pacifico', cursive;
+
+}
+
+.x{
+    text-align: center;
+    width: 300px;
+    height: 150px;
+    line-height: 150px;
+    border: 1px solid rgb(25,25,25);
+    background-color: rgb(25,25,25);
+    padding: 10px;
+    margin: 10px;
+    border-radius: 8px;
+    font-family: 'Gloria Hallelujah', cursive;
+    font-family: 'Pacifico', cursive;
+  
+}
+.ig{
+    text-align: center;
+    width: 300px;
+    height: 150px;
+    line-height: 150px;
+    border: 1px solid rgb(25,25,25);
+    background-color: rgb(25,25,25);
+    padding: 10px;
+    margin: 10px;
+    border-radius: 8px;
+    font-family: 'Gloria Hallelujah', cursive;
+    font-family: 'Pacifico', cursive;
+   
+}
+
+.yt:hover{
+    background-color: rgb(35,35,35);
+    border: 1px solid rgb(25,25,25);
+}
+.tw:hover{
+    background-color: rgb(35,35,35);
+    border: 1px solid rgb(25,25,25);
+}
+.x:hover{
+    background-color: rgb(35,35,35);
+    border: 1px solid rgb(25,25,25);
+}
+.ig:hover{
+    background-color: rgb(35,35,35);
+    border: 1px solid rgb(25,25,25);
+}
+
+
+
+.yt a{
+    font-size: 200%;
+    color: aliceblue;
+    text-decoration: none; 
+}
+.yt a:hover{
+    font-size: 220%;
+    color: pink
+}
+.tw a{
+    font-size: 200%;
+    color: aliceblue;
+    text-decoration: none;
+}
+.tw a:hover{
+    font-size: 220%;
+    color: pink;
+}
+.x a{
+    font-size: 200%;
+    color: aliceblue;
+    text-decoration: none;
+}
+.x a:hover{
+    font-size: 220%;
+    color: pink;
+}
+.ig a{
+    font-size: 200%;
+    color: aliceblue;
+    text-decoration: none;
+}
+.ig a:hover{
+    font-size: 220%;
+    color: pink;
+}
+.ytlogo{
+    color: aliceblue;
+}
+.ytlogo:hover{
+    color: pink;
+}
+.twlogo{
+    color: aliceblue;
+}
+.twlogo:hover{
+    color: pink;
+}
+.xlogo{
+    color: aliceblue;
+}
+.xlogo:hover{
+    color: pink;
+}
+.iglogo{
+    color: aliceblue;
+}
+.iglogo:hover{
+    color: pink;
+}
+#contact{
+    font-size: 200%;
+    margin-left: 20%;
+    font-family: 'Gloria Hallelujah', cursive;
+    font-family: 'Pacifico', cursive;
+    color: pink;
+    padding-top: 14%;
+   
+}
+.email{
+   
+    font-size: 150%;
+    margin-left: 20%;
+  
+    color: aliceblue;
+    
+}
+.gmail{
+    text-decoration: none;
+    color: aliceblue;
+    padding-left: 30px;
+}
+.gmail:hover{
+    color: pink;
+}
+
+.num{
+    font-size: 150%;
+    margin-left: 20%;
+  
+    color: aliceblue;
+}
+
+.cel{
+    
+    text-decoration: none;
+    color: aliceblue;
+    padding-left: 30px;
+}
+.cel:hover{
+    color: pink;
+}
+
+#aboutme{
+    font-size: 200%;
+    margin-left: 20%;
+    font-family: 'Gloria Hallelujah', cursive;
+    font-family: 'Pacifico', cursive;
+    color: pink;
+    padding-top: 14%;
+}
+
+.CVicon{
+    font-size: 150%;
+    text-decoration: none;
+    color: aliceblue;
+    padding-left: 30px;
+}
+
+
+p{
+    font-size: 150%;
+    margin-left: 20%;
+    margin-right: 25%;
+    font-family: Roboto, Arial, sans-serif;;
+    color: aliceblue;
+}
