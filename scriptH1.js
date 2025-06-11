@@ -1,6 +1,7 @@
 let titles = [
     "Matteo",
-    "Mosti"
+    "Mosti",
+    "Portfolio"
 ];
 
 let index = 0;
