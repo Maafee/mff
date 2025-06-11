@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>mff</title>
+
+    <link rel="stylesheet" href="mff.css">
+    <script src="scriptH1.js"></script>
+    <script src="finisher-header.es5.min.js" type="text/javascript"></script>
+
+</head>
+
+<body class="header finisher-header">
+
+    <nav>
+        <div id="menu-container">
+            <input type="checkbox" id="menu-toggle" class="menu-toggle">
+            <label for="menu-toggle" class="menu-label">&#9776;</label>
+            <ul class="menu-items">
+                <li><a href="#home" class="menu-link">Home</a></li>
+                <li><a href="#aboutme" class="menu-link">About me</a></li>
+                <li><a href="#contact" class="menu-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="home">
+
+        
+    <img class="fiha" src="fiha.png" alt="Logo" width="100px">
+
+    <h1 id="dynamic-title"></h1>
+    
+    <div class="container1">
+        <div class="yt" onclick="window.open('https://www.linkedin.com/in/matteo-mosti-9377a5257/', '_blank')">
+            <div class="social-content">
+               <img src="svg/linkedin.svg" alt="logo linkedin">
+            </div>
+        </div>
+        
+        <div class="tw" onclick="window.open('https://github.com/Maafee/mff', '_blank')">
+            <div class="social-content">
+               
+                <img src="svg/github.svg" alt="logo indeed">
+
+            </div>
+        </div>
+    </div>
+    
+</section>
+
+    <section id="aboutme">
+
+        <h2>About Me</h2>
+
+         <p class="about-text">
+    Sono un Perito Informatico diplomato nel 2023, appassionato di informatica, elettronica e programmazione in tutte le sue forme.
+    Mi piace creare soluzioni pratiche e funzionali, soprattutto nel mondo <strong>web</strong>.
+  </p>
+  <p class="about-text">
+    Durante i miei studi e progetti personali ho acquisito competenze in:
+  </p>
+  <ul class="about-list">
+    <li class="about-list-item"><strong>HTML</strong>, <strong>CSS</strong>, <strong>JavaScript</strong></li>
+    <li class="about-list-item"><strong>PHP</strong> e <strong>MySQL</strong> per lo sviluppo web back-end</li>
+    <li class="about-list-item"><strong>C</strong> e <strong>C++</strong> per la programmazione software e sistemi embedded</li>
+  </ul>
+  <p class="about-text">
+    Sono una persona curiosa, precisa e sempre alla ricerca di nuove sfide per crescere e migliorarmi.
+    Attualmente continuo a formarmi e a lavorare su progetti per ampliare le mie competenze.
+  </p>
+  
+    </section>
+
+    <section id="contact">
+
+        <h2>Contact</h2>
+        
+        <!-- Contatto email -->
+        <div class="contact-item">
+            <a href="mailto:matteomosti04@gmail.com">
+                <svg width="1.5em" height="1.5em" viewBox="0 0 512 384" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M64 48C55.2 48 48 55.2 48 64V86.1L220.5 227.7C241.2 244.7 270.9 244.7 291.6 227.7L464 86.1V64C464 55.2 456.8 48 448 48H64ZM48 148.2V320C48 328.8 55.2 336 64 336H448C456.8 336 464 328.8 464 320V148.2L322 264.8C283.6 296.3 228.3 296.3 190 264.8L48 148.2ZM0 64C0 28.7 28.7 0 64 0H448C483.3 0 512 28.7 512 64V320C512 355.3 483.3 384 448 384H64C28.7 384 0 355.3 0 320V64Z" fill="white"/>
+                </svg>
+                <span>matteomosti04@gmail.com</span>
+            </a>
+        </div>
+    
+        <!-- Contatto telefonico -->
+        <div class="contact-item">
+            <a href="tel:+39 3271852425">
+                <svg width="1.5em" height="1.5em" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M164.9 24.6C157.2 6.00003 136.9 -3.89997 117.5 1.40003L29.5 25.4C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512C466 512 481.8 499.9 486.6 482.5L510.6 394.5C515.9 375.1 506 354.8 487.4 347.1L391.4 307.1C375.1 300.3 356.2 305 345.1 318.7L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167C207 155.8 211.7 137 204.9 120.7L164.9 24.7V24.6Z" fill="white"/>
+                </svg>
+                <span>+39 327 185 2425</span>
+            </a>
+        </div>
+    
+        <!-- Link per il CV -->
+        <div class="contact-item">
+            <a class="CVicon" href="CV.pdf" download>
+                <svg width="1.5em" height="1.5em" viewBox="0 0 384 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M320 464C328.8 464 336 456.8 336 448V160H256C238.3 160 224 145.7 224 128V48H64C55.2 48 48 55.2 48 64V448C48 456.8 55.2 464 64 464H320ZM0 64C0 28.7 28.7 0 64 0H229.5C246.5 0 262.8 6.7 274.8 18.7L365.3 109.2C377.3 121.2 384 137.5 384 154.5V448C384 483.3 355.3 512 320 512H64C28.7 512 0 483.3 0 448V64Z" fill="white"/>
+                    </svg>
+                    
+                <span>Download CV</span>
+            </a>
+        </div>
+
+    </section>
+    
+    <script type="text/javascript">
+        new FinisherHeader({
+            
+    "count": 100,
+    "size": {
+        "min": 2,
+        "max": 30,
+        "pulse": 0
+    },
+    "speed": {
+        "x": {
+        "min": 0,
+        "max": 0.4
+        },
+        "y": {
+        "min": 0,
+        "max": 0.6
+        }
+    },
+    "colors": {
+        "background": "#0e0e0e",
+        "particles": [
+        "#ffc0cb"
+        ]
+    },
+    "blending": "overlay",
+    "opacity": {
+        "center": 1,
+        "edge": 0.55
+    },
+    "skew": 0,
+    "shapes": [
+        "c"
+  ]
+});
+        </script>
+</body>
+
+<script src="script.js"></script>
+
+</html>

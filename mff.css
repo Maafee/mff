@@ -1,0 +1,380 @@
+@import url('https://fonts.googleapis.com/css2?family=Liter&display=swap');
+
+html{  
+    margin: 0;
+    padding: 0;
+    font-family: "Liter", serif;
+    background-color: #0e0e0e;
+    scroll-padding-top: 60px;
+    scroll-behavior: smooth;
+    position: relative;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+}
+
+/* ======= NAVBAR ======= */
+nav {
+    width: 100%;
+    height: 60px;
+    background-color: rgb(25, 25, 25);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.5);
+    z-index: 100;
+}
+
+/* Menu Desktop */
+.menu-items {
+    list-style: none;
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-items li {
+    padding: 0 15px;
+}
+
+.menu-items a {
+    text-decoration: none;
+    color: #ffc0cb;
+    font-size: 1.2em;
+    display: block;
+    padding: 10px 15px;
+}
+
+.menu-items a:hover {
+    color: aliceblue;
+}
+
+/* ======= HAMBURGER MENU ======= */
+.menu-toggle {
+    display: none;
+}
+
+/* Icona Hamburger */
+.menu-label {
+    font-size: 30px;
+    color: #ffc0cb;
+    cursor: pointer;
+    display: none;
+    position: absolute;
+    top: 15px;
+    right: 50px;
+    width: 40px; 
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    z-index: 101;
+}
+
+/* ======= RESPONSIVE DESIGN ======= */
+@media (max-width: 768px) {
+    /* Allinea la navbar e mostra l'hamburger */
+    nav {
+        justify-content: space-between;
+        padding: 0 20px;
+    }
+
+    /* Nasconde il menu principale e mostra l'hamburger */
+    .menu-items {
+
+        display: none;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background-color: rgb(25, 25, 25);
+        width: 200px;
+        flex-direction: column;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        transform: scaleY(0);
+        transform-origin: top;
+        transition: transform 0.3s ease-in-out;
+        padding: 10px 0; /* Padding top e bottom per dare spazio */
+        margin-right: 10px; /* Spazio dal bordo destro */
+        left: 44%;
+    }
+
+    .menu-items li {
+        padding: 12px 20px; /* Padding dentro gli elementi della lista */
+        list-style-type: none;
+    }
+
+    /* Mostra l'hamburger solo su mobile */
+    .menu-label {
+        display: block;
+    }
+
+    /* Quando si clicca l'hamburger, mostra il menu */
+    .menu-toggle:checked ~ .menu-items {
+        display: flex;
+        transform: scaleY(1);
+    }
+    
+}
+
+
+#home {
+    position: relative;
+    z-index: 2;
+}
+
+.fiha {
+    display: block;
+    margin: 80px auto 20px;
+    max-width: 100px;
+}
+
+#dynamic-title {
+    text-align: center;
+    color: #ffc0cb;
+    font-size: 2.5em;
+    padding-bottom: 30px;
+}
+
+.container1 {
+    margin-top: 140px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.yt, .tw{
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20%;
+    height: 250px; 
+    background-color: rgb(25, 25, 25);
+    padding: 20px;
+    margin: 10px;
+    border-radius: 8px;
+    transition: transform 0.2s, background 0.2s;
+    z-index: 1;
+}
+
+.yt:hover, .tw:hover {
+    transform: scale(1.03); /* Ridotto ingrandimento */
+}
+
+.social-content {
+    width: auto;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+#aboutme {
+    max-width: 800px;
+    margin: 150px auto 0 auto; /* centrare e mantenere distanza dall'alto */
+    padding: 20px;
+}
+
+#aboutme h2 {
+    text-align: center;
+    margin-top: 120px;
+    margin-bottom: 60px;
+    font-size: 1.8em;
+    color: #ffc0cb;
+}
+
+#aboutme p {
+    color: white;
+    font-size: 1.3rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.about-list {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.about-list-item {
+    margin-bottom: 10px;
+    color: white;
+    font-size: 1.3rem;
+    text-align: left;
+}
+
+#contact {
+    max-width: 75%;
+    margin: 180px auto 0 auto; /* centrare e mantenere distanza dall'alto */
+    padding: 20px;
+    text-align: center;
+}
+
+#contact h2{
+    color: #ffc0cb;
+    padding: 20px;
+    text-align: center;
+    margin-top: 150px;
+
+}
+
+.contact-item {
+    display: inline-flex;
+    text-align: center;
+    padding: 5%;
+    margin: 15px 0;
+}
+
+.contact-item svg {
+    margin-right: 10px;
+    fill: #ffffff; /* Puoi cambiare il colore dell'icona */
+}
+
+.contact-item a {
+    font-size: 1.2em; /* La dimensione del testo in em per adattarsi al tuo design */
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.contact-item a:hover {
+    color: #ffc0cb; /* Colore di hover personalizzato */
+}
+
+.CVicon {
+    font-size: 1.2em;
+    color: white;
+    text-decoration: none;
+    border: 2px solid white;
+    padding: 10px 20px;
+    border-radius: 20px;
+}
+
+.CVicon:hover {
+    background-color: rgb(25, 25, 25);
+    border: 2px solid rgb(25, 25, 25);
+}
+
+@media (max-width: 768px) {
+    /* Rendi la sezione del titolo dinamico più piccola */
+    #dynamic-title {
+        font-size: 2em;
+        padding-bottom: 20px;
+        text-align: center; /* Allineamento al centro */
+    }
+
+    /* Rendi le immagini della classe fiha più piccole e aggiungi padding-top per evitare sovrapposizione */
+    .fiha {
+        max-width: 80px;
+        margin: 50px auto;/* Centrato orizzontalmente e distanziato dalla navbar */
+        padding-top: 20px; /* Aggiunge un po' di spazio sopra */
+    }
+
+    /* Adatta la disposizione dei contenitori di social in una colonna */
+    .container1, .container2 {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+
+    /* Modifica le dimensioni dei social */
+    .yt, .tw, .x, .ig {
+        width: 80%; /* Cambia la larghezza per una visualizzazione più appropriata */
+        height: 200px;
+        margin: 10px 0;
+        justify-content: center;
+        align-items: center;
+        display: flex; /* Assicurati che flex sia attivo per centrare */
+        text-align: center; /* Allinea il contenuto */
+    }
+
+    .yt svg, .tw svg, .x svg, .ig svg {
+        width: 50%;
+        height: 50%;
+        margin: 0 auto; /* Allineamento centrato dell'icona */
+    }
+
+    /* Modifica l'iframe per mantenerne le proporzioni e renderlo più alto */
+    iframe {
+        width: 100%; /* Occupa il 100% della larghezza del contenitore */
+        height: 56.25vw; /* Usa una proporzione 16:9 per l'altezza (56.25% di larghezza) */
+        max-width: 100%; /* Impedisce che l'iframe superi la larghezza del contenitore */
+        border: none; /* Rimuove il bordo dell'iframe */
+    }
+
+    /* Modifica l'aspetto del contatto */
+    #contact {
+        margin-top: 50px;
+        font-size: 1.1em;
+        text-align: center; /* Allineamento al centro */
+    }
+
+    .contact-item {
+        display: inline-flex;
+        align-items: center;
+        padding: 10px 0;
+        justify-content: center; /* Centra gli elementi all'interno */
+        margin: 10px auto; /* Centra orizzontalmente */
+    }
+
+    .contact-item svg {
+        margin-right: 10px;
+        fill: #ffffff;
+    }
+
+    .contact-item a {
+        font-size: 1.2em;
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center; /* Allineamento del link al centro */
+    }
+
+    .contact-item a:hover {
+        color: #ffc0cb;
+    }
+
+    /* Modifica le dimensioni del CV */
+    .CVicon {
+        font-size: 1em;
+        padding: 8px 16px;
+        margin: 10px auto; /* Centra il bottone del CV */
+        display: inline-block;
+    }
+
+    .CVicon:hover {
+        background-color: rgb(25, 25, 25);
+        border: 2px solid rgb(25, 25, 25);
+    }
+
+    /* Sezione "About Me" */
+    #aboutme {
+        margin-top: 50px;
+        text-align: center; /* Allineamento al centro */
+    }
+
+    #aboutme p {
+        font-size: 1em;
+        color: white;
+    }
+
+    #aboutme h3 {
+        font-size: 1.5em;
+        color: #ffc0cb;
+    }
+}
