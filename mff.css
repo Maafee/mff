@@ -279,7 +279,7 @@ nav {
     /* Rendi le immagini della classe fiha più piccole e aggiungi padding-top per evitare sovrapposizione */
     .fiha {
         max-width: 80px;
-        margin: 50px auto;/* Centrato orizzontalmente e distanziato dalla navbar */
+        margin: 120px auto;/* Centrato orizzontalmente e distanziato dalla navbar */
         padding-top: 20px; /* Aggiunge un po' di spazio sopra */
     }
 
