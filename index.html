@@ -26,7 +26,7 @@
             </ul>
         </div>
     </nav>
-
+<section class="fade-in">
     <section id="home">
 
         
@@ -149,7 +149,19 @@
 });
         </script>
 </body>
+</section>
 
+    <script>
+  window.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll('.fade-in').forEach(el => {
+      // Delay per vedere bene l'effetto
+      setTimeout(() => {
+        el.classList.add('loaded');
+      }, 100);
+    });
+  });
+</script>
+    
 <script src="script.js"></script>
 
 </html>
