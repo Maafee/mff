@@ -100,6 +100,11 @@ nav {
         padding: 0 20px;
     }
 
+     /* Mostra l'hamburger solo su mobile */
+    .menu-label {
+        display: block;
+    }
+
     .menu-header,
     .menu-divider {
         display: block;
@@ -132,11 +137,12 @@ nav {
 
     /* Nasconde il menu principale e mostra l'hamburger */
     .menu-items {
+
     margin: 0 !important;
     padding: 10px 0 !important;
     right: 0;
     height: 100vh;
-    width: 35%;
+    width: 50%;
     box-sizing: border-box;
     position: absolute;
     top: 60px;
@@ -162,16 +168,12 @@ nav {
 
     .menu-items li a{
         
-        padding: 20px 20px; /* Padding dentro gli elementi della lista */
+        
+        padding: 20px;
         list-style-type: none;
 
     }
-
-    /* Mostra l'hamburger solo su mobile */
-    .menu-label {
-        display: block;
-    }
-
+   
     /* Quando si clicca l'hamburger, mostra il menu */
     .menu-toggle:checked ~ .menu-items {
 
