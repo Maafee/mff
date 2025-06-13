@@ -13,6 +13,8 @@
 
 </head>
 
+
+
 <body class="header finisher-header">
 
     <nav>
@@ -20,20 +22,25 @@
             <input type="checkbox" id="menu-toggle" class="menu-toggle">
             <label for="menu-toggle" class="menu-label">&#9776;</label>
             <ul class="menu-items">
+
+                <li class="menu-header">Menu</li>
+                <li><hr class="menu-divider"></li>
+
                 <li><a href="#home" class="menu-link">Home</a></li>
                 <li><a href="#aboutme" class="menu-link">About me</a></li>
                 <li><a href="#contact" class="menu-link">Contact</a></li>
             </ul>
         </div>
     </nav>
+
 <section class="fade-in">
+
     <section id="home">
 
-        
     <img class="fiha" src="midj.png" alt="Logo" width="100px">
 
     <h1 id="dynamic-title"></h1>
-    
+   
     <div class="container1">
         <div class="yt" onclick="window.open('https://www.linkedin.com/in/matteo-mosti-9377a5257/', '_blank')">
             <div class="social-content">
@@ -149,9 +156,10 @@
 });
         </script>
 </body>
+
 </section>
 
-    <script>
+<script>
   window.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll('.fade-in').forEach(el => {
       // Delay per vedere bene l'effetto
@@ -161,7 +169,14 @@
     });
   });
 </script>
-    
+
+<script>
+document.querySelector('.menu-label').addEventListener('click', () => {
+    const menu = document.querySelector('.menu-items');
+    menu.classList.toggle('active');
+});
+</script>
+
 <script src="script.js"></script>
 
 </html>
