@@ -1,6 +1,5 @@
 let titles = [
-    "Matteo",
-    "Mosti",
+    "Matteo Mosti",
     "Portfolio"
 ];
 
