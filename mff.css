@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Liter&display=swap');
 
+
+
 html{  
     margin: 0;
     padding: 0;
@@ -20,7 +22,6 @@ html{
   opacity: 1;
   transform: translateY(0);
 }
-
 body{
     margin: 0;
     padding: 0;
@@ -39,6 +40,11 @@ nav {
     align-items: center;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.5);
     z-index: 100;
+}
+
+.menu-header,
+.menu-divider {
+    display: none;
 }
 
 /* Menu Desktop */
@@ -94,29 +100,71 @@ nav {
         padding: 0 20px;
     }
 
-    /* Nasconde il menu principale e mostra l'hamburger */
-    .menu-items {
-
-        display: none;
-        position: absolute;
-        top: 60px;
-        right: 0;
-        background-color: rgb(25, 25, 25);
-        width: 200px;
-        flex-direction: column;
-        text-align: center;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        transform: scaleY(0);
-        transform-origin: top;
-        transition: transform 0.3s ease-in-out;
-        padding: 10px 0; /* Padding top e bottom per dare spazio */
-        margin-right: 10px; /* Spazio dal bordo destro */
-        left: 44%;
+    .menu-header,
+    .menu-divider {
+        display: block;
     }
 
-    .menu-items li {
-        padding: 12px 20px; /* Padding dentro gli elementi della lista */
+    .menu-header {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #ffc0cb;
+        margin: 10px;
+}
+
+    /* Linea divisoria */
+    .menu-divider {
+
+        width: 100%;
+        border: 0;
+        margin: 0;
+        padding: 0;
+        height: 1px;
+        background-color: black;
+        margin-bottom: 20px;
+
+        /*Hacky*/
+        width: calc(100% + 20px); /* o quanto è il padding/margine laterale */
+        margin-left: -15px; /* per compensare il padding */
+
+    }
+  
+
+    /* Nasconde il menu principale e mostra l'hamburger */
+    .menu-items {
+    margin: 0 !important;
+    padding: 10px 0 !important;
+    right: 0;
+    height: 100vh;
+    width: 35%;
+    box-sizing: border-box;
+    position: absolute;
+    top: 60px;
+    background-color: rgb(25, 25, 25);
+    flex-direction: column;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+
+    display: flex;
+    opacity: 0;
+    pointer-events: none;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+/* Quando ha classe active, mostra il menu */
+.menu-items.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scaleY(1);
+}
+
+    .menu-items li a{
+        
+        padding: 20px 20px; /* Padding dentro gli elementi della lista */
         list-style-type: none;
+
     }
 
     /* Mostra l'hamburger solo su mobile */
@@ -126,6 +174,7 @@ nav {
 
     /* Quando si clicca l'hamburger, mostra il menu */
     .menu-toggle:checked ~ .menu-items {
+
         display: flex;
         transform: scaleY(1);
     }
@@ -135,12 +184,14 @@ nav {
 
 #home {
     position: relative;
+    padding-top: 80px; /* quanto è alto l'header */
+    margin-top: -80px; /* negativo per mantenere posizione visiva */
     z-index: 2;
 }
 
 .fiha {
     display: block;
-    margin: 125px auto 20px;
+    margin: 120px auto 20px;
     max-width: 100px;
     border-radius: 50%;
 }
@@ -288,12 +339,7 @@ nav {
     }
 
     /* Rendi le immagini della classe fiha più piccole e aggiungi padding-top per evitare sovrapposizione */
-    .fiha {
-        max-width: 80px;
-        margin: 120px auto;/* Centrato orizzontalmente e distanziato dalla navbar */
-        padding-top: 20px; /* Aggiunge un po' di spazio sopra */
-    }
-
+   
     /* Adatta la disposizione dei contenitori di social in una colonna */
     .container1, .container2 {
         flex-direction: column;
