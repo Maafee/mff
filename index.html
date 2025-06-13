@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>mff</title>
+    <link rel="icon" href="favicon.png" type="image/png">
+
 
     <link rel="stylesheet" href="mff.css">
     <script src="scriptH1.js"></script>
@@ -19,9 +21,9 @@
 
     <nav>
         <div id="menu-container">
-            <input type="checkbox" id="menu-toggle" class="menu-toggle">
-            <label for="menu-toggle" class="menu-label">&#9776;</label>
+           <div class="menu-label">&#9776;</div>
             <ul class="menu-items">
+
 
                 <li class="menu-header">Menu</li>
                 <li><hr class="menu-divider"></li>
@@ -168,13 +170,6 @@
       }, 100);
     });
   });
-</script>
-
-<script>
-document.querySelector('.menu-label').addEventListener('click', () => {
-    const menu = document.querySelector('.menu-items');
-    menu.classList.toggle('active');
-});
 </script>
 
 <script src="script.js"></script>
