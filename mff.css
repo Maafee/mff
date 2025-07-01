@@ -10,6 +10,107 @@ html{
     position: relative;
 }
 
+/*THEME TOGGLE 
+.theme-toggle {
+  position: absolute;
+  left: 20px;
+  top: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #ffc0cb;
+  z-index: 200;
+  transition: color 0.3s ease;
+}
+
+.theme-toggle:hover {
+  color: white;
+}
+
+.light-mode .theme-toggle {
+  color: #222;
+}
+
+/* ===== LIGHT MODE ===== 
+.light-mode {
+  background-color: white;
+  color: black;
+}
+
+/* Sfondo del body 
+.light-mode body {
+  background-color: white;
+  color: black;
+}
+
+/* Titoli 
+.light-mode #dynamic-title,
+.light-mode #aboutme h2,
+.light-mode #contact h2 {
+  color: #003f34;
+}
+
+/* Paragrafi 
+.light-mode #aboutme p,
+.light-mode .about-list-item,
+.light-mode .contact-item a {
+  color: black;
+}
+
+/* Navbar 
+.light-mode nav {
+  background-color: #ffffff;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Menu mobile 
+.light-mode .menu-items {
+  background-color: #f9f9f9;
+}
+
+.light-mode .menu-items a {
+  color: #003f34;
+  background-color: #ffffff;
+}
+
+.light-mode .menu-items a:hover {
+  color: #666;
+}
+
+/* Bottone toggle 
+.light-mode .theme-toggle {
+  color: #080000;
+}
+
+/* Social box 
+.light-mode .yt,
+.light-mode .tw {
+  background-color: #e0e0e0;
+}
+
+.light-mode .yt:hover,
+.light-mode .tw:hover {
+  background-color: #d0d0d0;
+}
+
+/* Icone 
+.light-mode .contact-item svg {
+  fill: black;
+}
+
+/* Bottone CV 
+.light-mode .CVicon {
+  border: 2px solid black;
+  color: black;
+}
+
+.light-mode .CVicon:hover {
+  background-color: #ddd;
+  border-color: #ddd;
+}
+*/
+
 .fade-in {
     opacity: 0;
     transform: translateY(20px);
@@ -182,28 +283,53 @@ nav {
 
 
 #home {
+
     position: relative;
     padding-top: 80px; /* quanto è alto l'header */
     margin-top: -80px; /* negativo per mantenere posizione visiva */
     z-index: 2;
 }
 
+.nameandlogo {
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding-left: 16%; /* centra un po' verso sinistra */
+}
+
 .fiha {
-    display: block;
-    margin: 120px auto 20px;
-    max-width: 100px;
+    
+    width: 150px;
     border-radius: 50%;
+    flex-shrink: 0;
+    margin-right: 40px; /* distanza dal titolo */
 }
 
 #dynamic-title {
-    text-align: center;
-    color: #ffc0cb;
-    font-size: 2.5em;
-    padding-bottom: 30px;
+  color: #ffc0cb;
+  font-size: 5.5em;
+  white-space: nowrap;
+  overflow: hidden;
+  display: inline-block;
+  width: 14ch; /* larghezza fissa basata su caratteri */
+  box-sizing: border-box; /* evita che il bordo influisca sulla larghezza */
+}
+#typed-text {
+
+  display: inline-block;
+  border-right: 3px solid #ffc0cb;
+  animation: blink 0.7s step-end infinite;
 }
 
+@keyframes blink {
+
+  50% { border-color: transparent; }
+
+}
 .container1 {
-    margin-top: 140px;
+
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -330,16 +456,28 @@ nav {
 }
 
 @media (max-width: 768px) {
-    /* Rendi la sezione del titolo dinamico più piccola */
-    #dynamic-title {
-        font-size: 2em;
-        padding-bottom: 20px;
-        text-align: center; /* Allineamento al centro */
-    }
-
-    /* Rendi le immagini della classe fiha più piccole e aggiungi padding-top per evitare sovrapposizione */
    
-    /* Adatta la disposizione dei contenitori di social in una colonna */
+ .nameandlogo {
+    padding-top: 120px;
+    padding-bottom: 50px;
+    padding-left: 3vw; /* meno spazio a sinistra */
+    height: auto;
+    justify-content: flex-start; /* sposta tutto verso sinistra */
+  }
+
+  .fiha {
+    width: 70px; /* immagine più piccola */
+    margin-right: 20px;
+  }
+
+  #dynamic-title {
+    font-size: 2.5em;
+    width: 12ch;
+  }
+
+  #typed-text {
+    border-right: 2px solid #ffc0cb;
+  }
     .container1, .container2 {
         flex-direction: column;
         align-items: center;
