@@ -367,26 +367,27 @@ nav {
     align-items: center;
 }
 
-/* Rimuovi completamente qualsiasi max-width dalla section #aboutme */
-/* STRUTTURA BASE */
+/* -------------------- SEZIONE ABOUT ME -------------------- */
 #aboutme {
     margin: 150px auto 0 auto;
     padding: 20px;
     width: 100%;
 }
 
-#aboutme h1 {
+#aboutme h1,
+#aboutme h2 {
     text-align: center;
-    margin: 120px 0 60px;
-    font-size: 2em;
     color: #ffc0cb;
 }
 
-#aboutme h2 {
-    text-align: center;
+#aboutme h1 {
     margin: 120px 0 60px;
+    font-size: 2em;
+}
+
+#aboutme h2 {
+    margin: 60px 0;
     font-size: 1.4em;
-    color: #ffc0cb;
 }
 
 .timeline {
@@ -409,58 +410,55 @@ nav {
     z-index: 1;
 }
 
-/* ELEMENTI TIMELINE COMPATTI */
+/* ELEMENTI TIMELINE */
 .entry {
-    position: relative;
-    width: 50%;
-    padding-bottom: 30px;
-    box-sizing: border-box;
+  position: relative;
+  width: 50%;
+  padding-bottom: 30px;
+  box-sizing: border-box;
+  opacity: 0;
+  transition: all 0.8s ease-out;
 }
 
+/* Prima dell’animazione */
+.entry.left {
+  transform: translateX(-100px);
+  left: 0;
+  padding-right: 80px;
+}
+
+.entry.right {
+  transform: translateX(100px);
+  left: 50%;
+  padding-left: 80px;
+}
+
+/* Quando entra in vista */
+.entry.animate {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+
+/* ICONA TIMELINE */
 .timeline-icon-img {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 2;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 40px;
+    height: 40px;
 }
 
 .entry.left .timeline-icon-img {
-  right: 14px;
+    right: 14px;
 }
 
 .entry.right .timeline-icon-img {
-  left: 14px;
+    left: 14px;
 }
 
-@media (max-width: 768px) {
-  .timeline-icon-img {
-    left: 25px !important;
-    right: auto !important;
-    width: 24px;
-    height: 24px;
-  }
-}
-
-
-.left {
-    left: 0;
-    padding-right: 80px; /* Ridotto lo spazio */
-}
-
-.right {
-    left: 50%;
-    padding-left: 80px; /* Ridotto lo spazio */
-}
-
-.left::after {
-    right: -10px;
-}
-
-.right::after {
-    left: -10px;
-}
-
-/* RETTANGOLI COMPATTI MA ELEGANTI */
+/* ENTRY CONTENT */
 .entry-content {
     background: rgba(25, 25, 25, 0.9);
     padding: 20px 25px;
@@ -475,7 +473,7 @@ nav {
     transform: translateY(-2px);
 }
 
-/* CONTENUTO */
+/* HEADER E LISTE */
 .entry h3 {
     margin: 0 0 10px 0;
     color: #ffc0cb;
@@ -487,6 +485,7 @@ nav {
     padding: 0;
     margin: 10px 0 0 0;
 }
+
 .entry ul li {
     color: #ffffff;
     margin-bottom: 8px;
@@ -495,7 +494,7 @@ nav {
     line-height: 1.5;
     transition: all 0.3s ease;
 }
-/* Effetto icona personalizzata */
+
 .entry ul li::before {
     content: '';
     position: absolute;
@@ -509,16 +508,16 @@ nav {
     opacity: 0;
     transition: all 0.3s ease;
 }
-/* Effetto hover e stato attivo */
+
 .entry ul li:hover {
     transform: translateX(5px);
 }
+
 .entry ul li:hover::before {
     opacity: 1;
     transform: scale(1);
 }
 
-/* Linea decorativa */
 .entry ul li::after {
     content: '';
     position: absolute;
@@ -529,74 +528,51 @@ nav {
     background: linear-gradient(90deg, #ffc0cb, transparent);
     transition: width 0.3s ease;
 }
+
 .entry ul li:hover::after {
     width: 100%;
 }
 
-@media (max-width: 768px) {
-    .entry ul li {
-        padding-left: 24px;
-        line-height: 1.4;
-    }
-    
-    .entry ul li::before {
-        width: 14px;
-        height: 14px;
-        top: 5px;
-    }
-}
-
-/* RESPONSIVE */
+/* MEDIA QUERIES */
 @media (max-width: 900px) {
     .left { padding-right: 60px; }
     .right { padding-left: 60px; }
 }
 
 @media (max-width: 768px) {
-    .timeline::after {
-        left: 20px;
-    }
-    
-    .entry {
+    .timeline::after { left: 20px; }
+
+    .entry,
+    .left,
+    .right {
         width: 100%;
-        padding-left: 50px;
-        padding-right: 20px;
-    }
-    
-    .left, .right {
         left: 0;
         padding-left: 50px;
         padding-right: 20px;
+        transform: translateX(0) !important;
     }
-    
-    .left::after, 
-    .right::after {
-        left: 10px;
-        right: auto;
+
+    .entry ul li { padding-left: 24px; }
+    .entry ul li::before { width: 14px; height: 14px; top: 5px; }
+    .timeline-icon-img {
+        left: 25px !important;
+        right: auto !important;
+        width: 24px;
+        height: 24px;
     }
 }
 
 @media (max-width: 480px) {
-    .entry {
-        padding-left: 40px;
-        padding-right: 15px;
-    }
-    
-    .entry::after {
-        width: 16px;
-        height: 16px;
-    }
-    
-    .entry-content {
-        padding: 15px 20px;
-    }
+    .entry { padding-left: 40px; padding-right: 15px; }
+    .entry-content { padding: 15px 20px; }
 }
+
 
 
 #contact {
     max-width: 75%;
     margin: 180px auto 0 auto; /* centrare e mantenere distanza dall'alto */
-    padding: 20px;
+   padding-top: 200px;
     text-align: center;
 }
 
