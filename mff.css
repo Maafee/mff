@@ -540,26 +540,43 @@ nav {
 }
 
 @media (max-width: 768px) {
-    .timeline::after { left: 20px; }
-
-    .entry,
-    .left,
-    .right {
-        width: 100%;
-        left: 0;
-        padding-left: 50px;
-        padding-right: 20px;
-        transform: translateX(0) !important;
-    }
-
-    .entry ul li { padding-left: 24px; }
-    .entry ul li::before { width: 14px; height: 14px; top: 5px; }
-    .timeline-icon-img {
-        left: 25px !important;
-        right: auto !important;
-        width: 24px;
-        height: 24px;
-    }
+     .timeline::after {
+    left: 20px;
+  }
+  
+  .entry {
+    width: 100%;
+    padding-left: 50px;
+    padding-right: 20px;
+    left: 0 !important;       /* tutti allineati a sinistra */
+    transform: translateX(100px); /* partono tutti da destra */
+    opacity: 0;
+    transition: all 0.8s ease-out;
+  }
+  
+  /* Tutti animati a translateX(0) */
+  .entry.animate {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  
+  /* Nascondo padding-right-left specifici per desktop */
+  .entry.left, .entry.right {
+    padding-left: 50px !important;
+    padding-right: 20px !important;
+  }
+  
+  /* Posiziona tutti i .entry-content a destra della linea */
+  .entry-content {
+    margin-left: 60px;  /* spostato a destra */
+    margin-right: 0;
+  }
+  
+  /* Icona linea sempre a sinistra */
+  .timeline-icon-img {
+    left: 50px !important;
+    right: auto !important;
+  }
 }
 
 @media (max-width: 480px) {
