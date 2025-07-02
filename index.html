@@ -76,7 +76,7 @@
 
         <h1>About Me</h1>
 
-        <h2>  Skills </h2>
+        <h2>Hard Skills</h2>
 
       <div class="timeline">
 
@@ -220,6 +220,29 @@
   ]
 });
         </script>
+
+  <script>
+document.addEventListener("DOMContentLoaded", function () {
+  const entries = document.querySelectorAll(".entry");
+
+  const observer = new IntersectionObserver((entriesList) => {
+    entriesList.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("animate");
+      } else {
+        entry.target.classList.remove("animate");
+      }
+    });
+  }, {
+    threshold: 0.3
+  });
+
+  entries.forEach(el => observer.observe(el));
+});
+
+</script>
+
+
 </body>
 
 </section>
