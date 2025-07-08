@@ -14,107 +14,6 @@ html{
     box-sizing: border-box;
 }
 
-/*THEME TOGGLE 
-.theme-toggle {
-  position: absolute;
-  left: 20px;
-  top: 10px;
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  color: #ffc0cb;
-  z-index: 200;
-  transition: color 0.3s ease;
-}
-
-.theme-toggle:hover {
-  color: white;
-}
-
-.light-mode .theme-toggle {
-  color: #222;
-}
-
-/* ===== LIGHT MODE ===== 
-.light-mode {
-  background-color: white;
-  color: black;
-}
-
-/* Sfondo del body 
-.light-mode body {
-  background-color: white;
-  color: black;
-}
-
-/* Titoli 
-.light-mode #dynamic-title,
-.light-mode #aboutme h2,
-.light-mode #contact h2 {
-  color: #003f34;
-}
-
-/* Paragrafi 
-.light-mode #aboutme p,
-.light-mode .about-list-item,
-.light-mode .contact-item a {
-  color: black;
-}
-
-/* Navbar 
-.light-mode nav {
-  background-color: #ffffff;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Menu mobile 
-.light-mode .menu-items {
-  background-color: #f9f9f9;
-}
-
-.light-mode .menu-items a {
-  color: #003f34;
-  background-color: #ffffff;
-}
-
-.light-mode .menu-items a:hover {
-  color: #666;
-}
-
-/* Bottone toggle 
-.light-mode .theme-toggle {
-  color: #080000;
-}
-
-/* Social box 
-.light-mode .yt,
-.light-mode .tw {
-  background-color: #e0e0e0;
-}
-
-.light-mode .yt:hover,
-.light-mode .tw:hover {
-  background-color: #d0d0d0;
-}
-
-/* Icone 
-.light-mode .contact-item svg {
-  fill: black;
-}
-
-/* Bottone CV 
-.light-mode .CVicon {
-  border: 2px solid black;
-  color: black;
-}
-
-.light-mode .CVicon:hover {
-  background-color: #ddd;
-  border-color: #ddd;
-}
-*/
-
 .fade-in {
     opacity: 0;
     transform: translateY(20px);
@@ -351,7 +250,9 @@ nav {
     padding: 20px;
     margin: 10px;
     border-radius: 8px;
-    transition: transform 0.2s, background 0.2s;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0);
+    transition: all 0.3s ease;
     z-index: 1;
 }
 
@@ -463,13 +364,13 @@ nav {
     background: rgba(25, 25, 25, 0.9);
     padding: 20px 25px;
     border-radius: 10px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
-    border: 1px solid rgba(255, 192, 203, 0.2);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0);
     transition: all 0.3s ease;
 }
 
 .entry-content:hover {
-    border-color: rgba(255, 192, 203, 0.5);
+    border-color: rgba(0, 0, 0, 0);
     transform: translateY(-2px);
 }
 
