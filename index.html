@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="mff.css">
     <script src="scriptH1.js"></script>
 
-   <!--- THEME TOGGLE <script src="theme.js"></script> --->
+ 
    
     <script src="finisher-header.es5.min.js" type="text/javascript"></script>
 
@@ -25,7 +25,14 @@
     <nav>
         <div id="menu-container">
 
-       <!-- THEME TOGGLE <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark/light">☀️</button>  --> 
+          <!-- TOGGLE THEME BUTTON
+
+          <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle theme">
+  <svg id="theme-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <path d="M12 4V2M12 22v-2M4.93 4.93L3.51 3.51M20.49 20.49l-1.42-1.42M4 12H2M22 12h-2M4.93 19.07l-1.42 1.42M20.49 3.51l-1.42 1.42M12 8a4 4 0 100 8 4 4 0 000-8z" stroke="#ffc0cb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</button> -->
+
 
            <div class="menu-label">&#9776;</div>
             <ul class="menu-items">
@@ -74,22 +81,22 @@
 
     <section id="aboutme">
 
-        <h1>About Me</h1>
+  <h1>About Me</h1>
+  <h2>Hard Skills</h2>
 
-        <h2>Hard Skills</h2>
+  <div class="timeline">
 
-      <div class="timeline">
-
-        <div class="entry left">
-          <img class="timeline-icon-img" src="svg/grad.svg" alt="">
+    <div class="entry left">
+      <img class="timeline-icon-img" src="svg/grad.svg" alt="">
       <div class="entry-content">
-        
-        <h3>2018-2019</h3>
+        <h3>2018–2019</h3>
         <ul>
-          <li>Assembly and knowledge of the hardware components of a desktop PC</li>
-          <li>Operating system and file management</li>
-          <li>Advanced use of the Office package
-           <br>Word, Excel e PowerPoint / Google Workspace</li>
+          <li>Assemblaggio e componenti hardware di un PC</li>
+          <li>Sistema operativo e gestione file</li>
+          <li>
+            Utilizzo avanzato del pacchetto Office
+            <br>Word, Excel e PowerPoint / Google Workspace
+          </li>
         </ul>
       </div>
     </div>
@@ -97,12 +104,11 @@
     <div class="entry right">
       <img class="timeline-icon-img" src="svg/grad.svg" alt="">
       <div class="entry-content">
-        
-        <h3>2019-2020</h3>
+        <h3>2019–2020</h3>
         <ul>
-          <li>Basic electrical systems</li>
-          <li>Analogue electronics</li>
-          <li>Basic computer science algorithms</li>
+          <li>Impiantistica base (fase, neutro, terra)</li>
+          <li>Elettronica analogica</li>
+          <li>Informatica – algoritmi di base</li>
         </ul>
       </div>
     </div>
@@ -110,23 +116,23 @@
     <div class="entry left">
       <img class="timeline-icon-img" src="svg/grad.svg" alt="">
       <div class="entry-content">
-        <h3>2020-2021</h3>
+        <h3>2020–2021</h3>
         <ul>
-          <li>Programming in C/C++</li>
-          <li>Basic networks and protocols</li>
-          <li>Digital logic</li>
+          <li>Programmazione in C / C++</li>
+          <li>Reti e protocolli base</li>
+          <li>Logica digitale</li>
         </ul>
       </div>
     </div>
 
     <div class="entry right">
-     <img class="timeline-icon-img" src="svg/grad.svg" alt="">
+      <img class="timeline-icon-img" src="svg/grad.svg" alt="">
       <div class="entry-content">
-        <h3>2021-2022</h3>
+        <h3>2021–2022</h3>
         <ul>
-          <li>Linux, hardware, and OS </li>
-          <li>Router configuration, subnetting</li>
-          <li>Digital electronics (flip-flops, counters)</li>
+          <li>Linux, hardware, sistemi operativi</li>
+          <li>Configurazione router, subnetting</li>
+          <li>Elettronica digitale (flip-flop, contatori)</li>
         </ul>
       </div>
     </div>
@@ -134,18 +140,34 @@
     <div class="entry left">
       <img class="timeline-icon-img" src="svg/grad.svg" alt="">
       <div class="entry-content">
-        <h3>2022-2023</h3>
+        <h3>2022–2023</h3>
         <ul>
-          <li>Cyber security</li>
-          <li>Web development: HTML, CSS, JS</li>
-           <li>Backend/Database Development: PHP, SQL</li>
-          <li>Project: personal portfolio</li>
+          <li>Sicurezza informatica</li>
+          <li>Sviluppo web: HTML, CSS, JavaScript</li>
+          <li>Sviluppo back-end / database: PHP, SQL</li>
+          <li>Progetto finale: portfolio personale</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="entry right">
+      <img class="timeline-icon-img" src="svg/tools.svg" alt="">
+      <div class="entry-content">
+        <h3>2025 <br> Operatore CNC </h3>
+        
+        <ul>
+          <li>Lettura del disegno tecnico</li>
+          <li>Preparazione della macchina utensile CNC</li>
+          <li>Programmazione CNC</li>
+          <li>Esecuzione delle lavorazioni</li>
+          <li>Manutenzione ordinaria della macchina</li>
         </ul>
       </div>
     </div>
 
   </div>
-    </section>
+</section>
+
 
     <section id="contact">
 
@@ -242,6 +264,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </script>
 
+<script>
+  const toggleBtn = document.getElementById("theme-toggle");
+  const icon = document.getElementById("theme-icon");
+
+  toggleBtn.addEventListener("click", () => {
+    document.body.classList.toggle("light");
+
+    // Cambia l’icona (opzionale)
+    if (document.body.classList.contains("light")) {
+      icon.innerHTML = `
+        <path d="M21.64 13A9 9 0 1111 2.36 7 7 0 0021.64 13z" stroke="#4a90e2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
+    } else {
+      icon.innerHTML = `
+        <path d="M12 4V2M12 22v-2M4.93 4.93L3.51 3.51M20.49 20.49l-1.42-1.42M4 12H2M22 12h-2M4.93 19.07l-1.42 1.42M20.49 3.51l-1.42 1.42M12 8a4 4 0 100 8 4 4 0 000-8z" stroke="#ffc0cb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
+    }
+  });
+</script>
+
 
 </body>
 
@@ -261,6 +301,3 @@ document.addEventListener("DOMContentLoaded", function () {
 <script src="script.js"></script>
 
 </html>
-
-
-
