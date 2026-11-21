@@ -1,302 +1,654 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="it">
 
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>mff</title>
+    <title>Matteo Mosti — Portfolio</title>
+    <meta name="description"
+        content="Matteo Mosti: sviluppo web, reti e programmazione CNC a Massa.">
+    <meta name="author" content="Matteo Mosti">
+    <meta name="theme-color" content="#0a0a0c">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Matteo Mosti — Portfolio">
+    <meta property="og:description"
+        content="Siti web, reti e macchine CNC. Il percorso e i recapiti di Matteo Mosti.">
+
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="icon" href="favicon.png" type="image/png">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
+    <script>document.documentElement.classList.add("js");</script>
 
     <link rel="stylesheet" href="mff.css">
-    <script src="scriptH1.js"></script>
 
- 
-   
     <script src="finisher-header.es5.min.js" type="text/javascript"></script>
-
+    <script src="scriptH1.js" defer></script>
+    <script src="script.js" defer></script>
 </head>
 
+<body>
 
+    <!-- ================= PRELOADER ================= -->
+    <div class="preloader" id="preloader" aria-hidden="true">
+        <div class="preloader-top">
+            <span>mff</span>
+            <span>2026</span>
+        </div>
+        <div class="preloader-word">mff</div>
+        <div class="preloader-bottom">
+            <span>Caricamento</span>
+            <span id="preloader-count">0%</span>
+        </div>
+        <div class="preloader-bar"><i id="preloader-bar"></i></div>
+    </div>
 
-<body class="header finisher-header">
+    <!-- Custom cursor (desktop only, progressive enhancement) -->
+    <div class="cursor" id="cursor" aria-hidden="true">
+        <span class="cursor-dot"></span>
+        <span class="cursor-ring"></span>
+    </div>
 
-    <nav>
-        <div id="menu-container">
+    <a class="skip-link" href="#home">Salta al contenuto</a>
 
-          <!-- TOGGLE THEME BUTTON
+    <!-- ================= HEADER ================= -->
+    <header class="site-header" id="site-header">
+        <nav class="nav container" aria-label="Navigazione principale">
 
-          <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle theme">
-  <svg id="theme-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <path d="M12 4V2M12 22v-2M4.93 4.93L3.51 3.51M20.49 20.49l-1.42-1.42M4 12H2M22 12h-2M4.93 19.07l-1.42 1.42M20.49 3.51l-1.42 1.42M12 8a4 4 0 100 8 4 4 0 000-8z" stroke="#ffc0cb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-</button> -->
+            <a href="#home" class="brand" aria-label="mff — torna all'inizio">
+                <span class="brand-word" aria-hidden="true">mff</span>
+                <span class="brand-trace" aria-hidden="true"><i></i></span>
+            </a>
 
+            <button class="nav-toggle" id="nav-toggle" type="button" aria-controls="primary-menu"
+                aria-expanded="false" aria-label="Apri il menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
 
-           <div class="menu-label">&#9776;</div>
-            <ul class="menu-items">
-
-
-                <li class="menu-header">Menu</li>
-                <li><hr class="menu-divider"></li>
-
-                <li><a href="#home" class="menu-link">Home</a></li>
-                <li><a href="#aboutme" class="menu-link">About me</a></li>
-                <li><a href="#contact" class="menu-link">Contact</a></li>
+            <ul class="menu-items" id="primary-menu">
+                <li><a href="#home" class="menu-link is-active">Inizio</a></li>
+                <li><a href="#aboutme" class="menu-link">Chi sono</a></li>
+                <li><a href="#web" class="menu-link">Web</a></li>
+                <li><a href="#cnc" class="menu-link">CNC</a></li>
+                <li><a href="#contact" class="menu-link">Contatti</a></li>
+                <li class="nav-cta-wrap">
+                    <a class="nav-cta" href="CV.pdf" download data-magnetic>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" />
+                        </svg>
+                        CV
+                    </a>
+                </li>
             </ul>
+
+        </nav>
+        <div class="scroll-progress" aria-hidden="true">
+            <span id="scroll-progress-bar"></span>
         </div>
-    </nav>
+    </header>
 
-<section class="fade-in">
+    <div class="menu-overlay" id="menu-overlay" aria-hidden="true"></div>
 
-<div class="nameandlogo">
-  <img class="fiha" src="midj.png" alt="Logo" width="100px">
-  <div class="title-container">
-  <h1 id="dynamic-title"><span id="typed-text"></span></h1>
-  </div>
-</div>
+    <main>
 
-    <section id="home">
+        <!-- ================= HERO ================= -->
+        <section id="home" class="hero">
+            <div class="hero-bg" aria-hidden="true">
+                <div class="hero-grid"></div>
+                <div class="glow glow-1"></div>
+                <div class="glow glow-2"></div>
+            </div>
 
+            <div class="finisher-header hero-canvas" aria-hidden="true"></div>
 
-   
-    <div class="container1">
-        <div class="yt" onclick="window.open('https://www.linkedin.com/in/matteo-mosti-9377a5257/', '_blank')">
-            <div class="social-content">
-               <img src="svg/linkedin.svg" alt="logo linkedin">
+            <div class="hero-hud hero-hud-left" aria-hidden="true">
+                <span><i>X</i><b id="hud-x">+000.000</b></span>
+                <span><i>Y</i><b id="hud-y">+000.000</b></span>
+                <span><i>Z</i><b>-001.500</b></span>
+            </div>
+
+            <div class="hero-hud hero-hud-right" aria-hidden="true">
+                <span>43.99° N</span>
+                <span>10.13° E</span>
+                <span>Massa · IT</span>
+            </div>
+
+            <div class="container hero-inner">
+
+                <div class="hero-copy">
+                    <p class="eyebrow">
+                        <span class="eyebrow-dot" aria-hidden="true"></span>
+                        Massa, Toscana
+                    </p>
+
+                    <h1 class="hero-title">
+                        <span class="text-gradient">Matteo Mosti</span>
+                    </h1>
+
+                    <p class="hero-role" aria-hidden="true">
+                        <span class="mono-prompt">&gt;_</span>
+                        <span id="typed-text">Web Developer</span>
+                        <span class="caret"></span>
+                    </p>
+                    <p class="sr-only">Web developer, tecnico hardware e operatore CNC.</p>
+
+                    <p class="hero-desc">
+                        Sviluppo siti web, configuro reti e programmo macchine CNC.
+                        Lavoro tra front-end, infrastruttura e officina.
+                    </p>
+
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="#contact" data-magnetic>
+                            Scrivimi
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M5 12h14M13 6l6 6-6 6" />
+                            </svg>
+                        </a>
+                        <a class="btn btn-ghost" href="CV.pdf" download data-magnetic>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" />
+                            </svg>
+                            Scarica CV
+                        </a>
+                    </div>
+
+                    <ul class="social-list" aria-label="Profili social">
+                        <li>
+                            <a href="https://www.linkedin.com/in/matteo-mosti-9377a5257/" target="_blank"
+                                rel="noopener noreferrer" aria-label="LinkedIn (si apre in una nuova scheda)"
+                                data-magnetic>
+                                <img src="svg/linkedin.svg" alt="" width="22" height="22">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/Maafee/mff" target="_blank" rel="noopener noreferrer"
+                                aria-label="GitHub (si apre in una nuova scheda)" data-magnetic>
+                                <img src="svg/github.svg" alt="" width="22" height="22">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="avatar-frame">
+                        <img class="avatar" src="midj-640.jpg" alt="Immagine di profilo" width="640" height="640">
+                    </div>
+                    <span class="float-chip chip-1"><span class="chip-dot" aria-hidden="true"></span>Web &amp; UI</span>
+                    <span class="float-chip chip-2">Reti &amp; sistemi</span>
+                    <span class="float-chip chip-3">CNC · G-code</span>
+                </div>
+
+            </div>
+
+            <a class="scroll-hint" href="#aboutme" aria-label="Scorri alla sezione Chi sono">
+                <span class="scroll-hint-line" aria-hidden="true"></span>
+                Scorri
+            </a>
+        </section>
+
+        <!-- ================= SKILL MARQUEE ================= -->
+        <div class="marquee-band" aria-hidden="true">
+            <div class="marquee">
+                <div class="marquee-track">
+                    <div class="marquee-group">
+                        <span>HTML</span><span>CSS</span><span>JavaScript</span><span>PHP</span><span>SQL</span>
+                        <span>C / C++</span><span>Linux</span><span>Reti &amp; Protocolli</span>
+                        <span>Sicurezza informatica</span><span>G-Code</span><span>CNC</span><span>Office</span>
+                    </div>
+                    <div class="marquee-group">
+                        <span>HTML</span><span>CSS</span><span>JavaScript</span><span>PHP</span><span>SQL</span>
+                        <span>C / C++</span><span>Linux</span><span>Reti &amp; Protocolli</span>
+                        <span>Sicurezza informatica</span><span>G-Code</span><span>CNC</span><span>Office</span>
+                    </div>
+                </div>
+            </div>
+            <div class="marquee marquee-alt">
+                <div class="marquee-track">
+                    <div class="marquee-group">
+                        <span>Disegno tecnico</span><span>Elettronica</span><span>Subnetting</span>
+                        <span>Virtualizzazione</span><span>Programmazione G-code</span><span>Disegno CAD</span>
+                    </div>
+                    <div class="marquee-group">
+                        <span>Disegno tecnico</span><span>Elettronica</span><span>Subnetting</span>
+                        <span>Virtualizzazione</span><span>Programmazione G-code</span><span>Disegno CAD</span>
+                    </div>
+                </div>
             </div>
         </div>
-        
-        <div class="tw" onclick="window.open('https://github.com/Maafee/mff', '_blank')">
-            <div class="social-content">
-               
-                <img src="svg/github.svg" alt="logo indeed">
 
+        <!-- ================= ABOUT ================= -->
+        <section id="aboutme" class="section">
+            <div class="container">
+
+                <header class="section-head reveal">
+                    <p class="eyebrow">2018 — 2026</p>
+                    <h2 class="section-title">Percorso<span class="accent-dot">.</span></h2>
+                    <p class="section-desc">
+                        Sei tappe tra hardware, elettronica, programmazione, reti, web e CNC.
+                        Per ogni anno, quello che ho imparato a fare.
+                    </p>
+                </header>
+
+                <ul class="stat-row reveal" aria-label="Numeri del percorso">
+                    <li>
+                        <b><span data-count="5">5</span></b>
+                        <span>anni di ITIS informatico</span>
+                    </li>
+                    <li>
+                        <b><span data-count="2">2</span></b>
+                        <span>esperienze sul campo</span>
+                    </li>
+                    <li>
+                        <b><span data-count="6">6</span></b>
+                        <span>tappe di formazione</span>
+                    </li>
+                </ul>
+
+                <h3 class="subhead reveal"><span>Tappe</span></h3>
+
+                <div class="timeline" id="timeline">
+                    <div class="timeline-progress" aria-hidden="true"><i id="timeline-bar"></i></div>
+
+                    <article class="entry left">
+                        <span class="timeline-node" aria-hidden="true">
+                            <img src="svg/grad.svg" alt="">
+                        </span>
+                        <div class="entry-content">
+                            <span class="entry-year">2018 — 2019</span>
+                            <h3>Fondamenti IT</h3>
+                            <ul>
+                                <li>Assemblaggio e componenti hardware di un PC</li>
+                                <li>Sistema operativo e gestione file</li>
+                                <li>Utilizzo avanzato del pacchetto Office <span class="muted">— Word, Excel e
+                                        PowerPoint / Google Workspace</span></li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <article class="entry right">
+                        <span class="timeline-node" aria-hidden="true">
+                            <img src="svg/grad.svg" alt="">
+                        </span>
+                        <div class="entry-content">
+                            <span class="entry-year">2019 — 2020</span>
+                            <h3>Elettronica &amp; impianti</h3>
+                            <ul>
+                                <li>Impiantistica base (fase, neutro, terra)</li>
+                                <li>Elettronica analogica</li>
+                                <li>Informatica — algoritmi di base</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <article class="entry left">
+                        <span class="timeline-node" aria-hidden="true">
+                            <img src="svg/grad.svg" alt="">
+                        </span>
+                        <div class="entry-content">
+                            <span class="entry-year">2020 — 2021</span>
+                            <h3>Programmazione &amp; reti</h3>
+                            <ul>
+                                <li>Programmazione in C / C++</li>
+                                <li>Reti e protocolli base</li>
+                                <li>Logica digitale</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <article class="entry right">
+                        <span class="timeline-node" aria-hidden="true">
+                            <img src="svg/grad.svg" alt="">
+                        </span>
+                        <div class="entry-content">
+                            <span class="entry-year">2021 — 2022</span>
+                            <h3>Sistemi &amp; infrastrutture</h3>
+                            <ul>
+                                <li>Linux, hardware, sistemi operativi</li>
+                                <li>Configurazione router, subnetting</li>
+                                <li>Elettronica digitale (flip-flop, contatori)</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <article class="entry left">
+                        <span class="timeline-node" aria-hidden="true">
+                            <img src="svg/grad.svg" alt="">
+                        </span>
+                        <div class="entry-content">
+                            <span class="entry-year">2022 — 2023</span>
+                            <h3>Sviluppo web &amp; sicurezza</h3>
+                            <ul>
+                                <li>Sicurezza informatica</li>
+                                <li>Sviluppo web: HTML, CSS, JavaScript</li>
+                                <li>Sviluppo back-end / database: PHP, SQL</li>
+                                <li>Progetto finale: portfolio personale</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <article class="entry right">
+                        <span class="timeline-node" aria-hidden="true">
+                            <img src="svg/tools.svg" alt="">
+                        </span>
+                        <div class="entry-content">
+                            <span class="entry-year">2025 — 2026</span>
+                            <h3>CNC &amp; G-code</h3>
+                            <ul>
+                                <li>Operatore CNC</li>
+                                <li>Programmatore CNC in G-code</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                </div>
             </div>
-        </div>
-    </div>
-    
-</section>
+        </section>
 
-    <section id="aboutme">
+        <!-- ================= WEB ================= -->
+        <section id="web" class="section section-web">
+            <div class="container">
 
-  <h1>About Me</h1>
-  <h2>Hard Skills</h2>
+                <header class="section-head reveal">
+                    <p class="eyebrow">Sviluppo web</p>
+                    <h2 class="section-title">Web<span class="accent-dot">.</span></h2>
+                    <p class="section-desc">
+                        Front-end, back-end e reti. HTML, CSS, JavaScript, PHP e SQL.
+                    </p>
+                </header>
 
-  <div class="timeline">
+                <div class="web-grid">
 
-    <div class="entry left">
-      <img class="timeline-icon-img" src="svg/grad.svg" alt="">
-      <div class="entry-content">
-        <h3>2018–2019</h3>
-        <ul>
-          <li>Assemblaggio e componenti hardware di un PC</li>
-          <li>Sistema operativo e gestione file</li>
-          <li>
-            Utilizzo avanzato del pacchetto Office
-            <br>Word, Excel e PowerPoint / Google Workspace
-          </li>
-        </ul>
-      </div>
-    </div>
+                    <article class="bento-card web-browser reveal">
+                        <div class="browser-bar">
+                            <span class="bento-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                            <span class="browser-url">mff.dev</span>
+                            <div class="view-switch" role="group" aria-label="Anteprima responsive">
+                                <button type="button" class="view-btn is-active" data-view="desktop"
+                                    aria-pressed="true">Desktop</button>
+                                <button type="button" class="view-btn" data-view="mobile"
+                                    aria-pressed="false">Mobile</button>
+                            </div>
+                        </div>
 
-    <div class="entry right">
-      <img class="timeline-icon-img" src="svg/grad.svg" alt="">
-      <div class="entry-content">
-        <h3>2019–2020</h3>
-        <ul>
-          <li>Impiantistica base (fase, neutro, terra)</li>
-          <li>Elettronica analogica</li>
-          <li>Informatica – algoritmi di base</li>
-        </ul>
-      </div>
-    </div>
+                        <div class="browser-stage">
+                            <div class="mini-site" id="mini-site">
+                                <div class="mini-grid" aria-hidden="true"></div>
+                                <div class="mini-nav">
+                                    <span class="mini-logo">mff</span>
+                                    <span class="mini-links">web · cnc · contatti</span>
+                                </div>
+                                <div class="mini-hero">
+                                    <p class="mini-eyebrow">Massa, Toscana</p>
+                                    <h3>Matteo<br>Mosti</h3>
+                                    <p class="mini-copy">Siti web, reti e macchine CNC.</p>
+                                    <div class="mini-actions">
+                                        <span class="mini-btn">Scrivimi</span>
+                                        <span class="mini-btn is-ghost">CV</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-    <div class="entry left">
-      <img class="timeline-icon-img" src="svg/grad.svg" alt="">
-      <div class="entry-content">
-        <h3>2020–2021</h3>
-        <ul>
-          <li>Programmazione in C / C++</li>
-          <li>Reti e protocolli base</li>
-          <li>Logica digitale</li>
-        </ul>
-      </div>
-    </div>
+                        <div class="browser-foot">
+                            <div class="accent-swatches" role="group" aria-label="Colore anteprima">
+                                <button type="button" class="swatch is-active" data-accent="#ffc0cb"
+                                    style="--sw:#ffc0cb" aria-label="Rosa" aria-pressed="true"></button>
+                                <button type="button" class="swatch" data-accent="#b9a7ff"
+                                    style="--sw:#b9a7ff" aria-label="Lilla" aria-pressed="false"></button>
+                                <button type="button" class="swatch" data-accent="#8ff0c4"
+                                    style="--sw:#8ff0c4" aria-label="Menta" aria-pressed="false"></button>
+                            </div>
+                            <span class="browser-hint">Anteprima interattiva</span>
+                        </div>
+                    </article>
 
-    <div class="entry right">
-      <img class="timeline-icon-img" src="svg/grad.svg" alt="">
-      <div class="entry-content">
-        <h3>2021–2022</h3>
-        <ul>
-          <li>Linux, hardware, sistemi operativi</li>
-          <li>Configurazione router, subnetting</li>
-          <li>Elettronica digitale (flip-flop, contatori)</li>
-        </ul>
-      </div>
-    </div>
+                    <article class="bento-card web-code reveal">
+                        <div class="bento-bar">
+                            <span class="bento-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                            <span class="bento-file">index.html</span>
+                            <span class="bento-lang">HTML</span>
+                        </div>
+                        <pre class="code-typer" id="web-typer" aria-hidden="true"></pre>
+                        <p class="sr-only">Esempio di HTML: sezione hero con titolo, testo e link.</p>
+                    </article>
 
-    <div class="entry left">
-      <img class="timeline-icon-img" src="svg/grad.svg" alt="">
-      <div class="entry-content">
-        <h3>2022–2023</h3>
-        <ul>
-          <li>Sicurezza informatica</li>
-          <li>Sviluppo web: HTML, CSS, JavaScript</li>
-          <li>Sviluppo back-end / database: PHP, SQL</li>
-          <li>Progetto finale: portfolio personale</li>
-        </ul>
-      </div>
-    </div>
+                    <article class="bento-card web-card reveal">
+                        <span class="web-card-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m8 6-5 6 5 6M16 6l5 6-5 6M14 4l-4 16" />
+                            </svg>
+                        </span>
+                        <h3>Front-end</h3>
+                        <p>HTML, CSS e JavaScript. Layout responsive e animazioni.</p>
+                    </article>
 
-    <div class="entry right">
-      <img class="timeline-icon-img" src="svg/tools.svg" alt="">
-      <div class="entry-content">
-        <h3>2025-2026 <br> Operatore CNC </h3>
-        
-        <ul>
-          <li>Lettura del disegno tecnico</li>
-          <li>Preparazione della macchina utensile CNC</li>
-          <li>Programmazione CNC in G-Code</li>
-          <li>Manutenzione ordinaria della macchina</li>
-        </ul>
-      </div>
-    </div>
+                    <article class="bento-card web-card reveal">
+                        <span class="web-card-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <ellipse cx="12" cy="5" rx="7" ry="3" />
+                                <path d="M5 5v14c0 1.7 3.1 3 7 3s7-1.3 7-3V5" />
+                                <path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3" />
+                            </svg>
+                        </span>
+                        <h3>Back-end</h3>
+                        <p>PHP e SQL per dati e funzionalità lato server.</p>
+                    </article>
 
-  </div>
-</section>
+                    <article class="bento-card web-card reveal">
+                        <span class="web-card-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="5" cy="12" r="2" />
+                                <circle cx="19" cy="6" r="2" />
+                                <circle cx="19" cy="18" r="2" />
+                                <path d="M7 12h5m0 0 5-5m-5 5 5 5" />
+                            </svg>
+                        </span>
+                        <h3>Reti</h3>
+                        <p>Router, subnetting e ambienti Linux.</p>
+                    </article>
 
+                </div>
+            </div>
+        </section>
 
-    <section id="contact">
+        <!-- ================= CNC ================= -->
+        <section id="cnc" class="section section-cnc">
+            <div class="container">
 
-        <h1>Contact</h1>
-        
-        <!-- Contatto email -->
-        <div class="contact-item">
-            <a href="mailto:matteomosti04@gmail.com">
-                <svg width="1.5em" height="1.5em" viewBox="0 0 512 384" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M64 48C55.2 48 48 55.2 48 64V86.1L220.5 227.7C241.2 244.7 270.9 244.7 291.6 227.7L464 86.1V64C464 55.2 456.8 48 448 48H64ZM48 148.2V320C48 328.8 55.2 336 64 336H448C456.8 336 464 328.8 464 320V148.2L322 264.8C283.6 296.3 228.3 296.3 190 264.8L48 148.2ZM0 64C0 28.7 28.7 0 64 0H448C483.3 0 512 28.7 512 64V320C512 355.3 483.3 384 448 384H64C28.7 384 0 355.3 0 320V64Z" fill="white"/>
+                <header class="section-head reveal">
+                    <p class="eyebrow">CNC &amp; G-code</p>
+                    <h2 class="section-title">CNC<span class="accent-dot">.</span></h2>
+                    <p class="section-desc">
+                        Operatore CNC e programmatore CNC in G-code.
+                    </p>
+                </header>
+
+                <div class="cnc-grid">
+
+                    <article class="bento-card cnc-role reveal">
+                        <span class="cnc-role-num">01</span>
+                        <div class="cnc-role-icon" aria-hidden="true">
+                            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="7" y="9" width="34" height="24" rx="3" />
+                                <path d="M14 9V5h20v4M24 15v10M19 25h10M13 39h22M17 33v6M31 33v6" />
+                                <circle cx="24" cy="15" r="2" />
+                            </svg>
+                        </div>
+                        <h3>Operatore CNC</h3>
+                        <p>Conduzione della macchina utensile CNC.</p>
+                    </article>
+
+                    <article class="bento-card cnc-role reveal">
+                        <span class="cnc-role-num">02</span>
+                        <div class="cnc-role-icon" aria-hidden="true">
+                            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M10 14 4 24l6 10M38 14l6 10-6 10M28 8l-8 32" />
+                            </svg>
+                        </div>
+                        <h3>Programmatore CNC</h3>
+                        <p>Programmazione in G-code.</p>
+                    </article>
+
+                    <article class="bento-card cnc-terminal reveal">
+                        <div class="bento-bar">
+                            <span class="bento-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                            <span class="bento-file">programma.nc</span>
+                            <span class="bento-lang">G-code</span>
+                        </div>
+                        <div class="cnc-terminal-body">
+                            <pre class="gcode-typer" id="gcode-typer" aria-hidden="true"></pre>
+                            <svg class="toolpath" viewBox="0 0 260 180" aria-hidden="true">
+                                <defs>
+                                    <pattern id="toolgrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                        <path d="M20 0H0V20" fill="none" stroke="rgba(255,255,255,.06)"
+                                            stroke-width="1" />
+                                    </pattern>
+                                </defs>
+                                <rect width="260" height="180" fill="url(#toolgrid)" />
+                                <path id="toolpath-line"
+                                    d="M40 130 H100 V70 H160 V110 H220"
+                                    fill="none" stroke="#ffc0cb" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <circle r="4" fill="#ffc0cb">
+                                    <animateMotion dur="5s" repeatCount="indefinite" rotate="auto">
+                                        <mpath href="#toolpath-line" />
+                                    </animateMotion>
+                                </circle>
+                            </svg>
+                        </div>
+                        <p class="sr-only">
+                            Esempio di programma G-code con coordinate assolute e movimento lineare.
+                        </p>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= CONTACT ================= -->
+        <section id="contact" class="section section-contact">
+            <div class="container">
+
+                <header class="section-head reveal">
+                    <p class="eyebrow">Contatti</p>
+                    <h2 class="section-title">Recapiti<span class="accent-dot">.</span></h2>
+                    <p class="section-desc">
+                        Email, telefono e CV in PDF.
+                    </p>
+                </header>
+
+                <div class="contact-grid">
+
+                    <a class="contact-card reveal" href="mailto:matteomosti04@gmail.com">
+                        <span class="contact-icon" aria-hidden="true">
+                            <svg viewBox="0 0 512 384" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M64 48C55.2 48 48 55.2 48 64V86.1L220.5 227.7C241.2 244.7 270.9 244.7 291.6 227.7L464 86.1V64C464 55.2 456.8 48 448 48H64ZM48 148.2V320C48 328.8 55.2 336 64 336H448C456.8 336 464 328.8 464 320V148.2L322 264.8C283.6 296.3 228.3 296.3 190 264.8L48 148.2ZM0 64C0 28.7 28.7 0 64 0H448C483.3 0 512 28.7 512 64V320C512 355.3 483.3 384 448 384H64C28.7 384 0 355.3 0 320V64Z" />
+                            </svg>
+                        </span>
+                        <span class="contact-label">Email</span>
+                        <span class="contact-value">matteomosti04@gmail.com</span>
+                        <span class="contact-cta">
+                            Apri la mail
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M5 12h14M13 6l6 6-6 6" />
+                            </svg>
+                        </span>
+                    </a>
+
+                    <a class="contact-card reveal" href="tel:+393271852425">
+                        <span class="contact-icon" aria-hidden="true">
+                            <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M164.9 24.6C157.2 6.00003 136.9 -3.89997 117.5 1.40003L29.5 25.4C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512C466 512 481.8 499.9 486.6 482.5L510.6 394.5C515.9 375.1 506 354.8 487.4 347.1L391.4 307.1C375.1 300.3 356.2 305 345.1 318.7L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167C207 155.8 211.7 137 204.9 120.7L164.9 24.7V24.6Z" />
+                            </svg>
+                        </span>
+                        <span class="contact-label">Telefono</span>
+                        <span class="contact-value">+39 327 185 2425</span>
+                        <span class="contact-cta">
+                            Chiama
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M5 12h14M13 6l6 6-6 6" />
+                            </svg>
+                        </span>
+                    </a>
+
+                    <a class="contact-card contact-card-cv reveal" href="CV.pdf" download>
+                        <span class="contact-icon" aria-hidden="true">
+                            <svg viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M320 464C328.8 464 336 456.8 336 448V160H256C238.3 160 224 145.7 224 128V48H64C55.2 48 48 55.2 48 64V448C48 456.8 55.2 464 64 464H320ZM0 64C0 28.7 28.7 0 64 0H229.5C246.5 0 262.8 6.7 274.8 18.7L365.3 109.2C377.3 121.2 384 137.5 384 154.5V448C384 483.3 355.3 512 320 512H64C28.7 512 0 483.3 0 448V64Z" />
+                            </svg>
+                        </span>
+                        <span class="contact-label">Curriculum</span>
+                        <span class="contact-value">Scarica il CV in PDF</span>
+                        <span class="contact-cta">
+                            Scarica il PDF
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" />
+                            </svg>
+                        </span>
+                    </a>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <p>© <span id="year">2026</span> Matteo Mosti</p>
+            <a class="footer-top" href="#home" data-magnetic>
+                Torna su
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12 19V5M6 11l6-6 6 6" />
                 </svg>
-                <span>matteomosti04@gmail.com</span>
             </a>
         </div>
-    
-        <!-- Contatto telefonico -->
-        <div class="contact-item">
-            <a href="tel:+39 3271852425">
-                <svg width="1.5em" height="1.5em" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M164.9 24.6C157.2 6.00003 136.9 -3.89997 117.5 1.40003L29.5 25.4C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512C466 512 481.8 499.9 486.6 482.5L510.6 394.5C515.9 375.1 506 354.8 487.4 347.1L391.4 307.1C375.1 300.3 356.2 305 345.1 318.7L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167C207 155.8 211.7 137 204.9 120.7L164.9 24.7V24.6Z" fill="white"/>
-                </svg>
-                <span>+39 327 185 2425</span>
-            </a>
-        </div>
-    
-        <!-- Link per il CV -->
-        <div class="contact-item">
-            <a class="CVicon" href="CV.pdf" download>
-                <svg width="1.5em" height="1.5em" viewBox="0 0 384 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M320 464C328.8 464 336 456.8 336 448V160H256C238.3 160 224 145.7 224 128V48H64C55.2 48 48 55.2 48 64V448C48 456.8 55.2 464 64 464H320ZM0 64C0 28.7 28.7 0 64 0H229.5C246.5 0 262.8 6.7 274.8 18.7L365.3 109.2C377.3 121.2 384 137.5 384 154.5V448C384 483.3 355.3 512 320 512H64C28.7 512 0 483.3 0 448V64Z" fill="white"/>
-                    </svg>
-                    
-                <span>Download CV</span>
-            </a>
-        </div>
+    </footer>
 
-    </section>
-    
     <script type="text/javascript">
         new FinisherHeader({
-            
-    "count": 100,
-    "size": {
-        "min": 2,
-        "max": 30,
-        "pulse": 0
-    },
-    "speed": {
-        "x": {
-        "min": 0,
-        "max": 0.4
-        },
-        "y": {
-        "min": 0,
-        "max": 0.6
-        }
-    },
-    "colors": {
-        "background": "#0e0e0e",
-        "particles": [
-        "#ffc0cb"
-        ]
-    },
-    "blending": "overlay",
-    "opacity": {
-        "center": 1,
-        "edge": 0.55
-    },
-    "skew": 0,
-    "shapes": [
-        "c"
-  ]
-});
-        </script>
-
-  <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const entries = document.querySelectorAll(".entry");
-
-  const observer = new IntersectionObserver((entriesList) => {
-    entriesList.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("animate");
-      } else {
-        entry.target.classList.remove("animate");
-      }
-    });
-  }, {
-    threshold: 0.3
-  });
-
-  entries.forEach(el => observer.observe(el));
-});
-
-</script>
-
-<script>
-  const toggleBtn = document.getElementById("theme-toggle");
-  const icon = document.getElementById("theme-icon");
-
-  toggleBtn.addEventListener("click", () => {
-    document.body.classList.toggle("light");
-
-    // Cambia l’icona (opzionale)
-    if (document.body.classList.contains("light")) {
-      icon.innerHTML = `
-        <path d="M21.64 13A9 9 0 1111 2.36 7 7 0 0021.64 13z" stroke="#4a90e2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
-    } else {
-      icon.innerHTML = `
-        <path d="M12 4V2M12 22v-2M4.93 4.93L3.51 3.51M20.49 20.49l-1.42-1.42M4 12H2M22 12h-2M4.93 19.07l-1.42 1.42M20.49 3.51l-1.42 1.42M12 8a4 4 0 100 8 4 4 0 000-8z" stroke="#ffc0cb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
-    }
-  });
-</script>
-
+            "count": 42,
+            "size": { "min": 1, "max": 18, "pulse": 0 },
+            "speed": {
+                "x": { "min": 0, "max": 0.22 },
+                "y": { "min": 0, "max": 0.38 }
+            },
+            "colors": {
+                "background": "#0a0a0c",
+                "particles": ["#ffc0cb"]
+            },
+            "blending": "screen",
+            "opacity": { "center": 0.45, "edge": 0 },
+            "skew": 0,
+            "shapes": ["c"]
+        });
+    </script>
 
 </body>
-
-</section>
-
-<script>
-  window.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll('.fade-in').forEach(el => {
-      // Delay per vedere bene l'effetto
-      setTimeout(() => {
-        el.classList.add('loaded');
-      }, 100);
-    });
-  });
-</script>
-
-<script src="script.js"></script>
 
 </html>
