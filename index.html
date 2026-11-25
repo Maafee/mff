@@ -81,10 +81,10 @@
                 <li><a href="#cnc" class="menu-link">CNC</a></li>
                 <li><a href="#contact" class="menu-link">Contatti</a></li>
                 <li class="nav-cta-wrap">
-                    <a class="nav-cta" href="CV.pdf" download data-magnetic>
+                    <a class="nav-cta" href="cv.html" data-magnetic>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                            <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" />
+                            <path d="M14 3h7v7M21 3l-9 9M10 5H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5" />
                         </svg>
                         CV
                     </a>
@@ -343,10 +343,10 @@
                             <img src="svg/tools.svg" alt="">
                         </span>
                         <div class="entry-content">
-                            <span class="entry-year">2025 — 2026</span>
+                            <span class="entry-year">2025 — oggi</span>
                             <h3>CNC &amp; G-code</h3>
                             <ul>
-                                <li>Operatore CNC</li>
+                                <li>Operatore CNC <span class="muted">— in corso</span></li>
                                 <li>Programmatore CNC in G-code</li>
                             </ul>
                         </div>
@@ -383,21 +383,10 @@
                         </div>
 
                         <div class="browser-stage">
-                            <div class="mini-site" id="mini-site">
-                                <div class="mini-grid" aria-hidden="true"></div>
-                                <div class="mini-nav">
-                                    <span class="mini-logo">mff</span>
-                                    <span class="mini-links">web · cnc · contatti</span>
-                                </div>
-                                <div class="mini-hero">
-                                    <p class="mini-eyebrow">Massa, Toscana</p>
-                                    <h3>Matteo<br>Mosti</h3>
-                                    <p class="mini-copy">Siti web, reti e macchine CNC.</p>
-                                    <div class="mini-actions">
-                                        <span class="mini-btn">Scrivimi</span>
-                                        <span class="mini-btn is-ghost">CV</span>
-                                    </div>
-                                </div>
+                            <div class="preview-frame" id="web-preview-frame">
+                                <iframe class="preview-iframe" id="web-preview"
+                                    title="Anteprima dal vivo del codice HTML e CSS"
+                                    sandbox="allow-same-origin"></iframe>
                             </div>
                         </div>
 
@@ -410,18 +399,45 @@
                                 <button type="button" class="swatch" data-accent="#8ff0c4"
                                     style="--sw:#8ff0c4" aria-label="Menta" aria-pressed="false"></button>
                             </div>
-                            <span class="browser-hint">Anteprima interattiva</span>
+                            <span class="browser-hint">
+                                <span class="live-dot" aria-hidden="true"></span>
+                                Anteprima live
+                            </span>
                         </div>
                     </article>
 
-                    <article class="bento-card web-code reveal">
+                    <article class="bento-card web-code reveal" id="web-editor">
                         <div class="bento-bar">
                             <span class="bento-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-                            <span class="bento-file">index.html</span>
-                            <span class="bento-lang">HTML</span>
+                            <div class="code-tabs" aria-label="File del progetto">
+                                <button class="code-tab is-active" type="button" data-file="html"
+                                    aria-pressed="true">index.html</button>
+                                <button class="code-tab" type="button" data-file="css"
+                                    aria-pressed="false">style.css</button>
+                            </div>
+                            <div class="bar-actions">
+                                <button class="edit-btn" type="button" id="web-reset"
+                                    aria-label="Ripristina il codice di esempio" title="Ripristina l'esempio">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+                                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5" />
+                                    </svg>
+                                </button>
+                                <button class="edit-btn" type="button" id="web-edit" aria-pressed="false"
+                                    aria-label="Modifica il codice" title="Modifica il codice">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+                                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                         <pre class="code-typer" id="web-typer" aria-hidden="true"></pre>
-                        <p class="sr-only">Esempio di HTML: sezione hero con titolo, testo e link.</p>
+                        <textarea class="code-input" id="web-input" spellcheck="false" autocapitalize="off"
+                            autocomplete="off" aria-label="Editor del codice HTML" hidden></textarea>
+                        <p class="sr-only">
+                            Esempio modificabile: il codice HTML e CSS aggiorna l'anteprima accanto in tempo reale.
+                        </p>
                     </article>
 
                     <article class="bento-card web-card reveal">
@@ -506,35 +522,59 @@
                         <p>Programmazione in G-code.</p>
                     </article>
 
-                    <article class="bento-card cnc-terminal reveal">
+                    <article class="bento-card cnc-terminal reveal" id="cnc-editor">
                         <div class="bento-bar">
                             <span class="bento-dots" aria-hidden="true"><i></i><i></i><i></i></span>
                             <span class="bento-file">programma.nc</span>
                             <span class="bento-lang">G-code</span>
+                            <div class="bar-actions">
+                                <button class="edit-btn" type="button" id="gcode-reset"
+                                    aria-label="Ripristina il programma di esempio" title="Ripristina l'esempio">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+                                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5" />
+                                    </svg>
+                                </button>
+                                <button class="edit-btn" type="button" id="gcode-edit" aria-pressed="false"
+                                    aria-label="Modifica il programma G-code" title="Modifica il programma">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+                                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                         <div class="cnc-terminal-body">
-                            <pre class="gcode-typer" id="gcode-typer" aria-hidden="true"></pre>
-                            <svg class="toolpath" viewBox="0 0 260 180" aria-hidden="true">
-                                <defs>
-                                    <pattern id="toolgrid" width="20" height="20" patternUnits="userSpaceOnUse">
-                                        <path d="M20 0H0V20" fill="none" stroke="rgba(255,255,255,.06)"
-                                            stroke-width="1" />
-                                    </pattern>
-                                </defs>
-                                <rect width="260" height="180" fill="url(#toolgrid)" />
-                                <path id="toolpath-line"
-                                    d="M40 130 H100 V70 H160 V110 H220"
-                                    fill="none" stroke="#ffc0cb" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                                <circle r="4" fill="#ffc0cb">
-                                    <animateMotion dur="5s" repeatCount="indefinite" rotate="auto">
-                                        <mpath href="#toolpath-line" />
-                                    </animateMotion>
-                                </circle>
-                            </svg>
+                            <div class="gcode-pane">
+                                <pre class="gcode-typer" id="gcode-typer" aria-hidden="true"></pre>
+                                <textarea class="gcode-input" id="gcode-input" spellcheck="false" autocapitalize="off"
+                                    autocomplete="off" aria-label="Editor del programma G-code" hidden></textarea>
+                            </div>
+                            <div class="toolpath-panel">
+                                <svg class="toolpath" viewBox="0 0 320 220" role="img"
+                                    aria-label="Anteprima del percorso utensile ricavato dal G-code">
+                                    <defs>
+                                        <pattern id="toolgrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                            <path d="M20 0H0V20" fill="none" stroke="rgba(255,255,255,.06)"
+                                                stroke-width="1" />
+                                        </pattern>
+                                    </defs>
+                                    <rect width="320" height="220" fill="url(#toolgrid)" />
+                                    <g id="toolpath-paths"></g>
+                                    <circle id="toolpath-start" r="3" fill="rgba(255,255,255,.35)" />
+                                    <circle id="toolpath-tool" r="5" fill="#ffc0cb" />
+                                    <text id="toolpath-empty" x="160" y="112" text-anchor="middle"
+                                        fill="#8d8d9b" font-family="ui-monospace, Consolas, monospace"
+                                        font-size="11">Nessun movimento X / Y</text>
+                                </svg>
+                                <div class="toolpath-meta">
+                                    <span id="gcode-pos">X0 · Y0</span>
+                                    <span id="gcode-stats">12 blocchi</span>
+                                </div>
+                            </div>
                         </div>
                         <p class="sr-only">
-                            Esempio di programma G-code con coordinate assolute e movimento lineare.
+                            Esempio modificabile di programma G-code: il percorso accanto si aggiorna mentre scrivi.
                         </p>
                     </article>
 
@@ -550,65 +590,122 @@
                     <p class="eyebrow">Contatti</p>
                     <h2 class="section-title">Recapiti<span class="accent-dot">.</span></h2>
                     <p class="section-desc">
-                        Email, telefono e CV in PDF.
+                        Email, telefono e curriculum. Il CV si sfoglia qui, senza scaricarlo.
                     </p>
                 </header>
 
-                <div class="contact-grid">
+                <div class="contact-layout">
 
-                    <a class="contact-card reveal" href="mailto:matteomosti04@gmail.com">
-                        <span class="contact-icon" aria-hidden="true">
-                            <svg viewBox="0 0 512 384" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M64 48C55.2 48 48 55.2 48 64V86.1L220.5 227.7C241.2 244.7 270.9 244.7 291.6 227.7L464 86.1V64C464 55.2 456.8 48 448 48H64ZM48 148.2V320C48 328.8 55.2 336 64 336H448C456.8 336 464 328.8 464 320V148.2L322 264.8C283.6 296.3 228.3 296.3 190 264.8L48 148.2ZM0 64C0 28.7 28.7 0 64 0H448C483.3 0 512 28.7 512 64V320C512 355.3 483.3 384 448 384H64C28.7 384 0 355.3 0 320V64Z" />
-                            </svg>
-                        </span>
-                        <span class="contact-label">Email</span>
-                        <span class="contact-value">matteomosti04@gmail.com</span>
-                        <span class="contact-cta">
-                            Apri la mail
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                <path d="M5 12h14M13 6l6 6-6 6" />
-                            </svg>
-                        </span>
-                    </a>
+                    <div class="contact-direct reveal">
+                        <a class="contact-row" href="mailto:matteomosti04@gmail.com">
+                            <span class="contact-icon" aria-hidden="true">
+                                <svg viewBox="0 0 512 384" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M64 48C55.2 48 48 55.2 48 64V86.1L220.5 227.7C241.2 244.7 270.9 244.7 291.6 227.7L464 86.1V64C464 55.2 456.8 48 448 48H64ZM48 148.2V320C48 328.8 55.2 336 64 336H448C456.8 336 464 328.8 464 320V148.2L322 264.8C283.6 296.3 228.3 296.3 190 264.8L48 148.2ZM0 64C0 28.7 28.7 0 64 0H448C483.3 0 512 28.7 512 64V320C512 355.3 483.3 384 448 384H64C28.7 384 0 355.3 0 320V64Z" />
+                                </svg>
+                            </span>
+                            <span class="contact-body">
+                                <span class="contact-label">Email</span>
+                                <span class="contact-value">matteomosti04@gmail.com</span>
+                            </span>
+                            <span class="contact-row-arrow" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5 12h14M13 6l6 6-6 6" />
+                                </svg>
+                            </span>
+                        </a>
 
-                    <a class="contact-card reveal" href="tel:+393271852425">
-                        <span class="contact-icon" aria-hidden="true">
-                            <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M164.9 24.6C157.2 6.00003 136.9 -3.89997 117.5 1.40003L29.5 25.4C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512C466 512 481.8 499.9 486.6 482.5L510.6 394.5C515.9 375.1 506 354.8 487.4 347.1L391.4 307.1C375.1 300.3 356.2 305 345.1 318.7L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167C207 155.8 211.7 137 204.9 120.7L164.9 24.7V24.6Z" />
-                            </svg>
-                        </span>
-                        <span class="contact-label">Telefono</span>
-                        <span class="contact-value">+39 327 185 2425</span>
-                        <span class="contact-cta">
-                            Chiama
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                <path d="M5 12h14M13 6l6 6-6 6" />
-                            </svg>
-                        </span>
-                    </a>
+                        <a class="contact-row" href="tel:+393271852425">
+                            <span class="contact-icon" aria-hidden="true">
+                                <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M164.9 24.6C157.2 6.00003 136.9 -3.89997 117.5 1.40003L29.5 25.4C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512C466 512 481.8 499.9 486.6 482.5L510.6 394.5C515.9 375.1 506 354.8 487.4 347.1L391.4 307.1C375.1 300.3 356.2 305 345.1 318.7L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167C207 155.8 211.7 137 204.9 120.7L164.9 24.7V24.6Z" />
+                                </svg>
+                            </span>
+                            <span class="contact-body">
+                                <span class="contact-label">Telefono</span>
+                                <span class="contact-value">+39 327 185 2425</span>
+                            </span>
+                            <span class="contact-row-arrow" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5 12h14M13 6l6 6-6 6" />
+                                </svg>
+                            </span>
+                        </a>
 
-                    <a class="contact-card contact-card-cv reveal" href="CV.pdf" download>
-                        <span class="contact-icon" aria-hidden="true">
-                            <svg viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M320 464C328.8 464 336 456.8 336 448V160H256C238.3 160 224 145.7 224 128V48H64C55.2 48 48 55.2 48 64V448C48 456.8 55.2 464 64 464H320ZM0 64C0 28.7 28.7 0 64 0H229.5C246.5 0 262.8 6.7 274.8 18.7L365.3 109.2C377.3 121.2 384 137.5 384 154.5V448C384 483.3 355.3 512 320 512H64C28.7 512 0 483.3 0 448V64Z" />
-                            </svg>
-                        </span>
-                        <span class="contact-label">Curriculum</span>
-                        <span class="contact-value">Scarica il CV in PDF</span>
-                        <span class="contact-cta">
-                            Scarica il PDF
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" />
-                            </svg>
-                        </span>
-                    </a>
+                        <div class="contact-row is-static">
+                            <span class="contact-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 0 1 16 0Z" />
+                                    <circle cx="12" cy="10" r="2.6" />
+                                </svg>
+                            </span>
+                            <span class="contact-body">
+                                <span class="contact-label">Zona</span>
+                                <span class="contact-value">Massa, Toscana</span>
+                            </span>
+                        </div>
+
+                        <div class="contact-foot">
+                            <span class="contact-label">Profili</span>
+                            <ul class="social-list" aria-label="Profili social">
+                                <li>
+                                    <a href="https://www.linkedin.com/in/matteo-mosti-9377a5257/" target="_blank"
+                                        rel="noopener noreferrer" aria-label="LinkedIn (si apre in una nuova scheda)">
+                                        <img src="svg/linkedin.svg" alt="" width="22" height="22">
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://github.com/Maafee/mff" target="_blank" rel="noopener noreferrer"
+                                        aria-label="GitHub (si apre in una nuova scheda)">
+                                        <img src="svg/github.svg" alt="" width="22" height="22">
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <aside class="cv-card reveal" aria-labelledby="cv-card-title">
+                        <button class="cv-thumb" type="button" data-cv-open
+                            aria-label="Apri l'anteprima del curriculum">
+                            <img src="cv-preview.jpg" alt="Anteprima del curriculum di Matteo Mosti" width="1152"
+                                height="700" loading="lazy">
+                            <span class="cv-thumb-cta">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+                                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z" />
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg>
+                                Anteprima
+                            </span>
+                        </button>
+                        <div class="cv-card-body">
+                            <p class="contact-label">Curriculum</p>
+                            <h3 id="cv-card-title">Sfoglia il CV</h3>
+                            <p class="cv-card-desc">Anteprima completa nella pagina. Il PDF resta disponibile
+                                per il download.</p>
+                            <div class="cv-card-actions">
+                                <button class="btn btn-primary" type="button" data-cv-open>
+                                    Anteprima CV
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z" />
+                                        <circle cx="12" cy="12" r="3" />
+                                    </svg>
+                                </button>
+                                <a class="btn btn-ghost" href="CV.pdf" download>
+                                    Scarica PDF
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </aside>
 
                 </div>
             </div>
@@ -629,6 +726,39 @@
             </a>
         </div>
     </footer>
+
+    <!-- ================= CV PREVIEW ================= -->
+    <dialog class="cv-modal" id="cv-modal" aria-labelledby="cv-modal-title">
+        <div class="cv-modal-inner">
+            <header class="cv-modal-head">
+                <span class="cv-modal-title" id="cv-modal-title">Curriculum · Matteo Mosti</span>
+                <div class="cv-modal-actions">
+                    <a class="cv-modal-btn" href="CV.pdf" download>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" />
+                        </svg>
+                        <span>Scarica PDF</span>
+                    </a>
+                    <a class="cv-modal-btn is-ghost" href="cv.html" target="_blank" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M14 3h7v7M21 3l-9 9M10 5H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5" />
+                        </svg>
+                        <span>Nuova scheda</span>
+                    </a>
+                    <button class="cv-modal-close" type="button" data-cv-close aria-label="Chiudi l'anteprima">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" aria-hidden="true">
+                            <path d="M6 6l12 12M18 6 6 18" />
+                        </svg>
+                    </button>
+                </div>
+            </header>
+            <iframe class="cv-modal-frame" id="cv-frame" title="Anteprima del curriculum vitae"
+                data-src="cv.html"></iframe>
+        </div>
+    </dialog>
 
     <script type="text/javascript">
         new FinisherHeader({

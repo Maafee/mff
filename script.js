@@ -325,42 +325,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* ---------------------------------------------------------------
-       Web preview controls
+       Typewriter helper (cancellable)
        --------------------------------------------------------------- */
-    const miniSite = document.getElementById("mini-site");
+    const typingTimers = new WeakMap();
 
-    if (miniSite) {
-        const viewButtons = Array.from(document.querySelectorAll("[data-view]"));
-        const swatches = Array.from(document.querySelectorAll("[data-accent]"));
-
-        const setActive = (group, activeItem) => {
-            group.forEach((item) => {
-                const isActive = item === activeItem;
-                item.classList.toggle("is-active", isActive);
-                item.setAttribute("aria-pressed", String(isActive));
-            });
-        };
-
-        viewButtons.forEach((button) => {
-            button.addEventListener("click", () => {
-                miniSite.classList.toggle("is-mobile", button.dataset.view === "mobile");
-                setActive(viewButtons, button);
-            });
-        });
-
-        swatches.forEach((swatch) => {
-            swatch.addEventListener("click", () => {
-                miniSite.style.setProperty("--mini-accent", swatch.dataset.accent);
-                setActive(swatches, swatch);
-            });
-        });
+    function stopTyping(element) {
+        if (!element) return;
+        const timers = typingTimers.get(element);
+        if (timers) timers.forEach((timer) => window.clearTimeout(timer));
+        typingTimers.delete(element);
     }
 
-    /* ---------------------------------------------------------------
-       Code / G-code typewriters
-       --------------------------------------------------------------- */
-    const typeWhenVisible = (element, text, baseDelay = 10) => {
+    function typeWhenVisible(element, getText, baseDelay = 10) {
         if (!element) return;
+
+        stopTyping(element);
+        const text = getText();
 
         if (reduceMotion || !("IntersectionObserver" in window)) {
             element.textContent = text;
@@ -374,45 +354,415 @@ document.addEventListener("DOMContentLoaded", () => {
                 entries.forEach((entry) => {
                     if (!entry.isIntersecting || started) return;
                     started = true;
+                    observer.disconnect();
 
                     let index = 0;
+                    const timers = [];
+                    typingTimers.set(element, timers);
+
                     const type = () => {
                         element.textContent = text.slice(0, index);
                         index += 1;
                         if (index <= text.length) {
-                            window.setTimeout(type, baseDelay + Math.random() * 8);
+                            timers.push(window.setTimeout(type, baseDelay + Math.random() * 8));
                         }
                     };
 
                     type();
-                    observer.disconnect();
                 });
             },
             { threshold: 0.3 }
         );
 
         observer.observe(element);
+    }
+
+    /* ---------------------------------------------------------------
+       Web: HTML + CSS editor with live preview
+       --------------------------------------------------------------- */
+    const webPreview = document.getElementById("web-preview");
+    const previewFrame = document.getElementById("web-preview-frame");
+    const codeEditor = document.getElementById("web-editor");
+    const webPre = document.getElementById("web-typer");
+    const webInput = document.getElementById("web-input");
+    const webEditBtn = document.getElementById("web-edit");
+    const webResetBtn = document.getElementById("web-reset");
+    const codeTabs = Array.from(document.querySelectorAll(".code-tab"));
+    const viewButtons = Array.from(document.querySelectorAll("[data-view]"));
+    const swatches = Array.from(document.querySelectorAll("[data-accent]"));
+
+    const webDefaults = {
+        html: [
+            '<nav class="nav">',
+            '  <span class="logo">mff</span>',
+            '  <span class="links">web · cnc · contatti</span>',
+            "</nav>",
+            "",
+            '<section class="hero">',
+            '  <p class="eyebrow">Massa, Toscana</p>',
+            "  <h1>Matteo<br>Mosti</h1>",
+            "  <p class=\"copy\">Siti web, reti e macchine CNC.</p>",
+            "",
+            '  <div class="actions">',
+            '    <a class="btn" href="#">Scrivimi</a>',
+            '    <a class="btn ghost" href="#">CV</a>',
+            "  </div>",
+            "</section>",
+        ].join("\n"),
+        css: [
+            ":root {",
+            "  --accent: #ffc0cb;",
+            "  --muted: #8d8d9b;",
+            "}",
+            "",
+            "body {",
+            "  position: relative;",
+            "  min-height: 100vh;",
+            "  padding: 26px 24px;",
+            "  background: linear-gradient(160deg, #111118, #0a0a0d);",
+            "  overflow: hidden;",
+            "}",
+            "",
+            "body::before {",
+            '  content: "";',
+            "  position: absolute;",
+            "  inset: 0;",
+            "  background-image:",
+            "    linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),",
+            "    linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);",
+            "  background-size: 34px 34px;",
+            "  -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 18%, #000, transparent 80%);",
+            "  mask-image: radial-gradient(ellipse 90% 80% at 50% 18%, #000, transparent 80%);",
+            "  pointer-events: none;",
+            "}",
+            "",
+            "body::after {",
+            '  content: "";',
+            "  position: absolute;",
+            "  top: -90px;",
+            "  right: -70px;",
+            "  width: 240px;",
+            "  height: 240px;",
+            "  border-radius: 50%;",
+            "  background: var(--accent);",
+            "  opacity: .22;",
+            "  filter: blur(70px);",
+            "  pointer-events: none;",
+            "}",
+            "",
+            ".nav {",
+            "  position: relative;",
+            "  z-index: 1;",
+            "  display: flex;",
+            "  align-items: center;",
+            "  justify-content: space-between;",
+            "  gap: 12px;",
+            "}",
+            "",
+            ".logo {",
+            '  font-family: "Space Grotesk", "Inter", system-ui, sans-serif;',
+            "  font-size: 1rem;",
+            "  font-weight: 700;",
+            "  letter-spacing: -.06em;",
+            "  color: var(--accent);",
+            "}",
+            "",
+            ".links {",
+            '  font-family: "JetBrains Mono", ui-monospace, monospace;',
+            "  font-size: .48rem;",
+            "  letter-spacing: .12em;",
+            "  text-transform: uppercase;",
+            "  color: var(--muted);",
+            "}",
+            "",
+            ".hero {",
+            "  position: relative;",
+            "  z-index: 1;",
+            "  margin-top: 40px;",
+            "}",
+            "",
+            ".eyebrow {",
+            "  margin: 0;",
+            '  font-family: "JetBrains Mono", ui-monospace, monospace;',
+            "  font-size: .5rem;",
+            "  letter-spacing: .16em;",
+            "  text-transform: uppercase;",
+            "  color: var(--accent);",
+            "}",
+            "",
+            ".hero h1 {",
+            "  margin: 10px 0 8px;",
+            '  font-family: "Space Grotesk", "Inter", system-ui, sans-serif;',
+            "  font-size: clamp(2rem, 9vw, 3rem);",
+            "  font-weight: 700;",
+            "  line-height: .9;",
+            "  letter-spacing: -.05em;",
+            "  background: linear-gradient(110deg, #fff, #ffe3e8 40%, var(--accent));",
+            "  -webkit-background-clip: text;",
+            "  background-clip: text;",
+            "  -webkit-text-fill-color: transparent;",
+            "}",
+            "",
+            ".copy {",
+            "  max-width: 28ch;",
+            "  margin: 0;",
+            "  color: #c3c3cd;",
+            "  font-size: .72rem;",
+            "  line-height: 1.5;",
+            "}",
+            "",
+            ".actions {",
+            "  display: flex;",
+            "  flex-wrap: wrap;",
+            "  gap: 8px;",
+            "  margin-top: 16px;",
+            "}",
+            "",
+            ".btn {",
+            "  padding: 7px 14px;",
+            "  border-radius: 999px;",
+            "  background: var(--accent);",
+            "  color: #1b0f13;",
+            "  font-size: .66rem;",
+            "  font-weight: 700;",
+            "}",
+            "",
+            ".btn.ghost {",
+            "  border: 1px solid rgba(255,255,255,.18);",
+            "  background: transparent;",
+            "  color: #f3f3f6;",
+            "}",
+            "",
+            "@media (max-width: 320px) {",
+            "  .links { display: none; }",
+            "  .hero { margin-top: 30px; }",
+            "}",
+        ].join("\n"),
     };
 
-    const webCode = [
+    const webState = {
+        html: webDefaults.html,
+        css: webDefaults.css,
+        file: "html",
+        accent: "#ffc0cb",
+        editing: false,
+    };
+
+    let previewReady = false;
+    let previewTimer = 0;
+
+    const previewBaseCss = [
+        "*, *::before, *::after { box-sizing: border-box; }",
+        "html { color-scheme: dark; }",
+        "body {",
+        "  margin: 0;",
+        "  min-height: 100%;",
+        "  background: #0b0b0f;",
+        "  color: #f3f3f6;",
+        '  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;',
+        "  -webkit-font-smoothing: antialiased;",
+        "  overflow: auto;",
+        "}",
+        "a { color: inherit; text-decoration: none; }",
+    ].join("\n");
+
+    const previewShell = [
         "<!DOCTYPE html>",
         '<html lang="it">',
-        "  <head>",
-        "    <title>mff</title>",
-        '    <link rel="stylesheet" href="mff.css">',
-        "  </head>",
-        "  <body>",
-        '    <section class="hero">',
-        '      <p class="eyebrow">Massa, Toscana</p>',
-        "      <h1>Matteo Mosti</h1>",
-        "      <p>Siti web, reti e macchine CNC.</p>",
-        '      <a href="#contact">Scrivimi</a>',
-        "    </section>",
-        "  </body>",
+        "<head>",
+        '<meta charset="utf-8">',
+        '<link rel="preconnect" href="https://fonts.googleapis.com">',
+        '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
+        '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">',
+        `<style>${previewBaseCss}</style>`,
+        '<style id="pv-user"></style>',
+        "</head>",
+        "<body></body>",
         "</html>",
     ].join("\n");
 
-    const gcode = [
+    function renderPreview() {
+        if (!previewReady || !webPreview) return;
+
+        const doc = webPreview.contentDocument;
+        if (!doc || !doc.body) return;
+
+        let parsed;
+        try {
+            parsed = new DOMParser().parseFromString(webState.html, "text/html");
+        } catch (error) {
+            return;
+        }
+
+        const extraStyles = Array.from(parsed.head.querySelectorAll("style"))
+            .map((style) => style.textContent)
+            .join("\n");
+        const userStyle = doc.getElementById("pv-user");
+
+        if (userStyle) userStyle.textContent = `${webState.css}\n${extraStyles}`;
+        doc.body.innerHTML = parsed.body.innerHTML;
+        doc.documentElement.style.setProperty("--accent", webState.accent);
+    }
+
+    function schedulePreview() {
+        window.clearTimeout(previewTimer);
+        previewTimer = window.setTimeout(renderPreview, 80);
+    }
+
+    if (webPreview) {
+        webPreview.srcdoc = previewShell;
+        webPreview.addEventListener("load", () => {
+            previewReady = true;
+            renderPreview();
+        });
+    }
+
+    function syncCodeTabs() {
+        codeTabs.forEach((tab) => {
+            const isActive = tab.dataset.file === webState.file;
+            tab.classList.toggle("is-active", isActive);
+            tab.setAttribute("aria-pressed", String(isActive));
+        });
+    }
+
+    function setCodeFile(file) {
+        if (!webState[file] || file === webState.file) return;
+        if (webState.editing && webInput) webState[webState.file] = webInput.value;
+        webState.file = file;
+        syncCodeTabs();
+
+        if (webInput) {
+            webInput.value = webState[file];
+            webInput.setAttribute("aria-label", `Editor del codice ${file === "html" ? "HTML" : "CSS"}`);
+        }
+
+        if (!webState.editing && webPre) {
+            stopTyping(webPre);
+            webPre.textContent = webState[file];
+        }
+    }
+
+    function setCodeEditing(on) {
+        if (!codeEditor || !webInput || !webPre || !webEditBtn) return;
+
+        webState.editing = on;
+
+        if (on) {
+            stopTyping(webPre);
+            webPre.hidden = true;
+            webInput.value = webState[webState.file];
+            webInput.hidden = false;
+            webInput.focus();
+            webInput.setSelectionRange(webInput.value.length, webInput.value.length);
+        } else {
+            webState[webState.file] = webInput.value;
+            webPre.textContent = webInput.value;
+            webInput.hidden = true;
+            webPre.hidden = false;
+            webEditBtn.focus();
+        }
+
+        webEditBtn.setAttribute("aria-pressed", String(on));
+        webEditBtn.setAttribute(
+            "aria-label",
+            on ? "Chiudi la modifica del codice" : "Modifica il codice"
+        );
+        webEditBtn.title = on ? "Chiudi la modifica" : "Modifica il codice";
+        codeEditor.classList.toggle("is-editing", on);
+        schedulePreview();
+    }
+
+    function resetCodeExample() {
+        if (!window.confirm("Ripristinare HTML e CSS di esempio?")) return;
+
+        webState.html = webDefaults.html;
+        webState.css = webDefaults.css;
+        webState.file = "html";
+        syncCodeTabs();
+
+        if (webInput) {
+            webInput.value = webState.html;
+            webInput.setAttribute("aria-label", "Editor del codice HTML");
+        }
+
+        if (webPre) {
+            stopTyping(webPre);
+            webPre.textContent = webState.html;
+        }
+
+        schedulePreview();
+    }
+
+    if (codeTabs.length) {
+        codeTabs.forEach((tab) => {
+            tab.addEventListener("click", () => setCodeFile(tab.dataset.file));
+        });
+    }
+
+    if (webEditBtn) webEditBtn.addEventListener("click", () => setCodeEditing(!webState.editing));
+    if (webResetBtn) webResetBtn.addEventListener("click", resetCodeExample);
+
+    if (webInput) {
+        webInput.addEventListener("input", () => {
+            webState[webState.file] = webInput.value;
+            schedulePreview();
+        });
+
+        webInput.addEventListener("keydown", (event) => {
+            if (event.key === "Tab") {
+                event.preventDefault();
+                const start = webInput.selectionStart;
+                const end = webInput.selectionEnd;
+                webInput.setRangeText("  ", start, end, "end");
+                webState[webState.file] = webInput.value;
+                schedulePreview();
+            } else if (event.key === "Escape") {
+                setCodeEditing(false);
+            }
+        });
+    }
+
+    const setPressedGroup = (group, activeItem) => {
+        group.forEach((item) => {
+            const isActive = item === activeItem;
+            item.classList.toggle("is-active", isActive);
+            item.setAttribute("aria-pressed", String(isActive));
+        });
+    };
+
+    viewButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+            if (previewFrame) previewFrame.classList.toggle("is-mobile", button.dataset.view === "mobile");
+            setPressedGroup(viewButtons, button);
+        });
+    });
+
+    swatches.forEach((swatch) => {
+        swatch.addEventListener("click", () => {
+            webState.accent = swatch.dataset.accent;
+            setPressedGroup(swatches, swatch);
+            schedulePreview();
+        });
+    });
+
+    if (webPre) typeWhenVisible(webPre, () => webState.html, 7);
+
+    /* ---------------------------------------------------------------
+       CNC: G-code editor with live toolpath
+       --------------------------------------------------------------- */
+    const cncEditor = document.getElementById("cnc-editor");
+    const gcodePre = document.getElementById("gcode-typer");
+    const gcodeInput = document.getElementById("gcode-input");
+    const gcodeEditBtn = document.getElementById("gcode-edit");
+    const gcodeResetBtn = document.getElementById("gcode-reset");
+    const toolpathPaths = document.getElementById("toolpath-paths");
+    const toolpathStart = document.getElementById("toolpath-start");
+    const toolpathTool = document.getElementById("toolpath-tool");
+    const toolpathEmpty = document.getElementById("toolpath-empty");
+    const gcodePos = document.getElementById("gcode-pos");
+    const gcodeStats = document.getElementById("gcode-stats");
+
+    const gcodeDefault = [
         "G21 ; millimetri",
         "G90 ; coordinate assolute",
         "G00 X0 Y0 Z5",
@@ -427,8 +777,253 @@ document.addEventListener("DOMContentLoaded", () => {
         "M30",
     ].join("\n");
 
-    typeWhenVisible(document.getElementById("web-typer"), webCode, 8);
-    typeWhenVisible(document.getElementById("gcode-typer"), gcode, 12);
+    const gcodeState = {
+        text: gcodeDefault,
+        editing: false,
+    };
+
+    const SVG_NS = "http://www.w3.org/2000/svg";
+    let gcodeTimer = 0;
+
+    const formatAxisValue = (value) => {
+        const rounded = Math.round(value * 10) / 10;
+        return Object.is(rounded, -0) ? "0" : String(rounded);
+    };
+
+    function parseToolpath(source) {
+        let x = 0;
+        let y = 0;
+        let motion = null;
+        let absolute = true;
+        let blocks = 0;
+        const points = [{ x: 0, y: 0 }];
+        const segments = [];
+
+        source.split(/\r?\n/).forEach((rawLine) => {
+            const line = rawLine.split(";")[0].trim();
+            if (!line) return;
+            blocks += 1;
+
+            const words = Array.from(
+                line.matchAll(/([A-Za-z])\s*([+-]?(?:\d+(?:\.\d*)?|\.\d+))/g)
+            );
+            if (!words.length) return;
+
+            let nextX = x;
+            let nextY = y;
+            let hasX = false;
+            let hasY = false;
+            let lineMotion = motion;
+
+            words.forEach(([, letterRaw, valueRaw]) => {
+                const letter = letterRaw.toUpperCase();
+                const value = Number(valueRaw);
+                if (!Number.isFinite(value)) return;
+
+                if (letter === "G") {
+                    const code = Math.trunc(value);
+                    if (code === 0) lineMotion = "rapid";
+                    else if (code === 1 || code === 2 || code === 3) lineMotion = "cut";
+                    else if (code === 90) absolute = true;
+                    else if (code === 91) absolute = false;
+                } else if (letter === "X") {
+                    nextX = absolute ? value : x + value;
+                    hasX = true;
+                } else if (letter === "Y") {
+                    nextY = absolute ? value : y + value;
+                    hasY = true;
+                }
+            });
+
+            if (hasX || hasY) {
+                if (nextX !== x || nextY !== y) {
+                    segments.push({
+                        from: { x, y },
+                        to: { x: nextX, y: nextY },
+                        rapid: lineMotion !== "cut",
+                    });
+                }
+                x = nextX;
+                y = nextY;
+                points.push({ x, y });
+                motion = lineMotion;
+            } else if (lineMotion) {
+                motion = lineMotion;
+            }
+        });
+
+        return { blocks, points, segments, position: { x, y } };
+    }
+
+    function renderToolpath() {
+        if (!toolpathPaths) return;
+
+        const { blocks, points, segments, position } = parseToolpath(gcodeState.text);
+
+        if (gcodePos) {
+            gcodePos.textContent = `X${formatAxisValue(position.x)} · Y${formatAxisValue(position.y)}`;
+        }
+
+        if (!segments.length) {
+            toolpathPaths.replaceChildren();
+            if (toolpathStart) toolpathStart.style.display = "none";
+            if (toolpathTool) toolpathTool.style.display = "none";
+            if (toolpathEmpty) toolpathEmpty.style.display = "";
+            if (gcodeStats) gcodeStats.textContent = `${blocks} blocchi`;
+            return;
+        }
+
+        let minX = Infinity;
+        let minY = Infinity;
+        let maxX = -Infinity;
+        let maxY = -Infinity;
+
+        points.forEach((point) => {
+            minX = Math.min(minX, point.x);
+            minY = Math.min(minY, point.y);
+            maxX = Math.max(maxX, point.x);
+            maxY = Math.max(maxY, point.y);
+        });
+
+        const width = 320;
+        const height = 220;
+        const pad = 26;
+        const spanX = Math.max(maxX - minX, 0.001);
+        const spanY = Math.max(maxY - minY, 0.001);
+        const scale = Math.min((width - pad * 2) / spanX, (height - pad * 2) / spanY);
+        const offsetX = (width - spanX * scale) / 2;
+        const offsetY = (height - spanY * scale) / 2;
+        const mapX = (value) => offsetX + (value - minX) * scale;
+        const mapY = (value) => height - offsetY - (value - minY) * scale;
+
+        toolpathPaths.replaceChildren();
+
+        [
+            { className: "toolpath-rapid", rapid: true },
+            { className: "toolpath-cut", rapid: false },
+        ].forEach(({ className, rapid }) => {
+            const d = segments
+                .filter((segment) => segment.rapid === rapid)
+                .map(
+                    (segment) =>
+                        `M${mapX(segment.from.x).toFixed(1)} ${mapY(segment.from.y).toFixed(1)}` +
+                        `L${mapX(segment.to.x).toFixed(1)} ${mapY(segment.to.y).toFixed(1)}`
+                )
+                .join("");
+
+            if (!d) return;
+
+            const path = document.createElementNS(SVG_NS, "path");
+            path.setAttribute("d", d);
+            path.setAttribute("class", className);
+            toolpathPaths.appendChild(path);
+        });
+
+        const start = points[0];
+        const end = points[points.length - 1];
+
+        if (toolpathStart) {
+            toolpathStart.style.display = "";
+            toolpathStart.setAttribute("cx", mapX(start.x).toFixed(1));
+            toolpathStart.setAttribute("cy", mapY(start.y).toFixed(1));
+        }
+
+        if (toolpathTool) {
+            toolpathTool.style.display = "";
+            toolpathTool.setAttribute("cx", mapX(end.x).toFixed(1));
+            toolpathTool.setAttribute("cy", mapY(end.y).toFixed(1));
+        }
+
+        if (toolpathEmpty) toolpathEmpty.style.display = "none";
+
+        const cutLength = segments
+            .filter((segment) => !segment.rapid)
+            .reduce(
+                (total, segment) =>
+                    total +
+                    Math.hypot(segment.to.x - segment.from.x, segment.to.y - segment.from.y),
+                0
+            );
+
+        if (gcodeStats) {
+            gcodeStats.textContent = `${blocks} blocchi · ${Math.round(cutLength)} mm`;
+        }
+    }
+
+    function scheduleToolpath() {
+        window.clearTimeout(gcodeTimer);
+        gcodeTimer = window.setTimeout(renderToolpath, 70);
+    }
+
+    function setGcodeEditing(on) {
+        if (!cncEditor || !gcodeInput || !gcodePre || !gcodeEditBtn) return;
+
+        gcodeState.editing = on;
+
+        if (on) {
+            stopTyping(gcodePre);
+            gcodePre.hidden = true;
+            gcodeInput.value = gcodeState.text;
+            gcodeInput.hidden = false;
+            gcodeInput.focus();
+            gcodeInput.setSelectionRange(gcodeInput.value.length, gcodeInput.value.length);
+        } else {
+            gcodeState.text = gcodeInput.value;
+            gcodePre.textContent = gcodeState.text;
+            gcodeInput.hidden = true;
+            gcodePre.hidden = false;
+            gcodeEditBtn.focus();
+        }
+
+        gcodeEditBtn.setAttribute("aria-pressed", String(on));
+        gcodeEditBtn.setAttribute(
+            "aria-label",
+            on ? "Chiudi la modifica del programma G-code" : "Modifica il programma G-code"
+        );
+        gcodeEditBtn.title = on ? "Chiudi la modifica" : "Modifica il programma";
+        cncEditor.classList.toggle("is-editing", on);
+        scheduleToolpath();
+    }
+
+    function resetGcodeExample() {
+        if (!window.confirm("Ripristinare il programma G-code di esempio?")) return;
+
+        gcodeState.text = gcodeDefault;
+
+        if (gcodeInput) gcodeInput.value = gcodeDefault;
+        if (gcodePre) {
+            stopTyping(gcodePre);
+            gcodePre.textContent = gcodeDefault;
+        }
+
+        renderToolpath();
+    }
+
+    if (gcodeEditBtn) gcodeEditBtn.addEventListener("click", () => setGcodeEditing(!gcodeState.editing));
+    if (gcodeResetBtn) gcodeResetBtn.addEventListener("click", resetGcodeExample);
+
+    if (gcodeInput) {
+        gcodeInput.addEventListener("input", () => {
+            gcodeState.text = gcodeInput.value;
+            scheduleToolpath();
+        });
+
+        gcodeInput.addEventListener("keydown", (event) => {
+            if (event.key === "Tab") {
+                event.preventDefault();
+                const start = gcodeInput.selectionStart;
+                const end = gcodeInput.selectionEnd;
+                gcodeInput.setRangeText("  ", start, end, "end");
+                gcodeState.text = gcodeInput.value;
+                scheduleToolpath();
+            } else if (event.key === "Escape") {
+                setGcodeEditing(false);
+            }
+        });
+    }
+
+    renderToolpath();
+    if (gcodePre) typeWhenVisible(gcodePre, () => gcodeState.text, 11);
 
     /* ---------------------------------------------------------------
        Header state, scroll progress & active nav link
@@ -516,6 +1111,47 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
         revealItems.forEach((el) => observer.observe(el));
+    }
+
+    /* ---------------------------------------------------------------
+       CV preview dialog
+       --------------------------------------------------------------- */
+    const cvModal = document.getElementById("cv-modal");
+    const cvFrame = document.getElementById("cv-frame");
+    const cvOpeners = Array.from(document.querySelectorAll("[data-cv-open]"));
+    const cvClose = document.querySelector("[data-cv-close]");
+
+    function openCvModal() {
+        if (!cvModal) return;
+
+        if (typeof cvModal.showModal !== "function") {
+            window.location.href = "cv.html";
+            return;
+        }
+
+        if (cvFrame && !cvFrame.getAttribute("src")) {
+            cvFrame.src = cvFrame.dataset.src || "cv.html";
+        }
+
+        if (!cvModal.open) cvModal.showModal();
+        body.classList.add("modal-open");
+    }
+
+    function closeCvModal() {
+        if (cvModal && cvModal.open) cvModal.close();
+    }
+
+    cvOpeners.forEach((button) => button.addEventListener("click", openCvModal));
+
+    if (cvClose) cvClose.addEventListener("click", closeCvModal);
+
+    if (cvModal) {
+        // Click on the backdrop (the dialog itself, outside its inner wrapper)
+        cvModal.addEventListener("click", (event) => {
+            if (event.target === cvModal) closeCvModal();
+        });
+
+        cvModal.addEventListener("close", () => body.classList.remove("modal-open"));
     }
 
     /* ---------------------------------------------------------------
