@@ -79,6 +79,7 @@ body {
     font-weight: 400;
     line-height: 1.6;
     overflow-x: hidden;
+    overflow-x: clip;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-tap-highlight-color: transparent;
@@ -135,6 +136,120 @@ ul {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #3c3c48;
+}
+
+@media (pointer: fine) {
+    html.has-custom-scroll {
+        scrollbar-width: none;
+    }
+
+    html.has-custom-scroll::-webkit-scrollbar {
+        display: none;
+    }
+
+    html.has-custom-scroll .code-typer,
+    html.has-custom-scroll .code-input,
+    html.has-custom-scroll .gcode-input {
+        scrollbar-width: none;
+    }
+
+    html.has-custom-scroll .code-typer::-webkit-scrollbar,
+    html.has-custom-scroll .code-input::-webkit-scrollbar,
+    html.has-custom-scroll .gcode-input::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.custom-scrollbar {
+    position: fixed;
+    top: calc(var(--header-h) + 8px);
+    right: 4px;
+    bottom: 8px;
+    z-index: 130;
+    width: 10px;
+    padding: 2px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.025);
+    opacity: 0;
+    transition: opacity 0.25s ease, background-color 0.25s ease;
+    touch-action: none;
+}
+
+.custom-scrollbar.is-visible {
+    opacity: 1;
+}
+
+.custom-scrollbar:hover,
+.custom-scrollbar.is-dragging {
+    background: rgba(255, 255, 255, 0.055);
+}
+
+body.modal-open .custom-scrollbar {
+    opacity: 0 !important;
+    pointer-events: none;
+}
+
+.custom-scrollbar-thumb {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    left: 2px;
+    min-height: 36px;
+    border-radius: 999px;
+    background: rgba(255, 192, 203, 0.34);
+    box-shadow: 0 0 12px rgba(255, 192, 203, 0.14);
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    will-change: transform, height;
+}
+
+.custom-scrollbar:hover .custom-scrollbar-thumb,
+.custom-scrollbar.is-dragging .custom-scrollbar-thumb {
+    background: rgba(255, 192, 203, 0.72);
+    box-shadow: 0 0 16px rgba(255, 192, 203, 0.36);
+}
+
+.web-code,
+.gcode-pane {
+    position: relative;
+}
+
+.panel-scrollbar {
+    position: absolute;
+    top: 52px;
+    right: 5px;
+    bottom: 8px;
+    z-index: 4;
+    width: 8px;
+    padding: 1px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.025);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, background-color 0.2s ease;
+    touch-action: none;
+}
+
+.gcode-pane .panel-scrollbar {
+    top: 2px;
+    right: -12px;
+    bottom: 2px;
+}
+
+.panel-scrollbar.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.panel-scrollbar:hover,
+.panel-scrollbar.is-dragging {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.panel-scrollbar .custom-scrollbar-thumb {
+    top: 1px;
+    right: 1px;
+    left: 1px;
+    min-height: 28px;
 }
 
 /* ==========================================================================
@@ -1277,120 +1392,167 @@ body.menu-open .nav-toggle span:nth-child(3) {
     margin: 0 auto;
 }
 
+.timeline-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 34px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+}
+
+.timeline-label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+}
+
+.timeline-label span {
+    color: var(--muted);
+}
+
+.timeline-count {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+}
+
+.timeline-count b {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.timeline-stage {
+    position: relative;
+}
+
 .timeline-rail {
     position: absolute;
-    top: 15px;
-    right: 18px;
-    left: 18px;
-    height: 2px;
-    background: linear-gradient(90deg,
+    top: 40px;
+    bottom: 110px;
+    left: 50%;
+    width: 2px;
+    transform: translateX(-50%);
+    background: linear-gradient(180deg,
             rgba(255, 192, 203, 0.08),
-            rgba(255, 192, 203, 0.5) 6%,
-            rgba(255, 192, 203, 0.5) 94%,
+            rgba(255, 192, 203, 0.28) 8%,
+            rgba(255, 192, 203, 0.28) 92%,
             rgba(255, 192, 203, 0.08));
-    box-shadow: 0 0 18px rgba(255, 192, 203, 0.16);
     pointer-events: none;
 }
 
 .timeline-rail i {
     position: absolute;
-    top: -0.5px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent), var(--accent-strong));
-    box-shadow: 0 0 14px rgba(255, 192, 203, 0.55);
-    transform: scaleX(0);
-    transform-origin: left center;
-    transition: transform 0.15s linear;
+    inset: 0;
+    background: linear-gradient(180deg, var(--accent), var(--accent-strong));
+    box-shadow: 0 0 16px rgba(255, 192, 203, 0.55);
+    transform: scaleY(0);
+    transform-origin: top center;
+    will-change: transform;
 }
 
 .timeline-track {
-    display: flex;
-    align-items: stretch;
-    gap: 14px;
-    padding: 0 2px 10px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x proximity;
-    overscroll-behavior-x: contain;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(255, 192, 203, 0.4) transparent;
-    -webkit-overflow-scrolling: touch;
-}
-
-.timeline-track:focus-visible {
-    outline-offset: 8px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 72px;
+    row-gap: 24px;
+    align-items: start;
 }
 
 .entry {
     position: relative;
-    display: flex;
-    flex: 0 0 clamp(238px, 24vw, 264px);
-    flex-direction: column;
+    display: block;
     width: auto;
     margin: 0;
     padding: 0;
-    scroll-snap-align: start;
+}
+
+.entry.left {
+    grid-column: 1;
 }
 
 .entry.right {
-    margin-left: 0;
+    grid-column: 2;
+    margin-top: 56px;
     padding: 0;
 }
 
 .js .entry,
 .js .entry.right {
     opacity: 0;
-    transform: translateY(18px);
-    transition: opacity 0.75s ease, transform 0.75s var(--ease-out);
+    transform: translateY(22px);
+    transition: opacity 0.7s ease, transform 0.7s var(--ease-out);
 }
 
 .js .entry.animate {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
 }
 
 .timeline-node {
-    position: static;
+    position: absolute;
+    top: 22px;
     z-index: 2;
     display: grid;
     place-items: center;
-    width: 32px;
-    height: 32px;
-    margin: 0 0 12px 18px;
+    width: 36px;
+    height: 36px;
+    margin: 0;
     border: 1px solid var(--border-accent);
     border-radius: 50%;
     background: var(--surface);
-    box-shadow: 0 0 0 4px var(--bg), 0 0 20px rgba(255, 192, 203, 0.14);
-    transition: box-shadow 0.35s ease, border-color 0.35s ease;
+    box-shadow: 0 0 0 5px var(--bg), 0 0 20px rgba(255, 192, 203, 0.14);
+    transition: box-shadow 0.35s ease, border-color 0.35s ease, transform 0.35s var(--ease-out);
+}
+
+.entry.left .timeline-node {
+    right: -54px;
+}
+
+.entry.right .timeline-node {
+    left: -54px;
+}
+
+.timeline-node::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 18px;
+    height: 1px;
+    background: var(--border-accent);
+    pointer-events: none;
+}
+
+.entry.left .timeline-node::before {
+    right: 100%;
+}
+
+.entry.right .timeline-node::before {
+    left: 100%;
 }
 
 .timeline-node img {
-    width: 15px;
-    height: 15px;
+    width: 16px;
+    height: 16px;
 }
 
-.entry:hover .timeline-node {
-    border-color: rgba(255, 192, 203, 0.7);
-    box-shadow: 0 0 0 4px var(--bg), 0 0 28px rgba(255, 192, 203, 0.32);
+.entry:hover .timeline-node,
+.entry.is-active .timeline-node {
+    border-color: rgba(255, 192, 203, 0.85);
+    box-shadow: 0 0 0 5px var(--bg), 0 0 28px rgba(255, 192, 203, 0.42);
 }
 
-.timeline-hint {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 7px;
-    margin: 10px 2px 0;
-    font-family: var(--font-mono);
-    font-size: 0.56rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--muted);
+.entry.is-active .timeline-node {
+    transform: scale(1.08);
 }
 
-.timeline-hint span {
-    color: var(--accent);
+.entry.is-active .entry-content {
+    border-color: rgba(255, 192, 203, 0.28);
 }
 
 .entry-content {
@@ -2035,6 +2197,7 @@ body.menu-open .nav-toggle span:nth-child(3) {
 }
 
 .gcode-typer {
+    min-height: calc(16 * 1.85em);
     margin: 0;
     font-family: var(--font-mono);
     font-size: clamp(0.67rem, 1vw, 0.78rem);
@@ -2056,7 +2219,7 @@ body.menu-open .nav-toggle span:nth-child(3) {
 
 .gcode-input {
     width: 100%;
-    min-height: 312px;
+    min-height: calc(16 * 1.85em);
     margin: 0;
     padding: 0;
     border: 0;
@@ -2099,16 +2262,35 @@ body.menu-open .nav-toggle span:nth-child(3) {
     stroke-linejoin: round;
 }
 
-.toolpath-cut {
+.toolpath-guide {
     fill: none;
-    stroke: var(--accent);
-    stroke-width: 2;
+    stroke: rgba(255, 192, 203, 0.22);
+    stroke-width: 1.6;
     stroke-linecap: round;
     stroke-linejoin: round;
 }
 
+.toolpath-cut {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.toolpath-ring {
+    fill: rgba(255, 192, 203, 0.12);
+    stroke: rgba(255, 192, 203, 0.55);
+    stroke-width: 1.2;
+    transition: opacity 0.2s ease;
+}
+
+.toolpath-ring.is-rapid {
+    opacity: 0.35;
+}
+
 #toolpath-tool {
-    filter: drop-shadow(0 0 6px rgba(255, 192, 203, 0.8));
+    filter: drop-shadow(0 0 6px rgba(255, 192, 203, 0.9));
 }
 
 .toolpath-meta {
@@ -2715,16 +2897,44 @@ body.modal-open .cursor {
     }
 
     /* Timeline */
+    .timeline-rail {
+        top: 24px;
+        bottom: 24px;
+        left: 16px;
+        transform: none;
+    }
+
     .timeline-track {
-        gap: 12px;
+        grid-template-columns: 1fr;
+        gap: 18px;
+        padding-left: 48px;
     }
 
-    .entry {
-        flex-basis: min(74vw, 280px);
+    .entry.left,
+    .entry.right {
+        grid-column: 1;
+        margin-top: 0;
     }
 
-    .timeline-hint {
-        justify-content: flex-start;
+    .timeline-node {
+        top: 20px;
+        width: 32px;
+        height: 32px;
+    }
+
+    .entry.left .timeline-node,
+    .entry.right .timeline-node {
+        right: auto;
+        left: -48px;
+    }
+
+    .timeline-node::before {
+        width: 16px;
+    }
+
+    .entry.left .timeline-node::before {
+        right: auto;
+        left: 100%;
     }
 
     /* Web */
@@ -2867,10 +3077,7 @@ body.modal-open .cursor {
     .gcode-typer,
     .gcode-input {
         font-size: 0.62rem;
-    }
-
-    .gcode-input {
-        min-height: 280px;
+        min-height: calc(16 * 1.85em);
     }
 
     .code-typer,

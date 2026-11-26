@@ -108,8 +108,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (cursor && finePointer && !reduceMotion) {
         const dot = cursor.querySelector(".cursor-dot");
         const ring = cursor.querySelector(".cursor-ring");
-        const hoverSelector = "a, button, [data-magnetic], [role='button'], .code-tab, .swatch, .view-btn";
+        const hoverSelector =
+            "a, button, [data-magnetic], [role='button'], .code-tab, .swatch, .view-btn, .custom-scrollbar-thumb";
         const cursorDocs = new WeakSet();
+        const cursorDocsList = [];
         let mouseX = window.innerWidth / 2;
         let mouseY = window.innerHeight / 2;
         let ringX = mouseX;
@@ -131,7 +133,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
         function hideCursor() {
             visible = false;
+            hovering = false;
+            release();
+            if (cursorFrame) {
+                window.cancelAnimationFrame(cursorFrame);
+                cursorFrame = null;
+            }
             document.body.classList.remove("has-cursor");
+            cursorDocsList.forEach((doc) => {
+                if (doc.documentElement) doc.documentElement.classList.remove("has-cursor");
+            });
         }
 
         function moveCursor(x, y, hover) {
@@ -143,6 +154,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 ringX = x;
                 ringY = y;
                 document.body.classList.add("has-cursor");
+                cursorDocsList.forEach((doc) => {
+                    if (doc.documentElement) doc.documentElement.classList.add("has-cursor");
+                });
             }
 
             if (dot) dot.style.transform = `translate3d(${x}px, ${y}px, 0)`;
@@ -175,10 +189,12 @@ document.addEventListener("DOMContentLoaded", () => {
             const doc = frame && frame.contentDocument;
             if (!doc || !doc.head || cursorDocs.has(doc)) return;
             cursorDocs.add(doc);
+            cursorDocsList.push(doc);
 
             const hideNative = doc.createElement("style");
-            hideNative.textContent = "html, body, body * { cursor: none !important; }";
+            hideNative.textContent = "html.has-cursor, html.has-cursor body, html.has-cursor body * { cursor: none !important; }";
             doc.head.appendChild(hideNative);
+            if (visible && doc.documentElement) doc.documentElement.classList.add("has-cursor");
 
             doc.addEventListener(
                 "pointermove",
@@ -193,9 +209,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 { passive: true }
             );
 
-            doc.addEventListener("pointerdown", press);
-            doc.addEventListener("pointerup", release);
+            doc.addEventListener("pointerdown", press, true);
+            doc.addEventListener("pointerup", release, true);
+            doc.addEventListener("pointercancel", hideCursor);
             doc.addEventListener("pointerleave", hideCursor);
+            doc.addEventListener("pointerout", (event) => {
+                if (!event.relatedTarget) hideCursor();
+            });
         };
 
         document.addEventListener(
@@ -206,11 +226,235 @@ document.addEventListener("DOMContentLoaded", () => {
             { passive: true }
         );
 
-        document.addEventListener("pointerdown", press);
-        document.addEventListener("pointerup", release);
-
+        document.addEventListener("pointerdown", press, true);
+        document.addEventListener("pointerup", release, true);
+        document.addEventListener("pointercancel", hideCursor);
         document.addEventListener("pointerleave", hideCursor);
+        document.addEventListener("pointerout", (event) => {
+            if (!event.relatedTarget) hideCursor();
+        });
         window.addEventListener("blur", hideCursor);
+        document.addEventListener("visibilitychange", () => {
+            if (document.hidden) hideCursor();
+        });
+    }
+
+    /* ---------------------------------------------------------------
+       Custom interactive scrollbars (keeps custom cursor alive on drag)
+       --------------------------------------------------------------- */
+    const panelScrollbarUpdaters = [];
+    let updatePageScrollbar = () => {};
+
+    if (finePointer && !reduceMotion) {
+        document.documentElement.classList.add("has-custom-scroll");
+
+        const createRail = (className, label) => {
+            const rail = document.createElement("div");
+            rail.className = className;
+            rail.setAttribute("aria-hidden", "true");
+            rail.setAttribute("role", "presentation");
+            rail.title = label;
+            const thumb = document.createElement("div");
+            thumb.className = "custom-scrollbar-thumb";
+            rail.appendChild(thumb);
+            return { rail, thumb };
+        };
+
+        // Page-level vertical scrollbar
+        const { rail: pageRail, thumb: pageThumb } = createRail("custom-scrollbar", "");
+        pageRail.id = "page-scrollbar";
+        document.body.appendChild(pageRail);
+
+        let pageDragStartY = 0;
+        let pageDragStartScroll = 0;
+        let pageDragging = false;
+
+        updatePageScrollbar = () => {
+            const docEl = document.documentElement;
+            const maxScroll = docEl.scrollHeight - window.innerHeight;
+            if (maxScroll <= 4) {
+                pageRail.classList.remove("is-visible");
+                return;
+            }
+
+            pageRail.classList.add("is-visible");
+            const trackHeight = Math.max(1, pageRail.clientHeight - 4);
+            const ratio = window.innerHeight / docEl.scrollHeight;
+            const thumbHeight = Math.max(36, Math.round(trackHeight * ratio));
+            const maxThumbY = Math.max(1, trackHeight - thumbHeight);
+            const scrollRatio = Math.min(Math.max(window.scrollY / maxScroll, 0), 1);
+
+            pageThumb.style.height = `${thumbHeight}px`;
+            pageThumb.style.transform = `translate3d(0, ${(scrollRatio * maxThumbY).toFixed(1)}px, 0)`;
+        };
+
+        pageThumb.addEventListener("pointerdown", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            pageDragging = true;
+            pageDragStartY = event.clientY;
+            pageDragStartScroll = window.scrollY;
+            pageRail.classList.add("is-dragging");
+            try {
+                pageThumb.setPointerCapture(event.pointerId);
+            } catch (e) {}
+        });
+
+        window.addEventListener("pointermove", (event) => {
+            if (!pageDragging) return;
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            const trackHeight = Math.max(1, pageRail.clientHeight - 4);
+            const maxThumbY = Math.max(1, trackHeight - pageThumb.offsetHeight);
+            const deltaY = event.clientY - pageDragStartY;
+            const nextScroll = Math.min(Math.max(pageDragStartScroll + (deltaY / maxThumbY) * maxScroll, 0), maxScroll);
+            window.scrollTo({ top: nextScroll, behavior: "instant" });
+        });
+
+        const endPageDrag = (event) => {
+            if (!pageDragging) return;
+            pageDragging = false;
+            try {
+                if (pageThumb.hasPointerCapture(event.pointerId)) {
+                    pageThumb.releasePointerCapture(event.pointerId);
+                }
+            } catch (e) {}
+            pageRail.classList.remove("is-dragging");
+        };
+
+        window.addEventListener("pointerup", endPageDrag);
+        window.addEventListener("pointercancel", endPageDrag);
+
+        pageRail.addEventListener("pointerdown", (event) => {
+            if (event.target === pageThumb) return;
+            event.preventDefault();
+            const rect = pageRail.getBoundingClientRect();
+            const trackHeight = Math.max(1, rect.height - 4);
+            const thumbH = pageThumb.offsetHeight || 40;
+            const clickY = event.clientY - rect.top - 2 - thumbH / 2;
+            const ratio = Math.min(Math.max(clickY / Math.max(1, trackHeight - thumbH), 0), 1);
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            window.scrollTo({ top: ratio * maxScroll, behavior: "instant" });
+        });
+
+        if ("ResizeObserver" in window) {
+            const bodyResizeObserver = new ResizeObserver(updatePageScrollbar);
+            bodyResizeObserver.observe(document.body);
+        }
+        window.addEventListener("resize", updatePageScrollbar, { passive: true });
+        updatePageScrollbar();
+
+        // Panel scrollbars (Web code editor & CNC G-code editor)
+        const attachPanelScrollbar = (container, getTarget) => {
+            if (!container) return;
+            const { rail, thumb } = createRail("panel-scrollbar", "");
+            container.appendChild(rail);
+
+            let dragStartY = 0;
+            let dragStartTop = 0;
+            let dragging = false;
+
+            const sync = () => {
+                const target = getTarget();
+                if (!target || target.hidden) {
+                    rail.classList.remove("is-visible");
+                    return;
+                }
+                const maxScroll = target.scrollHeight - target.clientHeight;
+                if (maxScroll <= 4) {
+                    rail.classList.remove("is-visible");
+                    return;
+                }
+                rail.classList.add("is-visible");
+                const trackHeight = Math.max(1, rail.clientHeight - 2);
+                const thumbHeight = Math.max(28, Math.round(trackHeight * (target.clientHeight / target.scrollHeight)));
+                const maxThumbY = Math.max(1, trackHeight - thumbHeight);
+                const scrollRatio = Math.min(Math.max(target.scrollTop / maxScroll, 0), 1);
+                thumb.style.height = `${thumbHeight}px`;
+                thumb.style.transform = `translate3d(0, ${(scrollRatio * maxThumbY).toFixed(1)}px, 0)`;
+            };
+
+            thumb.addEventListener("pointerdown", (event) => {
+                const target = getTarget();
+                if (!target) return;
+                event.preventDefault();
+                event.stopPropagation();
+                dragging = true;
+                dragStartY = event.clientY;
+                dragStartTop = target.scrollTop;
+                rail.classList.add("is-dragging");
+                try {
+                    thumb.setPointerCapture(event.pointerId);
+                } catch (e) {}
+            });
+
+            window.addEventListener("pointermove", (event) => {
+                if (!dragging) return;
+                const target = getTarget();
+                if (!target) return;
+                const maxScroll = target.scrollHeight - target.clientHeight;
+                const trackHeight = Math.max(1, rail.clientHeight - 2);
+                const maxThumbY = Math.max(1, trackHeight - thumb.offsetHeight);
+                const deltaY = event.clientY - dragStartY;
+                target.scrollTop = Math.min(Math.max(dragStartTop + (deltaY / maxThumbY) * maxScroll, 0), maxScroll);
+            });
+
+            const endDrag = (event) => {
+                if (!dragging) return;
+                dragging = false;
+                try {
+                    if (thumb.hasPointerCapture(event.pointerId)) {
+                        thumb.releasePointerCapture(event.pointerId);
+                    }
+                } catch (e) {}
+                rail.classList.remove("is-dragging");
+            };
+
+            window.addEventListener("pointerup", endDrag);
+            window.addEventListener("pointercancel", endDrag);
+
+            rail.addEventListener("pointerdown", (event) => {
+                if (event.target === thumb) return;
+                const target = getTarget();
+                if (!target) return;
+                event.preventDefault();
+                const rect = rail.getBoundingClientRect();
+                const trackHeight = Math.max(1, rect.height - 2);
+                const thumbH = thumb.offsetHeight || 28;
+                const clickY = event.clientY - rect.top - 1 - thumbH / 2;
+                const ratio = Math.min(Math.max(clickY / Math.max(1, trackHeight - thumbH), 0), 1);
+                target.scrollTop = ratio * (target.scrollHeight - target.clientHeight);
+            });
+
+            container.addEventListener("scroll", sync, true);
+            container.addEventListener("input", sync, true);
+            if ("MutationObserver" in window) {
+                const mo = new MutationObserver(sync);
+                mo.observe(container, {
+                    childList: true,
+                    characterData: true,
+                    subtree: true,
+                    attributes: true,
+                    attributeFilter: ["hidden"],
+                });
+            }
+            if ("ResizeObserver" in window) {
+                const ro = new ResizeObserver(sync);
+                ro.observe(container);
+            }
+            window.addEventListener("resize", sync, { passive: true });
+            panelScrollbarUpdaters.push(sync);
+            sync();
+        };
+
+        const webEditorBox = document.getElementById("web-editor");
+        const webTyperEl = document.getElementById("web-typer");
+        const webInputEl = document.getElementById("web-input");
+        attachPanelScrollbar(webEditorBox, () => (webInputEl && !webInputEl.hidden ? webInputEl : webTyperEl));
+
+        const gcodePaneEl = document.querySelector(".gcode-pane");
+        const gcodeTyperEl = document.getElementById("gcode-typer");
+        const gcodeInputEl = document.getElementById("gcode-input");
+        attachPanelScrollbar(gcodePaneEl, () => (gcodeInputEl && !gcodeInputEl.hidden ? gcodeInputEl : gcodeTyperEl));
     }
 
     /* ---------------------------------------------------------------
@@ -308,22 +552,42 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* ---------------------------------------------------------------
-       Timeline scroll progress (horizontal rail)
+       Timeline scroll progress (vertical spine & active step)
        --------------------------------------------------------------- */
-    const timelineTrack = document.querySelector(".timeline-track");
+    const timeline = document.getElementById("timeline");
+    const timelineStage = timeline ? timeline.querySelector(".timeline-stage") : null;
     const timelineBar = document.getElementById("timeline-bar");
+    const timelineStep = document.getElementById("timeline-step");
+    const timelineTotal = document.getElementById("timeline-total");
+    const timelineEntries = timeline ? Array.from(timeline.querySelectorAll(".entry")) : [];
 
-    function updateTimeline() {
-        if (!timelineTrack || !timelineBar) return;
-
-        const max = timelineTrack.scrollWidth - timelineTrack.clientWidth;
-        const scrolled = Math.max(0, timelineTrack.scrollLeft - 2);
-        const progress = max > 6 ? Math.min(scrolled / (max - 2), 1) : 1;
-        timelineBar.style.transform = `scaleX(${progress})`;
+    if (timelineTotal && timelineEntries.length) {
+        timelineTotal.textContent = String(timelineEntries.length).padStart(2, "0");
     }
 
-    if (timelineTrack) {
-        timelineTrack.addEventListener("scroll", updateTimeline, { passive: true });
+    function updateTimeline() {
+        if (!timelineStage || !timelineBar || !timelineEntries.length) return;
+
+        const rect = timelineStage.getBoundingClientRect();
+        const triggerY = window.innerHeight * 0.55;
+        const span = Math.max(1, rect.height - 60);
+        const progress = Math.min(Math.max((triggerY - rect.top) / span, 0.06), 1);
+        timelineBar.style.transform = `scaleY(${progress.toFixed(4)})`;
+
+        let activeIdx = 0;
+        timelineEntries.forEach((entry, idx) => {
+            const eRect = entry.getBoundingClientRect();
+            const passed = eRect.top <= triggerY;
+            if (passed) activeIdx = idx;
+            entry.classList.toggle("is-active", passed);
+        });
+
+        if (timelineStep) {
+            timelineStep.textContent = String(activeIdx + 1).padStart(2, "0");
+        }
+    }
+
+    if (timelineStage) {
         window.addEventListener("resize", updateTimeline, { passive: true });
         updateTimeline();
     }
@@ -621,6 +885,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "  overflow: auto;",
         "}",
         "a { color: inherit; text-decoration: none; }",
+        "a, button, [role='button'], .btn { pointer-events: none !important; cursor: default !important; }",
     ].join("\n");
 
     const previewShell = [
@@ -658,6 +923,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (userStyle) userStyle.textContent = `${webState.css}\n${extraStyles}`;
         doc.body.innerHTML = parsed.body.innerHTML;
+        doc.body.querySelectorAll("a, button, [role='button']").forEach((el) => {
+            el.setAttribute("tabindex", "-1");
+            el.setAttribute("aria-disabled", "true");
+        });
         doc.documentElement.style.setProperty("--accent", webState.accent);
     }
 
@@ -667,9 +936,32 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (webPreview) {
+        const guardedDocs = new WeakSet();
         webPreview.srcdoc = previewShell;
         webPreview.addEventListener("load", () => {
             previewReady = true;
+            const doc = webPreview.contentDocument;
+            if (doc && !guardedDocs.has(doc)) {
+                guardedDocs.add(doc);
+                doc.addEventListener(
+                    "click",
+                    (event) => {
+                        if (event.target && event.target.closest("a, button, [role='button'], form")) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                    },
+                    true
+                );
+                doc.addEventListener(
+                    "submit",
+                    (event) => {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    },
+                    true
+                );
+            }
             renderPreview();
             attachCursorFrame(webPreview);
         });
@@ -817,7 +1109,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const gcodeEditBtn = document.getElementById("gcode-edit");
     const gcodeResetBtn = document.getElementById("gcode-reset");
     const toolpathPaths = document.getElementById("toolpath-paths");
+    const toolpathProgress = document.getElementById("toolpath-progress");
     const toolpathStart = document.getElementById("toolpath-start");
+    const toolpathRing = document.getElementById("toolpath-ring");
     const toolpathTool = document.getElementById("toolpath-tool");
     const toolpathEmpty = document.getElementById("toolpath-empty");
     const gcodePos = document.getElementById("gcode-pos");
@@ -1042,9 +1336,104 @@ document.addEventListener("DOMContentLoaded", () => {
         return { blocks, points, segments, position: { x, y } };
     }
 
+    let cncVisible = false;
+    let toolpathRaf = 0;
+    let toolpathAnim = null;
+
+    function stopToolpathAnimation() {
+        if (toolpathRaf) {
+            window.cancelAnimationFrame(toolpathRaf);
+            toolpathRaf = 0;
+        }
+    }
+
+    function applyToolpathAt(elapsed) {
+        if (!toolpathAnim || !toolpathAnim.steps.length) return;
+        const { steps, motionDuration, totalDuration, endPos } = toolpathAnim;
+        const t = elapsed % totalDuration;
+
+        let curX = endPos.sx;
+        let curY = endPos.sy;
+        let curWX = endPos.wx;
+        let curWY = endPos.wy;
+        let curRapid = true;
+        let activeIdx = steps.length - 1;
+        let segAlpha = 1;
+
+        if (t < motionDuration) {
+            for (let i = 0; i < steps.length; i += 1) {
+                const step = steps[i];
+                if (t <= step.endT || i === steps.length - 1) {
+                    activeIdx = i;
+                    const dur = Math.max(step.endT - step.startT, 1e-4);
+                    segAlpha = Math.min(Math.max((t - step.startT) / dur, 0), 1);
+                    curX = step.x0 + (step.x1 - step.x0) * segAlpha;
+                    curY = step.y0 + (step.y1 - step.y0) * segAlpha;
+                    curWX = step.wx0 + (step.wx1 - step.wx0) * segAlpha;
+                    curWY = step.wy0 + (step.wy1 - step.wy0) * segAlpha;
+                    curRapid = step.rapid;
+                    break;
+                }
+            }
+        } else {
+            curRapid = false;
+        }
+
+        if (toolpathTool) {
+            toolpathTool.setAttribute("cx", curX.toFixed(1));
+            toolpathTool.setAttribute("cy", curY.toFixed(1));
+        }
+
+        if (toolpathRing) {
+            toolpathRing.setAttribute("cx", curX.toFixed(1));
+            toolpathRing.setAttribute("cy", curY.toFixed(1));
+            toolpathRing.classList.toggle("is-rapid", curRapid);
+        }
+
+        if (toolpathProgress) {
+            let cutD = "";
+            let penDown = false;
+            for (let i = 0; i <= activeIdx; i += 1) {
+                const step = steps[i];
+                if (step.rapid) {
+                    penDown = false;
+                    continue;
+                }
+                const ex = i === activeIdx ? curX : step.x1;
+                const ey = i === activeIdx ? curY : step.y1;
+                if (!penDown) {
+                    cutD += `M${step.x0.toFixed(1)} ${step.y0.toFixed(1)}`;
+                    penDown = true;
+                }
+                cutD += `L${ex.toFixed(1)} ${ey.toFixed(1)}`;
+            }
+            toolpathProgress.setAttribute("d", cutD);
+        }
+
+        if (gcodePos) {
+            gcodePos.textContent = `X${formatAxisValue(curWX)} · Y${formatAxisValue(curWY)}`;
+        }
+    }
+
+    function startToolpathAnimation() {
+        if (reduceMotion || !toolpathAnim || !toolpathAnim.steps.length || !cncVisible || document.hidden) return;
+        if (toolpathRaf) return;
+        const startedAt = performance.now();
+        const loop = (now) => {
+            if (!cncVisible || document.hidden || !toolpathAnim) {
+                toolpathRaf = 0;
+                return;
+            }
+            applyToolpathAt((now - startedAt) / 1000);
+            toolpathRaf = window.requestAnimationFrame(loop);
+        };
+        toolpathRaf = window.requestAnimationFrame(loop);
+    }
+
     function renderToolpath() {
         if (!toolpathPaths) return;
 
+        stopToolpathAnimation();
         const { blocks, points, segments, position } = parseToolpath(gcodeState.text);
 
         if (gcodePos) {
@@ -1052,8 +1441,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (!segments.length) {
+            toolpathAnim = null;
             toolpathPaths.replaceChildren();
+            if (toolpathProgress) toolpathProgress.setAttribute("d", "");
             if (toolpathStart) toolpathStart.style.display = "none";
+            if (toolpathRing) toolpathRing.style.display = "none";
             if (toolpathTool) toolpathTool.style.display = "none";
             if (toolpathEmpty) toolpathEmpty.style.display = "";
             if (gcodeStats) gcodeStats.textContent = `${blocks} blocchi`;
@@ -1087,7 +1479,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         [
             { className: "toolpath-rapid", rapid: true },
-            { className: "toolpath-cut", rapid: false },
+            { className: reduceMotion ? "toolpath-cut" : "toolpath-guide", rapid: false },
         ].forEach(({ className, rapid }) => {
             const d = segments
                 .filter((segment) => segment.rapid === rapid)
@@ -1121,10 +1513,20 @@ document.addEventListener("DOMContentLoaded", () => {
             toolpathStart.setAttribute("cy", mapY(start.y).toFixed(1));
         }
 
+        if (toolpathRing) {
+            toolpathRing.style.display = reduceMotion ? "none" : "";
+            toolpathRing.setAttribute("cx", mapX(end.x).toFixed(1));
+            toolpathRing.setAttribute("cy", mapY(end.y).toFixed(1));
+        }
+
         if (toolpathTool) {
             toolpathTool.style.display = "";
             toolpathTool.setAttribute("cx", mapX(end.x).toFixed(1));
             toolpathTool.setAttribute("cy", mapY(end.y).toFixed(1));
+        }
+
+        if (toolpathProgress) {
+            toolpathProgress.setAttribute("d", "");
         }
 
         if (toolpathEmpty) toolpathEmpty.style.display = "none";
@@ -1145,6 +1547,52 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (gcodeStats) {
             gcodeStats.textContent = `${blocks} blocchi · ${Math.round(cutLength)} mm`;
+        }
+
+        // Build animation steps across all rapid, linear, and sampled arc moves.
+        const steps = [];
+        let accTime = 0;
+        segments.forEach((segment) => {
+            const nodes = segment.arc ? segment.arc.samples : [segment.to];
+            const speed = segment.rapid ? 230 : 92;
+            let prev = segment.from;
+
+            nodes.forEach((next) => {
+                const x0 = mapX(prev.x);
+                const y0 = mapY(prev.y);
+                const x1 = mapX(next.x);
+                const y1 = mapY(next.y);
+                const dist = Math.hypot(x1 - x0, y1 - y0);
+                if (dist > 0.01) {
+                    const dur = dist / speed;
+                    steps.push({
+                        x0,
+                        y0,
+                        x1,
+                        y1,
+                        wx0: prev.x,
+                        wy0: prev.y,
+                        wx1: next.x,
+                        wy1: next.y,
+                        rapid: segment.rapid,
+                        startT: accTime,
+                        endT: accTime + dur,
+                    });
+                    accTime += dur;
+                }
+                prev = next;
+            });
+        });
+
+        toolpathAnim = {
+            steps,
+            motionDuration: accTime,
+            totalDuration: accTime + 0.85,
+            endPos: { sx: mapX(end.x), sy: mapY(end.y), wx: position.x, wy: position.y },
+        };
+
+        if (!reduceMotion && cncVisible) {
+            startToolpathAnimation();
         }
     }
 
@@ -1223,6 +1671,29 @@ document.addEventListener("DOMContentLoaded", () => {
     renderToolpath();
     if (gcodePre) typeWhenVisible(gcodePre, () => gcodeState.text, 11);
 
+    if (cncEditor && !reduceMotion && "IntersectionObserver" in window) {
+        const cncObserver = new IntersectionObserver(
+            (entries) => {
+                cncVisible = entries.some((entry) => entry.isIntersecting);
+                if (cncVisible) {
+                    startToolpathAnimation();
+                } else {
+                    stopToolpathAnimation();
+                }
+            },
+            { threshold: 0.15 }
+        );
+        cncObserver.observe(cncEditor);
+
+        document.addEventListener("visibilitychange", () => {
+            if (document.hidden) {
+                stopToolpathAnimation();
+            } else if (cncVisible) {
+                startToolpathAnimation();
+            }
+        });
+    }
+
     /* ---------------------------------------------------------------
        Header state, scroll progress & active nav link
        --------------------------------------------------------------- */
@@ -1235,6 +1706,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (header) header.classList.toggle("scrolled", y > 10);
         if (progressBar) progressBar.style.transform = `scaleX(${ratio})`;
+        updateTimeline();
+        updatePageScrollbar();
 
         // Scroll spy: last section whose top passed ~35% of the viewport
         let current = sections.length ? sections[0].id : "home";
