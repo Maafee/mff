@@ -103,11 +103,13 @@ document.addEventListener("DOMContentLoaded", () => {
        --------------------------------------------------------------- */
     const cursor = document.getElementById("cursor");
     const finePointer = window.matchMedia("(pointer: fine)").matches;
+    let attachCursorFrame = () => {};
 
     if (cursor && finePointer && !reduceMotion) {
         const dot = cursor.querySelector(".cursor-dot");
         const ring = cursor.querySelector(".cursor-ring");
-        const hoverSelector = "a, button, [data-magnetic], [role='button']";
+        const hoverSelector = "a, button, [data-magnetic], [role='button'], .code-tab, .swatch, .view-btn";
+        const cursorDocs = new WeakSet();
         let mouseX = window.innerWidth / 2;
         let mouseY = window.innerHeight / 2;
         let ringX = mouseX;
@@ -116,39 +118,38 @@ document.addEventListener("DOMContentLoaded", () => {
         let visible = false;
         let cursorFrame = null;
 
-        document.addEventListener(
-            "pointermove",
-            (event) => {
-                mouseX = event.clientX;
-                mouseY = event.clientY;
-
-                if (!visible) {
-                    visible = true;
-                    ringX = mouseX;
-                    ringY = mouseY;
-                    document.body.classList.add("has-cursor");
-                }
-
-                if (dot) dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
-                hovering = Boolean(event.target.closest(hoverSelector));
-
-                if (!cursorFrame) cursorFrame = window.requestAnimationFrame(renderCursor);
-            },
-            { passive: true }
-        );
-
-        document.addEventListener("pointerdown", () => {
+        const press = () => {
             if (ring) ring.style.opacity = "1";
-        });
+        };
 
-        document.addEventListener("pointerup", () => {
+        const release = () => {
             if (ring) ring.style.opacity = "";
-        });
+        };
 
-        document.addEventListener("mouseleave", () => {
-            document.body.classList.remove("has-cursor");
+        const isHoverTarget = (target) =>
+            Boolean(target && typeof target.closest === "function" && target.closest(hoverSelector));
+
+        function hideCursor() {
             visible = false;
-        });
+            document.body.classList.remove("has-cursor");
+        }
+
+        function moveCursor(x, y, hover) {
+            mouseX = x;
+            mouseY = y;
+
+            if (!visible) {
+                visible = true;
+                ringX = x;
+                ringY = y;
+                document.body.classList.add("has-cursor");
+            }
+
+            if (dot) dot.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+            hovering = hover;
+
+            if (!cursorFrame) cursorFrame = window.requestAnimationFrame(renderCursor);
+        }
 
         function renderCursor() {
             ringX += (mouseX - ringX) * 0.18;
@@ -166,6 +167,50 @@ document.addEventListener("DOMContentLoaded", () => {
                 cursorFrame = null;
             }
         }
+
+        // An iframe owns its document: it never forwards pointer moves to the
+        // page, which used to leave the custom cursor stuck on its border.
+        // Same-origin frames (preview) forward moves and hide the native cursor.
+        attachCursorFrame = (frame) => {
+            const doc = frame && frame.contentDocument;
+            if (!doc || !doc.head || cursorDocs.has(doc)) return;
+            cursorDocs.add(doc);
+
+            const hideNative = doc.createElement("style");
+            hideNative.textContent = "html, body, body * { cursor: none !important; }";
+            doc.head.appendChild(hideNative);
+
+            doc.addEventListener(
+                "pointermove",
+                (event) => {
+                    const rect = frame.getBoundingClientRect();
+                    moveCursor(
+                        rect.left + event.clientX,
+                        rect.top + event.clientY,
+                        isHoverTarget(event.target)
+                    );
+                },
+                { passive: true }
+            );
+
+            doc.addEventListener("pointerdown", press);
+            doc.addEventListener("pointerup", release);
+            doc.addEventListener("pointerleave", hideCursor);
+        };
+
+        document.addEventListener(
+            "pointermove",
+            (event) => {
+                moveCursor(event.clientX, event.clientY, isHoverTarget(event.target));
+            },
+            { passive: true }
+        );
+
+        document.addEventListener("pointerdown", press);
+        document.addEventListener("pointerup", release);
+
+        document.addEventListener("pointerleave", hideCursor);
+        window.addEventListener("blur", hideCursor);
     }
 
     /* ---------------------------------------------------------------
@@ -263,23 +308,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* ---------------------------------------------------------------
-       Timeline scroll progress
+       Timeline scroll progress (horizontal rail)
        --------------------------------------------------------------- */
-    const timeline = document.getElementById("timeline");
+    const timelineTrack = document.querySelector(".timeline-track");
     const timelineBar = document.getElementById("timeline-bar");
 
     function updateTimeline() {
-        if (!timeline || !timelineBar) return;
+        if (!timelineTrack || !timelineBar) return;
 
-        const rect = timeline.getBoundingClientRect();
-        const anchor = window.innerHeight * 0.6;
-        const progress = Math.min(Math.max((anchor - rect.top) / rect.height, 0), 1);
-        timelineBar.style.transform = `scaleY(${progress})`;
+        const max = timelineTrack.scrollWidth - timelineTrack.clientWidth;
+        const scrolled = Math.max(0, timelineTrack.scrollLeft - 2);
+        const progress = max > 6 ? Math.min(scrolled / (max - 2), 1) : 1;
+        timelineBar.style.transform = `scaleX(${progress})`;
     }
 
-    window.addEventListener("resize", updateTimeline, { passive: true });
-    window.addEventListener("scroll", updateTimeline, { passive: true });
-    updateTimeline();
+    if (timelineTrack) {
+        timelineTrack.addEventListener("scroll", updateTimeline, { passive: true });
+        window.addEventListener("resize", updateTimeline, { passive: true });
+        updateTimeline();
+    }
 
     /* ---------------------------------------------------------------
        Count-up numbers
@@ -341,6 +388,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         stopTyping(element);
         const text = getText();
+        // Long snippets (the CSS file) type faster so the panel never feels stuck.
+        const delay = Math.max(1, Math.min(baseDelay, 5200 / Math.max(text.length, 1)));
 
         if (reduceMotion || !("IntersectionObserver" in window)) {
             element.textContent = text;
@@ -357,14 +406,22 @@ document.addEventListener("DOMContentLoaded", () => {
                     observer.disconnect();
 
                     let index = 0;
+                    // Type a few characters per tick on long files: the panel
+                    // stays under ~4s even when timers get throttled.
+                    const step = Math.max(1, Math.ceil(text.length / 420));
                     const timers = [];
                     typingTimers.set(element, timers);
 
                     const type = () => {
+                        index = Math.min(index + step, text.length);
                         element.textContent = text.slice(0, index);
-                        index += 1;
-                        if (index <= text.length) {
-                            timers.push(window.setTimeout(type, baseDelay + Math.random() * 8));
+
+                        if (element.scrollHeight > element.clientHeight) {
+                            element.scrollTop = index >= text.length ? 0 : element.scrollHeight;
+                        }
+
+                        if (index < text.length) {
+                            timers.push(window.setTimeout(type, delay + Math.random() * 4));
                         }
                     };
 
@@ -614,6 +671,7 @@ document.addEventListener("DOMContentLoaded", () => {
         webPreview.addEventListener("load", () => {
             previewReady = true;
             renderPreview();
+            attachCursorFrame(webPreview);
         });
     }
 
@@ -639,6 +697,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!webState.editing && webPre) {
             stopTyping(webPre);
             webPre.textContent = webState[file];
+            webPre.scrollTop = 0;
         }
     }
 
@@ -657,6 +716,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
             webState[webState.file] = webInput.value;
             webPre.textContent = webInput.value;
+            webPre.scrollTop = 0;
             webInput.hidden = true;
             webPre.hidden = false;
             webEditBtn.focus();
@@ -688,6 +748,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (webPre) {
             stopTyping(webPre);
             webPre.textContent = webState.html;
+            webPre.scrollTop = 0;
         }
 
         schedulePreview();
@@ -765,13 +826,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const gcodeDefault = [
         "G21 ; millimetri",
         "G90 ; coordinate assolute",
-        "G00 X0 Y0 Z5",
+        "G00 X8 Y0 Z5",
         "M03 S12000",
         "G01 Z-1.5 F200",
-        "G01 X40 Y0",
-        "G01 X40 Y30",
-        "G01 X0 Y30",
-        "G01 X0 Y0",
+        "G01 X32 Y0",
+        "G03 X40 Y8 I0 J8 ; raccordo R8",
+        "G01 X40 Y22",
+        "G03 X32 Y30 I-8 J0 ; raccordo R8",
+        "G01 X8 Y30",
+        "G03 X0 Y22 I0 J-8 ; raccordo R8",
+        "G01 X0 Y8",
+        "G03 X8 Y0 I8 J0 ; raccordo R8",
         "G00 Z5",
         "M05",
         "M30",
@@ -789,6 +854,77 @@ document.addEventListener("DOMContentLoaded", () => {
         const rounded = Math.round(value * 10) / 10;
         return Object.is(rounded, -0) ? "0" : String(rounded);
     };
+
+    // Circular interpolation (G02/G03). I and J are offsets from the start
+    // point, R is the arc radius; the result is sampled into small line steps.
+    function buildArc(x0, y0, x1, y1, { iOffset, jOffset, hasI, hasJ, radius, clockwise }) {
+        const TAU = Math.PI * 2;
+        let cx;
+        let cy;
+
+        if (hasI || hasJ) {
+            cx = x0 + (hasI ? iOffset : 0);
+            cy = y0 + (hasJ ? jOffset : 0);
+        } else if (radius !== null && radius !== 0) {
+            const arcRadius = Math.abs(radius);
+            const dx = (x1 - x0) / 2;
+            const dy = (y1 - y0) / 2;
+            const half = Math.hypot(dx, dy);
+            if (half < 1e-6 || half > arcRadius) return null;
+
+            const h = Math.sqrt(arcRadius * arcRadius - half * half);
+            const mx = (x0 + x1) / 2;
+            const my = (y0 + y1) / 2;
+            const nx = -dy / half;
+            const ny = dx / half;
+            const largeArc = radius < 0;
+            const candidates = [
+                { x: mx + nx * h, y: my + ny * h },
+                { x: mx - nx * h, y: my - ny * h },
+            ];
+
+            cx = candidates[0].x;
+            cy = candidates[0].y;
+
+            for (const candidate of candidates) {
+                const startAngle = Math.atan2(y0 - candidate.y, x0 - candidate.x);
+                const endAngle = Math.atan2(y1 - candidate.y, x1 - candidate.x);
+                let candidateSpan = clockwise ? startAngle - endAngle : endAngle - startAngle;
+                candidateSpan = ((candidateSpan % TAU) + TAU) % TAU;
+                if (candidateSpan < 1e-9) candidateSpan = TAU;
+
+                if (largeArc ? candidateSpan >= Math.PI : candidateSpan <= Math.PI) {
+                    cx = candidate.x;
+                    cy = candidate.y;
+                    break;
+                }
+            }
+        } else {
+            return null;
+        }
+
+        const r = Math.hypot(x0 - cx, y0 - cy);
+        if (r < 1e-6 || !Number.isFinite(r)) return null;
+
+        const a0 = Math.atan2(y0 - cy, x0 - cx);
+        const a1 = Math.atan2(y1 - cy, x1 - cx);
+        let span = clockwise ? a0 - a1 : a1 - a0;
+        span = ((span % TAU) + TAU) % TAU;
+        if (span < 1e-9) span = TAU; // full circle
+
+        const sweep = clockwise ? -span : span;
+        const steps = Math.max(8, Math.ceil(span / (Math.PI / 32)));
+        const samples = [];
+
+        for (let step = 1; step <= steps; step += 1) {
+            const angle = a0 + (sweep * step) / steps;
+            samples.push({ x: cx + r * Math.cos(angle), y: cy + r * Math.sin(angle) });
+        }
+
+        samples[steps - 1] = { x: x1, y: y1 };
+
+        return { samples, length: r * span };
+    }
 
     function parseToolpath(source) {
         let x = 0;
@@ -814,6 +950,12 @@ document.addEventListener("DOMContentLoaded", () => {
             let hasX = false;
             let hasY = false;
             let lineMotion = motion;
+            let clockwise = false;
+            let iOffset = 0;
+            let jOffset = 0;
+            let hasI = false;
+            let hasJ = false;
+            let radius = null;
 
             words.forEach(([, letterRaw, valueRaw]) => {
                 const letter = letterRaw.toUpperCase();
@@ -822,34 +964,79 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 if (letter === "G") {
                     const code = Math.trunc(value);
-                    if (code === 0) lineMotion = "rapid";
-                    else if (code === 1 || code === 2 || code === 3) lineMotion = "cut";
-                    else if (code === 90) absolute = true;
-                    else if (code === 91) absolute = false;
+                    if (code === 0) {
+                        lineMotion = "rapid";
+                        clockwise = false;
+                    } else if (code === 1) {
+                        lineMotion = "cut";
+                        clockwise = false;
+                    } else if (code === 2 || code === 3) {
+                        lineMotion = "arc";
+                        clockwise = code === 2;
+                    } else if (code === 90) {
+                        absolute = true;
+                    } else if (code === 91) {
+                        absolute = false;
+                    }
                 } else if (letter === "X") {
                     nextX = absolute ? value : x + value;
                     hasX = true;
                 } else if (letter === "Y") {
                     nextY = absolute ? value : y + value;
                     hasY = true;
+                } else if (letter === "I") {
+                    iOffset = value;
+                    hasI = true;
+                } else if (letter === "J") {
+                    jOffset = value;
+                    hasJ = true;
+                } else if (letter === "R") {
+                    radius = value;
                 }
             });
 
-            if (hasX || hasY) {
-                if (nextX !== x || nextY !== y) {
+            if (!hasX && !hasY) {
+                if (lineMotion) motion = lineMotion;
+                return;
+            }
+
+            if (lineMotion === "arc") {
+                const arc = buildArc(x, y, nextX, nextY, {
+                    iOffset,
+                    jOffset,
+                    hasI,
+                    hasJ,
+                    radius,
+                    clockwise,
+                });
+
+                if (arc) {
                     segments.push({
                         from: { x, y },
                         to: { x: nextX, y: nextY },
-                        rapid: lineMotion !== "cut",
+                        rapid: false,
+                        arc,
+                    });
+                    arc.samples.forEach((point) => points.push(point));
+                } else if (nextX !== x || nextY !== y) {
+                    segments.push({
+                        from: { x, y },
+                        to: { x: nextX, y: nextY },
+                        rapid: false,
                     });
                 }
-                x = nextX;
-                y = nextY;
-                points.push({ x, y });
-                motion = lineMotion;
-            } else if (lineMotion) {
-                motion = lineMotion;
+            } else if (nextX !== x || nextY !== y) {
+                segments.push({
+                    from: { x, y },
+                    to: { x: nextX, y: nextY },
+                    rapid: lineMotion !== "cut",
+                });
             }
+
+            x = nextX;
+            y = nextY;
+            points.push({ x, y });
+            motion = lineMotion;
         });
 
         return { blocks, points, segments, position: { x, y } };
@@ -904,11 +1091,17 @@ document.addEventListener("DOMContentLoaded", () => {
         ].forEach(({ className, rapid }) => {
             const d = segments
                 .filter((segment) => segment.rapid === rapid)
-                .map(
-                    (segment) =>
-                        `M${mapX(segment.from.x).toFixed(1)} ${mapY(segment.from.y).toFixed(1)}` +
-                        `L${mapX(segment.to.x).toFixed(1)} ${mapY(segment.to.y).toFixed(1)}`
-                )
+                .map((segment) => {
+                    let commands =
+                        `M${mapX(segment.from.x).toFixed(1)} ${mapY(segment.from.y).toFixed(1)}`;
+                    const nodes = segment.arc ? segment.arc.samples : [segment.to];
+
+                    nodes.forEach((point) => {
+                        commands += `L${mapX(point.x).toFixed(1)} ${mapY(point.y).toFixed(1)}`;
+                    });
+
+                    return commands;
+                })
                 .join("");
 
             if (!d) return;
@@ -941,7 +1134,12 @@ document.addEventListener("DOMContentLoaded", () => {
             .reduce(
                 (total, segment) =>
                     total +
-                    Math.hypot(segment.to.x - segment.from.x, segment.to.y - segment.from.y),
+                    (segment.arc
+                        ? segment.arc.length
+                        : Math.hypot(
+                              segment.to.x - segment.from.x,
+                              segment.to.y - segment.from.y
+                          )),
                 0
             );
 

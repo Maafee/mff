@@ -14,11 +14,11 @@ lettura su desktop, tablet e smartphone e per la stampa in PDF.
 - **Preloader** con contatore e uscita animata.
 - **Header fisso** con effetto vetro, barra di avanzamento e link attivo automatico.
 - **Hero** con particelle animate, typewriter, lettura CNC X/Y/Z che segue il mouse e card immagine con tilt 3D.
-- **Cursore personalizzato e pulsanti magnetici** su desktop (disattivati con `prefers-reduced-motion`).
+- **Cursore personalizzato e pulsanti magnetici** su desktop (disattivati con `prefers-reduced-motion`); segue il puntatore anche dentro l’anteprima web, nascondendo il cursore nativo del frame. Nella modale del CV torna il puntatore di sistema, più comodo per leggere.
 - **Doppio marquee** con direzioni opposte.
-- **Timeline** alternata con linea di avanzamento legata allo scroll e numeri animati.
-- **Sezione Web** — anteprima browser interattiva con switch Desktop/Mobile e tre accenti colore; editor HTML/CSS con tab, modalità modifica (matita) e anteprima aggiornata in tempo reale; card front-end, back-end e reti.
-- **Sezione CNC** — ruoli di operatore e programmatore; editor G-code modificabile che ridisegna il percorso utensile (movimenti rapidi e di taglio) mentre scrivi.
+- **Timeline orizzontale** scorrevole con snap delle tappe, rail di avanzamento e schede animate; swipe su mobile.
+- **Sezione Web** — anteprima browser interattiva con switch Desktop/Mobile e tre accenti colore; editor HTML/CSS con tab, modalità modifica (matita), altezza fissa e scroll interno, anteprima aggiornata in tempo reale; card front-end, back-end e reti.
+- **Sezione CNC** — ruoli di operatore e programmatore; editor G-code modificabile che ridisegna il percorso utensile (movimenti rapidi, tagli e archi G02/G03 con I/J o R) mentre scrivi.
 - **Sezione contatti** — email, telefono e zona in righe cliccabili, profili social e anteprima del CV in una finestra modale, senza dover scaricare il PDF.
 - **Menu mobile** a pannello laterale con overlay, chiusura con `Esc` e blocco dello scroll.
 - **Accessibilità** — skip link, focus visibile, etichette ARIA, contrasti verificati e supporto a `prefers-reduced-motion`.

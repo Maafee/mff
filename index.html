@@ -259,7 +259,10 @@
                 <h3 class="subhead reveal"><span>Tappe</span></h3>
 
                 <div class="timeline" id="timeline">
-                    <div class="timeline-progress" aria-hidden="true"><i id="timeline-bar"></i></div>
+                    <div class="timeline-rail" aria-hidden="true"><i id="timeline-bar"></i></div>
+
+                    <div class="timeline-track" tabindex="0" role="region"
+                        aria-label="Tappe del percorso, scorrimento orizzontale">
 
                     <article class="entry left">
                         <span class="timeline-node" aria-hidden="true">
@@ -352,6 +355,8 @@
                         </div>
                     </article>
 
+                    </div>
+                    <p class="timeline-hint" aria-hidden="true">Scorri per esplorare <span>&rarr;</span></p>
                 </div>
             </div>
         </section>

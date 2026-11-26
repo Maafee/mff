@@ -1273,109 +1273,129 @@ body.menu-open .nav-toggle span:nth-child(3) {
 
 .timeline {
     position: relative;
-    max-width: 960px;
+    max-width: 1040px;
     margin: 0 auto;
 }
 
-.timeline::before {
-    content: "";
+.timeline-rail {
     position: absolute;
-    top: 10px;
-    bottom: 10px;
-    left: 50%;
-    width: 1px;
-    background: linear-gradient(180deg, transparent, rgba(255, 192, 203, 0.55) 10%,
-            rgba(255, 192, 203, 0.55) 90%, transparent);
-    box-shadow: 0 0 20px rgba(255, 192, 203, 0.2);
-    transform: translateX(-50%);
-}
-
-.timeline-progress {
-    position: absolute;
-    top: 10px;
-    bottom: 10px;
-    left: 50%;
-    z-index: 1;
-    width: 2px;
-    background: rgba(255, 192, 203, 0.06);
-    transform: translateX(-50%);
+    top: 15px;
+    right: 18px;
+    left: 18px;
+    height: 2px;
+    background: linear-gradient(90deg,
+            rgba(255, 192, 203, 0.08),
+            rgba(255, 192, 203, 0.5) 6%,
+            rgba(255, 192, 203, 0.5) 94%,
+            rgba(255, 192, 203, 0.08));
+    box-shadow: 0 0 18px rgba(255, 192, 203, 0.16);
     pointer-events: none;
 }
 
-.timeline-progress i {
-    display: block;
+.timeline-rail i {
+    position: absolute;
+    top: -0.5px;
+    left: 0;
     width: 100%;
-    height: 100%;
-    background: linear-gradient(180deg, var(--accent), var(--accent-strong));
-    box-shadow: 0 0 16px rgba(255, 192, 203, 0.6);
-    transform: scaleY(0);
-    transform-origin: top center;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-strong));
+    box-shadow: 0 0 14px rgba(255, 192, 203, 0.55);
+    transform: scaleX(0);
+    transform-origin: left center;
     transition: transform 0.15s linear;
+}
+
+.timeline-track {
+    display: flex;
+    align-items: stretch;
+    gap: 14px;
+    padding: 0 2px 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x proximity;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 192, 203, 0.4) transparent;
+    -webkit-overflow-scrolling: touch;
+}
+
+.timeline-track:focus-visible {
+    outline-offset: 8px;
 }
 
 .entry {
     position: relative;
-    width: 50%;
-    padding: 0 60px 44px 0;
+    display: flex;
+    flex: 0 0 clamp(238px, 24vw, 264px);
+    flex-direction: column;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    scroll-snap-align: start;
 }
 
 .entry.right {
-    margin-left: 50%;
-    padding: 0 0 44px 60px;
+    margin-left: 0;
+    padding: 0;
 }
 
-.entry:last-child {
-    padding-bottom: 0;
-}
-
-.js .entry {
-    opacity: 0;
-    transform: translateX(-42px);
-    transition: opacity 0.75s ease, transform 0.75s var(--ease-out);
-}
-
+.js .entry,
 .js .entry.right {
-    transform: translateX(42px);
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.75s ease, transform 0.75s var(--ease-out);
 }
 
 .js .entry.animate {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0);
 }
 
 .timeline-node {
-    position: absolute;
-    top: 26px;
-    right: -21px;
+    position: static;
     z-index: 2;
     display: grid;
     place-items: center;
-    width: 42px;
-    height: 42px;
+    width: 32px;
+    height: 32px;
+    margin: 0 0 12px 18px;
     border: 1px solid var(--border-accent);
     border-radius: 50%;
     background: var(--surface);
-    box-shadow: 0 0 0 6px rgba(255, 192, 203, 0.04), 0 0 26px rgba(255, 192, 203, 0.14);
+    box-shadow: 0 0 0 4px var(--bg), 0 0 20px rgba(255, 192, 203, 0.14);
     transition: box-shadow 0.35s ease, border-color 0.35s ease;
 }
 
-.entry.right .timeline-node {
-    right: auto;
-    left: -21px;
-}
-
 .timeline-node img {
-    width: 18px;
-    height: 18px;
+    width: 15px;
+    height: 15px;
 }
 
 .entry:hover .timeline-node {
     border-color: rgba(255, 192, 203, 0.7);
-    box-shadow: 0 0 0 7px rgba(255, 192, 203, 0.06), 0 0 32px rgba(255, 192, 203, 0.3);
+    box-shadow: 0 0 0 4px var(--bg), 0 0 28px rgba(255, 192, 203, 0.32);
+}
+
+.timeline-hint {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 7px;
+    margin: 10px 2px 0;
+    font-family: var(--font-mono);
+    font-size: 0.56rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.timeline-hint span {
+    color: var(--accent);
 }
 
 .entry-content {
     position: relative;
+    flex: 1;
     padding: 24px 26px;
     border: 1px solid var(--border);
     border-radius: var(--radius);
@@ -1652,6 +1672,7 @@ body.menu-open .nav-toggle span:nth-child(3) {
 
 .code-typer {
     flex: 1;
+    min-height: 0;
     margin: 0;
     padding: 22px 20px 26px;
     font-family: var(--font-mono);
@@ -1659,7 +1680,8 @@ body.menu-open .nav-toggle span:nth-child(3) {
     line-height: 1.85;
     color: #d9d9e3;
     white-space: pre-wrap;
-    overflow: hidden;
+    overflow: auto;
+    overscroll-behavior: contain;
     tab-size: 2;
 }
 
@@ -1709,7 +1731,7 @@ body.menu-open .nav-toggle span:nth-child(3) {
     grid-column: span 7;
     display: flex;
     flex-direction: column;
-    min-height: 440px;
+    height: clamp(500px, 38vw, 545px);
     padding: 0;
 }
 
@@ -1779,18 +1801,19 @@ body.menu-open .nav-toggle span:nth-child(3) {
     position: relative;
     width: 100%;
     max-width: 560px;
-    height: 340px;
+    height: 100%;
+    max-height: 340px;
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 14px;
     background: #0b0b0f;
     box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.9);
     overflow: hidden;
-    transition: max-width 0.55s var(--ease-out), height 0.55s var(--ease-out), border-color 0.3s ease;
+    transition: max-width 0.55s var(--ease-out), max-height 0.55s var(--ease-out), border-color 0.3s ease;
 }
 
 .preview-frame.is-mobile {
     max-width: 220px;
-    height: 360px;
+    max-height: 360px;
 }
 
 .preview-iframe {
@@ -1870,7 +1893,7 @@ body.menu-open .nav-toggle span:nth-child(3) {
     grid-column: span 5;
     display: flex;
     flex-direction: column;
-    min-height: 440px;
+    height: clamp(500px, 38vw, 545px);
     padding: 0;
 }
 
@@ -2363,6 +2386,21 @@ body.modal-open {
     overflow: hidden;
 }
 
+/* The dialog lives in the top layer: keep a normal pointer while reading. */
+body.modal-open,
+body.modal-open [role="button"] {
+    cursor: default;
+}
+
+body.modal-open a,
+body.modal-open button {
+    cursor: pointer;
+}
+
+body.modal-open .cursor {
+    display: none !important;
+}
+
 .cv-modal {
     width: min(1000px, 94vw);
     height: min(88vh, 900px);
@@ -2677,56 +2715,23 @@ body.modal-open {
     }
 
     /* Timeline */
-    .timeline::before {
-        left: 18px;
-        transform: none;
+    .timeline-track {
+        gap: 12px;
     }
 
-    .entry,
-    .entry.right,
-    .entry:last-child {
-        width: 100%;
-        margin-left: 0;
-        padding: 0 0 32px 58px;
+    .entry {
+        flex-basis: min(74vw, 280px);
     }
 
-    .entry:last-child {
-        padding-bottom: 0;
-    }
-
-    .js .entry,
-    .js .entry.right {
-        transform: translateX(32px);
-    }
-
-    .js .entry.animate {
-        transform: translateX(0);
-    }
-
-    .timeline-node,
-    .entry.right .timeline-node {
-        top: 22px;
-        left: -3px;
-        right: auto;
-    }
-
-    .timeline-progress {
-        left: 18px;
-        transform: none;
+    .timeline-hint {
+        justify-content: flex-start;
     }
 
     /* Web */
     .web-browser,
     .web-code {
         grid-column: span 12;
-    }
-
-    .web-browser {
-        min-height: 0;
-    }
-
-    .web-code {
-        min-height: 380px;
+        height: 500px;
     }
 
     .web-card {
@@ -2829,12 +2834,12 @@ body.modal-open {
     }
 
     .preview-frame {
-        height: 300px;
+        max-height: 300px;
     }
 
     .preview-frame.is-mobile {
         max-width: 200px;
-        height: 330px;
+        max-height: 320px;
     }
 
     .browser-foot {
@@ -2850,8 +2855,9 @@ body.modal-open {
         margin-left: auto;
     }
 
+    .web-browser,
     .web-code {
-        min-height: 340px;
+        height: 460px;
     }
 
     .cnc-terminal-body {
@@ -2951,31 +2957,15 @@ body.modal-open {
     }
 
     .preview-frame {
-        height: 280px;
+        max-height: 280px;
     }
 
     .preview-frame.is-mobile {
-        height: 310px;
+        max-height: 300px;
     }
 
-    .timeline-node,
-    .entry.right .timeline-node {
-        width: 36px;
-        height: 36px;
-        left: 0;
-    }
-
-    .timeline::before {
-        left: 18px;
-    }
-
-    .timeline-progress {
-        left: 18px;
-    }
-
-    .entry,
-    .entry.right {
-        padding-left: 50px;
+    .entry {
+        flex-basis: min(80vw, 250px);
     }
 
     .code-typer,
