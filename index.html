@@ -236,8 +236,8 @@
                     <p class="eyebrow">2018 — 2026</p>
                     <h2 class="section-title">Percorso<span class="accent-dot">.</span></h2>
                     <p class="section-desc">
-                        Sei tappe tra hardware, elettronica, programmazione, reti, web e CNC.
-                        Per ogni anno, quello che ho imparato a fare.
+                        Cinque anni di scuola da una parte, stage, lavoro e autoformazione dall'altra.
+                        Ogni tappa raccoglie le competenze che ho portato a casa.
                     </p>
                 </header>
 
@@ -251,118 +251,236 @@
                         <span>esperienze sul campo</span>
                     </li>
                     <li>
-                        <b><span data-count="6">6</span></b>
-                        <span>tappe di formazione</span>
+                        <b><span data-count="8">8</span></b>
+                        <span>tappe tra scuola e campo</span>
                     </li>
                 </ul>
 
-                <h3 class="subhead reveal"><span>Tappe</span></h3>
+                <h3 class="subhead reveal"><span>Scuola e campo</span></h3>
 
-                <div class="timeline" id="timeline">
-                    <div class="timeline-head">
-                        <span class="timeline-label">Percorso <span>&mdash; tappe</span></span>
-                        <span class="timeline-count" aria-hidden="true">
-                            <b id="timeline-step">01</b> / <span id="timeline-total">06</span>
-                        </span>
+                <div class="journey" id="journey" data-filter="all">
+                    <div class="journey-filter reveal">
+                        <div class="filter-group" role="group"
+                            aria-label="Metti in evidenza una parte del percorso">
+                            <button type="button" class="filter-btn is-active" data-filter="all"
+                                aria-pressed="true">Tutto</button>
+                            <button type="button" class="filter-btn" data-filter="school"
+                                aria-pressed="false">Scuola</button>
+                            <button type="button" class="filter-btn" data-filter="field"
+                                aria-pressed="false">Sul campo</button>
+                        </div>
+                        <p class="journey-status" data-journey-status aria-live="polite">Tutto il percorso</p>
                     </div>
 
-                    <div class="timeline-stage">
-                        <div class="timeline-rail" aria-hidden="true"><i id="timeline-bar"></i></div>
+                    <div class="journey-grid">
 
-                        <div class="timeline-track" id="timeline-track">
+                        <!-- ---------- Lane: scuola ---------- -->
+                        <section class="lane lane-school" aria-labelledby="lane-school-title">
+                            <header class="lane-head">
+                                <span class="lane-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="m2 9 10-5 10 5-10 5L2 9Z" />
+                                        <path d="M6 11v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5" />
+                                    </svg>
+                                </span>
+                                <div class="lane-title">
+                                    <h3 id="lane-school-title">Formazione</h3>
+                                    <p>ITIS “A. Meucci” · 2018 — 2023</p>
+                                </div>
+                                <span class="lane-count"><b>5</b> tappe</span>
+                            </header>
 
-                    <article class="entry left">
-                        <span class="timeline-node" aria-hidden="true">
-                            <img src="svg/grad.svg" alt="">
-                        </span>
-                        <div class="entry-content">
-                            <span class="entry-year">2018 — 2019</span>
-                            <h3>Fondamenti IT</h3>
-                            <ul>
-                                <li>Assemblaggio e componenti hardware di un PC</li>
-                                <li>Sistema operativo e gestione file</li>
-                                <li>Utilizzo avanzato del pacchetto Office <span class="muted">— Word, Excel e
-                                        PowerPoint / Google Workspace</span></li>
-                            </ul>
-                        </div>
-                    </article>
+                            <ol class="lane-track">
+                                <li class="stop">
+                                    <span class="stop-node" aria-hidden="true"></span>
+                                    <div class="stop-card">
+                                        <div class="stop-top">
+                                            <span class="stop-year">2018 — 2019</span>
+                                            <span class="stop-badge school">Scuola</span>
+                                        </div>
+                                        <h4>Fondamenti IT</h4>
+                                        <p>Le basi: com'è fatto un computer e come si usa.</p>
+                                        <ul class="skill-tags" aria-label="Competenze acquisite">
+                                            <li>Hardware PC</li>
+                                            <li>Sistemi operativi</li>
+                                            <li>Office &amp; Workspace</li>
+                                        </ul>
+                                    </div>
+                                </li>
 
-                    <article class="entry right">
-                        <span class="timeline-node" aria-hidden="true">
-                            <img src="svg/grad.svg" alt="">
-                        </span>
-                        <div class="entry-content">
-                            <span class="entry-year">2019 — 2020</span>
-                            <h3>Elettronica &amp; impianti</h3>
-                            <ul>
-                                <li>Impiantistica base (fase, neutro, terra)</li>
-                                <li>Elettronica analogica</li>
-                                <li>Informatica — algoritmi di base</li>
-                            </ul>
-                        </div>
-                    </article>
+                                <li class="stop">
+                                    <span class="stop-node" aria-hidden="true"></span>
+                                    <div class="stop-card">
+                                        <div class="stop-top">
+                                            <span class="stop-year">2019 — 2020</span>
+                                            <span class="stop-badge school">Scuola</span>
+                                        </div>
+                                        <h4>Elettronica &amp; impianti</h4>
+                                        <p>Dal componente al circuito, con i primi algoritmi.</p>
+                                        <ul class="skill-tags" aria-label="Competenze acquisite">
+                                            <li>Impiantistica</li>
+                                            <li>Elettronica analogica</li>
+                                            <li>Algoritmi</li>
+                                        </ul>
+                                    </div>
+                                </li>
 
-                    <article class="entry left">
-                        <span class="timeline-node" aria-hidden="true">
-                            <img src="svg/grad.svg" alt="">
-                        </span>
-                        <div class="entry-content">
-                            <span class="entry-year">2020 — 2021</span>
-                            <h3>Programmazione &amp; reti</h3>
-                            <ul>
-                                <li>Programmazione in C / C++</li>
-                                <li>Reti e protocolli base</li>
-                                <li>Logica digitale</li>
-                            </ul>
-                        </div>
-                    </article>
+                                <li class="stop">
+                                    <span class="stop-node" aria-hidden="true"></span>
+                                    <div class="stop-card">
+                                        <div class="stop-top">
+                                            <span class="stop-year">2020 — 2021</span>
+                                            <span class="stop-badge school">Scuola</span>
+                                        </div>
+                                        <h4>Programmazione &amp; reti</h4>
+                                        <p>Prime righe di codice e i protocolli della rete.</p>
+                                        <ul class="skill-tags" aria-label="Competenze acquisite">
+                                            <li>C / C++</li>
+                                            <li>Reti &amp; protocolli</li>
+                                            <li>Logica digitale</li>
+                                        </ul>
+                                    </div>
+                                </li>
 
-                    <article class="entry right">
-                        <span class="timeline-node" aria-hidden="true">
-                            <img src="svg/grad.svg" alt="">
-                        </span>
-                        <div class="entry-content">
-                            <span class="entry-year">2021 — 2022</span>
-                            <h3>Sistemi &amp; infrastrutture</h3>
-                            <ul>
-                                <li>Linux, hardware, sistemi operativi</li>
-                                <li>Configurazione router, subnetting</li>
-                                <li>Elettronica digitale (flip-flop, contatori)</li>
-                            </ul>
-                        </div>
-                    </article>
+                                <li class="stop">
+                                    <span class="stop-node" aria-hidden="true"></span>
+                                    <div class="stop-card">
+                                        <div class="stop-top">
+                                            <span class="stop-year">2021 — 2022</span>
+                                            <span class="stop-badge school">Scuola</span>
+                                        </div>
+                                        <h4>Sistemi &amp; infrastrutture</h4>
+                                        <p>Linux, indirizzi IP ed elettronica digitale.</p>
+                                        <ul class="skill-tags" aria-label="Competenze acquisite">
+                                            <li>Linux</li>
+                                            <li>Subnetting</li>
+                                            <li>Router</li>
+                                            <li>Elettronica digitale</li>
+                                        </ul>
+                                        <p class="stop-note">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+                                                aria-hidden="true">
+                                                <rect x="3" y="7" width="18" height="13" rx="2" />
+                                                <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                                            </svg>
+                                            <span>Stage IT · <b>MASTER S.r.l.</b> — giugno 2022</span>
+                                        </p>
+                                    </div>
+                                </li>
 
-                    <article class="entry left">
-                        <span class="timeline-node" aria-hidden="true">
-                            <img src="svg/grad.svg" alt="">
-                        </span>
-                        <div class="entry-content">
-                            <span class="entry-year">2022 — 2023</span>
-                            <h3>Sviluppo web &amp; sicurezza</h3>
-                            <ul>
-                                <li>Sicurezza informatica</li>
-                                <li>Sviluppo web: HTML, CSS, JavaScript</li>
-                                <li>Sviluppo back-end / database: PHP, SQL</li>
-                                <li>Progetto finale: portfolio personale</li>
-                            </ul>
-                        </div>
-                    </article>
+                                <li class="stop">
+                                    <span class="stop-node" aria-hidden="true"></span>
+                                    <div class="stop-card">
+                                        <div class="stop-top">
+                                            <span class="stop-year">2022 — 2023</span>
+                                            <span class="stop-badge school">Scuola</span>
+                                        </div>
+                                        <h4>Web, database &amp; sicurezza</h4>
+                                        <p>L'anno del progetto finale: nasce il portfolio.</p>
+                                        <ul class="skill-tags" aria-label="Competenze acquisite">
+                                            <li>HTML</li>
+                                            <li>CSS</li>
+                                            <li>JavaScript</li>
+                                            <li>PHP &amp; SQL</li>
+                                            <li>Sicurezza</li>
+                                            <li>Progetto finale</li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ol>
 
-                    <article class="entry right">
-                        <span class="timeline-node" aria-hidden="true">
-                            <img src="svg/tools.svg" alt="">
-                        </span>
-                        <div class="entry-content">
-                            <span class="entry-year">2025 — oggi</span>
-                            <h3>CNC &amp; G-code</h3>
-                            <ul>
-                                <li>Operatore CNC <span class="muted">— in corso</span></li>
-                                <li>Programmatore CNC in G-code</li>
-                            </ul>
-                        </div>
-                    </article>
+                            <p class="lane-foot">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M20 6 9 17l-5-5" />
+                                </svg>
+                                Diploma Tecnico Informatico · luglio 2023
+                            </p>
+                        </section>
 
-                        </div>
+                        <!-- ---------- Lane: sul campo ---------- -->
+                        <section class="lane lane-field" aria-labelledby="lane-field-title">
+                            <header class="lane-head">
+                                <span class="lane-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path
+                                            d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+                                    </svg>
+                                </span>
+                                <div class="lane-title">
+                                    <h3 id="lane-field-title">Sul campo</h3>
+                                    <p>Esperienze e autoformazione · 2022 — oggi</p>
+                                </div>
+                                <span class="lane-count"><b>3</b> tappe</span>
+                            </header>
+
+                            <ol class="lane-track">
+                                <li class="stop">
+                                    <span class="stop-node" aria-hidden="true"></span>
+                                    <div class="stop-card">
+                                        <div class="stop-top">
+                                            <span class="stop-year">giu 2022</span>
+                                            <span class="stop-badge stage">Stage</span>
+                                        </div>
+                                        <h4>Stage IT</h4>
+                                        <p>Manutenzione dei computer e primi contenuti web, in azienda.</p>
+                                        <ul class="skill-tags" aria-label="Competenze applicate">
+                                            <li>Manutenzione hardware</li>
+                                            <li>Supporto IT</li>
+                                            <li>Web</li>
+                                        </ul>
+                                    </div>
+                                </li>
+
+                                <li class="stop">
+                                    <span class="stop-node" aria-hidden="true"></span>
+                                    <div class="stop-card">
+                                        <div class="stop-top">
+                                            <span class="stop-year">2023 — 2026</span>
+                                            <span class="stop-badge self">Autodidatta</span>
+                                        </div>
+                                        <h4>Portfolio &amp; web</h4>
+                                        <p>Il sito che stai guardando: design, codice e iterazioni continue.</p>
+                                        <ul class="skill-tags" aria-label="Competenze acquisite">
+                                            <li>HTML</li>
+                                            <li>CSS</li>
+                                            <li>JavaScript</li>
+                                            <li>UI design</li>
+                                            <li>Responsive</li>
+                                        </ul>
+                                    </div>
+                                </li>
+
+                                <li class="stop">
+                                    <span class="stop-node" aria-hidden="true"></span>
+                                    <div class="stop-card">
+                                        <div class="stop-top">
+                                            <span class="stop-year">2025 — oggi</span>
+                                            <span class="stop-badge work"><i class="journey-dot"
+                                                    aria-hidden="true"></i>Lavoro</span>
+                                        </div>
+                                        <h4>Operatore CNC</h4>
+                                        <p>Dal disegno tecnico al pezzo finito, con programmazione ISO.</p>
+                                        <ul class="skill-tags" aria-label="Competenze applicate">
+                                            <li>Disegno tecnico</li>
+                                            <li>G-code / ISO</li>
+                                            <li>Setup macchina</li>
+                                            <li>Controllo qualità</li>
+                                            <li>Manutenzione</li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ol>
+
+                            <p class="lane-foot">
+                                <i class="journey-dot" aria-hidden="true"></i>
+                                In corso · operatore CNC
+                            </p>
+                        </section>
+
                     </div>
                 </div>
             </div>

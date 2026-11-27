@@ -552,44 +552,38 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* ---------------------------------------------------------------
-       Timeline scroll progress (vertical spine & active step)
+       Percorso: filtro scuola / sul campo
        --------------------------------------------------------------- */
-    const timeline = document.getElementById("timeline");
-    const timelineStage = timeline ? timeline.querySelector(".timeline-stage") : null;
-    const timelineBar = document.getElementById("timeline-bar");
-    const timelineStep = document.getElementById("timeline-step");
-    const timelineTotal = document.getElementById("timeline-total");
-    const timelineEntries = timeline ? Array.from(timeline.querySelectorAll(".entry")) : [];
+    const journey = document.getElementById("journey");
 
-    if (timelineTotal && timelineEntries.length) {
-        timelineTotal.textContent = String(timelineEntries.length).padStart(2, "0");
-    }
+    if (journey) {
+        const journeyButtons = Array.from(journey.querySelectorAll("[data-filter]"));
+        const journeyStatus = journey.querySelector("[data-journey-status]");
+        const journeyLabels = {
+            all: "Tutto il percorso",
+            school: "In evidenza: formazione scolastica",
+            field: "In evidenza: esperienze e autoformazione"
+        };
 
-    function updateTimeline() {
-        if (!timelineStage || !timelineBar || !timelineEntries.length) return;
+        const setJourneyFilter = (value) => {
+            if (!journeyLabels[value]) return;
 
-        const rect = timelineStage.getBoundingClientRect();
-        const triggerY = window.innerHeight * 0.55;
-        const span = Math.max(1, rect.height - 60);
-        const progress = Math.min(Math.max((triggerY - rect.top) / span, 0.06), 1);
-        timelineBar.style.transform = `scaleY(${progress.toFixed(4)})`;
+            journey.dataset.filter = value;
 
-        let activeIdx = 0;
-        timelineEntries.forEach((entry, idx) => {
-            const eRect = entry.getBoundingClientRect();
-            const passed = eRect.top <= triggerY;
-            if (passed) activeIdx = idx;
-            entry.classList.toggle("is-active", passed);
+            journeyButtons.forEach((button) => {
+                const isActive = button.dataset.filter === value;
+                button.classList.toggle("is-active", isActive);
+                button.setAttribute("aria-pressed", String(isActive));
+            });
+
+            if (journeyStatus) {
+                journeyStatus.textContent = journeyLabels[value];
+            }
+        };
+
+        journeyButtons.forEach((button) => {
+            button.addEventListener("click", () => setJourneyFilter(button.dataset.filter));
         });
-
-        if (timelineStep) {
-            timelineStep.textContent = String(activeIdx + 1).padStart(2, "0");
-        }
-    }
-
-    if (timelineStage) {
-        window.addEventListener("resize", updateTimeline, { passive: true });
-        updateTimeline();
     }
 
     /* ---------------------------------------------------------------
@@ -1706,7 +1700,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (header) header.classList.toggle("scrolled", y > 10);
         if (progressBar) progressBar.style.transform = `scaleX(${ratio})`;
-        updateTimeline();
         updatePageScrollbar();
 
         // Scroll spy: last section whose top passed ~35% of the viewport
@@ -1752,11 +1745,11 @@ document.addEventListener("DOMContentLoaded", () => {
     /* ---------------------------------------------------------------
        Reveal on scroll
        --------------------------------------------------------------- */
-    const revealItems = Array.from(document.querySelectorAll(".reveal, .entry"));
+    const revealItems = Array.from(document.querySelectorAll(".reveal, .stop"));
 
     if (reduceMotion || !("IntersectionObserver" in window)) {
         revealItems.forEach((el) => {
-            el.classList.add("is-visible", "animate");
+            el.classList.add("is-visible", "animate", "is-in");
             el.classList.remove("reveal");
         });
     } else {
@@ -1768,6 +1761,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     const el = entry.target;
                     if (el.classList.contains("entry")) {
                         el.classList.add("animate");
+                    } else if (el.classList.contains("stop")) {
+                        el.classList.add("is-in");
                     } else {
                         el.classList.add("is-visible");
                         // Free the element from the reveal transition so that

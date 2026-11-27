@@ -16,7 +16,7 @@ lettura su desktop, tablet e smartphone e per la stampa in PDF.
 - **Hero** con particelle animate, typewriter, lettura CNC X/Y/Z che segue il mouse e card immagine con tilt 3D.
 - **Cursore personalizzato e pulsanti magnetici** su desktop (disattivati con `prefers-reduced-motion`); segue il puntatore anche dentro l’anteprima web, nascondendo il cursore nativo del frame. Nella modale del CV torna il puntatore di sistema, più comodo per leggere.
 - **Doppio marquee** con direzioni opposte.
-- **Timeline orizzontale** scorrevole con snap delle tappe, rail di avanzamento e schede animate; swipe su mobile.
+- **Percorso a due binari** — colonna “Formazione” (ITIS, 2018–2023) e colonna “Sul campo” (stage, autoformazione e lavoro), con badge di provenienza, chip delle competenze e filtro interattivo Tutto / Scuola / Sul campo che mette in evidenza un binario e attenua l’altro.
 - **Sezione Web** — anteprima browser interattiva con switch Desktop/Mobile e tre accenti colore; editor HTML/CSS con tab, modalità modifica (matita), altezza fissa e scroll interno, anteprima aggiornata in tempo reale; card front-end, back-end e reti.
 - **Sezione CNC** — ruoli di operatore e programmatore; editor G-code modificabile che ridisegna il percorso utensile (movimenti rapidi, tagli e archi G02/G03 con I/J o R) mentre scrivi.
 - **Sezione contatti** — email, telefono e zona in righe cliccabili, profili social e anteprima del CV in una finestra modale, senza dover scaricare il PDF.
