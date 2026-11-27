@@ -2069,7 +2069,6 @@ body.menu-open .nav-toggle span:nth-child(3) {
     color: #d9d9e3;
     white-space: pre-wrap;
     overflow: auto;
-    overscroll-behavior: contain;
     tab-size: 2;
 }
 
