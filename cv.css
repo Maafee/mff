@@ -1,6 +1,6 @@
 /* =========================================================
    Matteo Mosti — Curriculum Vitae
-   Editorial light theme · forest sidebar · emerald + gold
+   Dark theme · pink + lilac palette from the portfolio
    ========================================================= */
 
 :root {
@@ -8,27 +8,27 @@
     --font-display: "Fraunces", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
     --font-mono: "JetBrains Mono", "Cascadia Code", Consolas, monospace;
 
-    --paper: #f2ede3;
-    --paper-2: #fbf8f1;
-    --card: #fffdf8;
-    --ink: #18241f;
-    --ink-2: #35453e;
-    --muted: #6b7871;
-    --line: #ddd5c6;
-    --line-soft: #e9e3d7;
+    --paper: #0a0a0c;
+    --paper-2: #0e0e12;
+    --card: #111116;
+    --ink: #f3f3f6;
+    --ink-2: #c3c3cd;
+    --muted: #8d8d9b;
+    --line: #2a2a33;
+    --line-soft: #202027;
 
-    --forest: #12241e;
-    --forest-2: #1a352c;
-    --cream: #f7f1e4;
-    --cream-muted: #b9c4bb;
+    --forest: #0a0a0c;
+    --forest-2: #16161c;
+    --cream: #f3f3f6;
+    --cream-muted: #c3c3cd;
 
-    --accent: #187a63;
-    --accent-2: #2aa98a;
-    --accent-soft: rgba(24, 122, 99, 0.1);
-    --gold: #d7a44b;
-    --gold-soft: rgba(215, 164, 75, 0.14);
+    --accent: #ffc0cb;
+    --accent-2: #b9a7ff;
+    --accent-soft: rgba(255, 192, 203, 0.1);
+    --gold: #b9a7ff;
+    --gold-soft: rgba(185, 167, 255, 0.14);
 
-    --shadow: 0 26px 80px rgba(18, 36, 30, 0.13);
+    --shadow: 0 26px 80px rgba(0, 0, 0, 0.45);
     --radius: 30px;
     --maxw: 1240px;
 }
@@ -47,8 +47,8 @@ body {
     margin: 0;
     min-height: 100vh;
     background:
-        radial-gradient(900px 520px at 4% -8%, rgba(24, 122, 99, 0.1), transparent 62%),
-        radial-gradient(760px 520px at 100% 0%, rgba(215, 164, 75, 0.12), transparent 64%),
+        radial-gradient(900px 520px at 4% -8%, rgba(255, 192, 203, 0.09), transparent 62%),
+        radial-gradient(760px 520px at 100% 0%, rgba(185, 167, 255, 0.1), transparent 64%),
         var(--paper);
     color: var(--ink);
     font-family: var(--font-body);
@@ -60,7 +60,7 @@ body {
 
 ::selection {
     background: var(--accent);
-    color: #ffffff;
+    color: #1b0f13;
 }
 
 h1,
@@ -120,8 +120,8 @@ svg {
     position: sticky;
     top: 0;
     z-index: 30;
-    border-bottom: 1px solid rgba(221, 213, 198, 0.85);
-    background: rgba(242, 237, 227, 0.84);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(10, 10, 12, 0.84);
     -webkit-backdrop-filter: blur(16px);
     backdrop-filter: blur(16px);
 }
@@ -155,7 +155,7 @@ svg {
     font-size: 17px;
     font-weight: 600;
     letter-spacing: -0.02em;
-    box-shadow: 0 7px 20px rgba(18, 36, 30, 0.2);
+    box-shadow: 0 7px 20px rgba(0, 0, 0, 0.2);
 }
 
 .brand-text {
@@ -196,7 +196,7 @@ svg {
 }
 
 .top-link:hover {
-    background: rgba(24, 122, 99, 0.08);
+    background: rgba(255, 192, 203, 0.08);
     color: var(--accent);
 }
 
@@ -226,27 +226,28 @@ svg {
 .btn-primary {
     background: var(--forest);
     color: var(--cream);
-    box-shadow: 0 8px 22px rgba(18, 36, 30, 0.18);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
 }
 
 .btn-primary:hover {
     background: var(--accent);
+    color: #1b0f13;
     transform: translateY(-1px);
-    box-shadow: 0 10px 26px rgba(24, 122, 99, 0.24);
+    box-shadow: 0 10px 26px rgba(255, 192, 203, 0.24);
 }
 
 .btn-icon {
     width: 40px;
     padding: 0;
     border-color: var(--line);
-    background: rgba(255, 253, 248, 0.7);
+    background: rgba(255, 255, 255, 0.025);
     color: var(--ink-2);
 }
 
 .btn-icon:hover {
     border-color: var(--accent);
     color: var(--accent);
-    background: #ffffff;
+    background: var(--surface-2, #16161c);
 }
 
 .btn-label-short {
@@ -294,7 +295,7 @@ svg {
     flex-direction: column;
     padding: 44px 34px 30px;
     overflow: hidden;
-    background: linear-gradient(165deg, var(--forest) 0%, #0f1f1a 56%, #162c25 100%);
+    background: linear-gradient(165deg, var(--forest) 0%, #0e0e12 56%, #16161c 100%);
     color: var(--cream);
 }
 
@@ -304,8 +305,8 @@ svg {
     inset: 0;
     z-index: -1;
     background-image:
-        linear-gradient(rgba(247, 241, 228, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(247, 241, 228, 0.05) 1px, transparent 1px);
+        linear-gradient(rgba(243, 243, 246, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(243, 243, 246, 0.05) 1px, transparent 1px);
     background-size: 32px 32px;
     -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.35) 62%, transparent 92%);
     mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.35) 62%, transparent 92%);
@@ -321,7 +322,7 @@ svg {
     width: 340px;
     height: 340px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(42, 169, 138, 0.28), transparent 66%);
+    background: radial-gradient(circle, rgba(185, 167, 255, 0.28), transparent 66%);
 }
 
 .sidebar-top {
@@ -335,7 +336,7 @@ svg {
     width: 72px;
     height: 72px;
     margin-bottom: 28px;
-    border: 1px solid rgba(247, 241, 228, 0.34);
+    border: 1px solid rgba(243, 243, 246, 0.34);
     border-radius: 50%;
     color: var(--gold);
     font-family: var(--font-display);
@@ -348,7 +349,7 @@ svg {
     content: "";
     position: absolute;
     inset: 5px;
-    border: 1px solid rgba(215, 164, 75, 0.24);
+    border: 1px solid rgba(185, 167, 255, 0.24);
     border-radius: 50%;
 }
 
@@ -403,7 +404,7 @@ svg {
 .side-block {
     margin-top: 30px;
     padding-top: 24px;
-    border-top: 1px solid rgba(247, 241, 228, 0.14);
+    border-top: 1px solid rgba(243, 243, 246, 0.14);
 }
 
 .side-title {
@@ -423,7 +424,7 @@ svg {
     content: "";
     flex: 1;
     height: 1px;
-    background: rgba(247, 241, 228, 0.14);
+    background: rgba(243, 243, 246, 0.14);
 }
 
 /* Contacts */
@@ -445,9 +446,9 @@ svg {
     place-items: center;
     width: 29px;
     height: 29px;
-    border: 1px solid rgba(247, 241, 228, 0.18);
+    border: 1px solid rgba(243, 243, 246, 0.18);
     border-radius: 9px;
-    background: rgba(247, 241, 228, 0.045);
+    background: rgba(243, 243, 246, 0.045);
     color: var(--gold);
 }
 
@@ -511,9 +512,9 @@ svg {
 
 .chip {
     padding: 4px 7px;
-    border: 1px solid rgba(247, 241, 228, 0.16);
+    border: 1px solid rgba(243, 243, 246, 0.16);
     border-radius: 6px;
-    background: rgba(247, 241, 228, 0.05);
+    background: rgba(243, 243, 246, 0.05);
     color: var(--cream-muted);
     font-family: var(--font-mono);
     font-size: 9px;
@@ -559,7 +560,7 @@ svg {
     flex: 1;
     height: 3px;
     border-radius: 99px;
-    background: rgba(247, 241, 228, 0.16);
+    background: rgba(243, 243, 246, 0.16);
 }
 
 .level i.on {
@@ -576,7 +577,7 @@ svg {
 .license-block {
     margin-top: 24px;
     padding-top: 18px;
-    border-top: 1px dashed rgba(247, 241, 228, 0.16);
+    border-top: 1px dashed rgba(243, 243, 246, 0.16);
 }
 
 .side-subtitle {
@@ -599,9 +600,9 @@ svg {
     place-items: center;
     width: 38px;
     height: 31px;
-    border: 1px solid rgba(247, 241, 228, 0.18);
+    border: 1px solid rgba(243, 243, 246, 0.18);
     border-radius: 8px;
-    background: rgba(247, 241, 228, 0.05);
+    background: rgba(243, 243, 246, 0.05);
     color: var(--cream);
     font-family: var(--font-mono);
     font-size: 10.5px;
@@ -613,7 +614,7 @@ svg {
     gap: 12px;
     margin-top: auto;
     padding-top: 26px;
-    color: rgba(247, 241, 228, 0.46);
+    color: rgba(243, 243, 246, 0.46);
     font-family: var(--font-mono);
     font-size: 8.5px;
     letter-spacing: 0.08em;
@@ -625,7 +626,7 @@ svg {
 .main {
     min-width: 0;
     padding: 50px 52px 38px;
-    background: linear-gradient(180deg, var(--card) 0%, #fdfbf6 100%);
+    background: linear-gradient(180deg, var(--card) 0%, #111116 100%);
 }
 
 .hero {
@@ -683,9 +684,9 @@ svg {
     gap: 13px;
     margin-top: 26px;
     padding: 14px 16px;
-    border: 1px solid rgba(24, 122, 99, 0.24);
+    border: 1px solid rgba(255, 192, 203, 0.24);
     border-radius: 14px;
-    background: linear-gradient(90deg, var(--accent-soft), rgba(255, 255, 255, 0.35));
+    background: linear-gradient(90deg, var(--accent-soft), rgba(255, 255, 255, 0.03));
 }
 
 .now-dot {
@@ -694,18 +695,18 @@ svg {
     height: 9px;
     border-radius: 50%;
     background: var(--accent);
-    box-shadow: 0 0 0 5px rgba(24, 122, 99, 0.12);
+    box-shadow: 0 0 0 5px rgba(255, 192, 203, 0.12);
     animation: now-pulse 2.2s ease-in-out infinite;
 }
 
 @keyframes now-pulse {
     0%,
     100% {
-        box-shadow: 0 0 0 5px rgba(24, 122, 99, 0.12);
+        box-shadow: 0 0 0 5px rgba(255, 192, 203, 0.12);
     }
 
     50% {
-        box-shadow: 0 0 0 8px rgba(24, 122, 99, 0.04);
+        box-shadow: 0 0 0 8px rgba(255, 192, 203, 0.04);
     }
 }
 
@@ -752,7 +753,7 @@ svg {
     padding: 13px 15px;
     border: 1px solid var(--line);
     border-radius: 13px;
-    background: rgba(255, 255, 255, 0.52);
+    background: rgba(255, 255, 255, 0.025);
 }
 
 .stat strong {
@@ -818,7 +819,7 @@ svg {
     padding: 22px 24px;
     border: 1px solid var(--line);
     border-radius: 17px;
-    background: rgba(255, 253, 248, 0.86);
+    background: rgba(255, 255, 255, 0.025);
     transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
@@ -827,8 +828,8 @@ svg {
 }
 
 .job.is-current {
-    border-color: rgba(24, 122, 99, 0.34);
-    background: linear-gradient(180deg, rgba(24, 122, 99, 0.05), rgba(255, 253, 248, 0.96) 44%);
+    border-color: rgba(255, 192, 203, 0.34);
+    background: linear-gradient(180deg, rgba(255, 192, 203, 0.05), rgba(255, 255, 255, 0.045) 44%);
 }
 
 .job.is-current::before {
@@ -891,7 +892,7 @@ svg {
     align-items: center;
     gap: 6px;
     padding: 5px 9px;
-    border: 1px solid rgba(24, 122, 99, 0.24);
+    border: 1px solid rgba(255, 192, 203, 0.24);
     border-radius: 99px;
     background: var(--accent-soft);
     color: var(--accent);
@@ -990,12 +991,12 @@ svg {
 @media (hover: hover) {
     .job:hover {
         transform: translateY(-2px);
-        border-color: #cfc5b3;
-        box-shadow: 0 13px 34px rgba(18, 36, 30, 0.08);
+        border-color: #2a2a33;
+        box-shadow: 0 13px 34px rgba(0, 0, 0, 0.08);
     }
 
     .job.is-current:hover {
-        border-color: rgba(24, 122, 99, 0.46);
+        border-color: rgba(255, 192, 203, 0.46);
     }
 }
 
@@ -1008,7 +1009,7 @@ svg {
     padding: 22px 24px;
     border: 1px solid var(--line);
     border-radius: 17px;
-    background: rgba(255, 253, 248, 0.86);
+    background: rgba(255, 255, 255, 0.025);
 }
 
 .edu-icon {
@@ -1018,7 +1019,7 @@ svg {
     height: 54px;
     border-radius: 14px;
     background: var(--gold-soft);
-    color: #9a6b1f;
+    color: #b9a7ff;
 }
 
 .edu-icon svg {
@@ -1039,7 +1040,7 @@ svg {
     padding: 22px 24px;
     border: 1px solid var(--line);
     border-radius: 17px;
-    background: rgba(255, 253, 248, 0.86);
+    background: rgba(255, 255, 255, 0.025);
 }
 
 .project-icon {
@@ -1067,7 +1068,7 @@ svg {
     align-items: center;
     gap: 4px;
     padding: 5px 9px;
-    border: 1px solid rgba(24, 122, 99, 0.24);
+    border: 1px solid rgba(255, 192, 203, 0.24);
     border-radius: 99px;
     background: var(--accent-soft);
     color: var(--accent);
@@ -1086,7 +1087,7 @@ svg {
 
 .project-link:hover {
     background: var(--accent);
-    color: #ffffff;
+    color: #1b0f13;
 }
 
 /* Soft skills */
@@ -1104,7 +1105,7 @@ svg {
     padding: 13px 14px;
     border: 1px solid var(--line);
     border-radius: 13px;
-    background: rgba(255, 253, 248, 0.72);
+    background: rgba(255, 255, 255, 0.02);
 }
 
 .soft-icon {
@@ -1213,7 +1214,7 @@ svg {
     .sidebar-foot {
         margin-top: 30px;
         padding-top: 20px;
-        border-top: 1px solid rgba(247, 241, 228, 0.14);
+        border-top: 1px solid rgba(243, 243, 246, 0.14);
     }
 }
 
@@ -1447,18 +1448,19 @@ svg {
     }
 
     :root {
-        --paper: #ffffff;
-        --paper-2: #faf8f2;
-        --card: #ffffff;
-        --ink: #16211d;
-        --ink-2: #303d37;
-        --muted: #626f68;
-        --line: #d9d3c7;
-        --line-soft: #e6e0d4;
-        --accent: #0f6b58;
-        --accent-soft: #eef6f2;
-        --gold: #a8792a;
-        --gold-soft: #f6efdf;
+        --paper: #0a0a0c;
+        --paper-2: #16161c;
+        --card: #111116;
+        --ink: #f3f3f6;
+        --ink-2: #c3c3cd;
+        --muted: #8d8d9b;
+        --line: #2a2a33;
+        --line-soft: #202027;
+        --accent: #ffc0cb;
+        --accent-2: #b9a7ff;
+        --accent-soft: rgba(255, 192, 203, 0.1);
+        --gold: #b9a7ff;
+        --gold-soft: rgba(185, 167, 255, 0.14);
     }
 
     html {
@@ -1466,7 +1468,7 @@ svg {
     }
 
     body {
-        background: #ffffff;
+        background: var(--paper);
         color: var(--ink);
         font-size: 9.5pt;
         -webkit-print-color-adjust: exact;
@@ -1499,8 +1501,8 @@ svg {
         padding: 0 0 5mm;
         overflow: visible;
         border: 0;
-        border-bottom: 1px solid #d9d3c7;
-        background: #ffffff !important;
+        border-bottom: 1px solid #2a2a33;
+        background: var(--paper) !important;
         color: var(--ink) !important;
     }
 
@@ -1515,7 +1517,7 @@ svg {
         column-gap: 4mm;
         align-items: center;
         padding-bottom: 3mm;
-        border-bottom: 1px solid #e6e0d4;
+        border-bottom: 1px solid #202027;
     }
 
     .monogram {
@@ -1523,14 +1525,14 @@ svg {
         width: 13mm;
         height: 13mm;
         margin: 0;
-        border-color: #b9c4bb;
+        border-color: #2a2a33;
         color: var(--accent);
         font-size: 11.5pt;
     }
 
     .monogram::after {
         inset: 1.2mm;
-        border-color: rgba(15, 107, 88, 0.2);
+        border-color: rgba(255, 192, 203, 0.2);
     }
 
     .sidebar-kicker {
@@ -1552,7 +1554,7 @@ svg {
     .sidebar-role {
         grid-column: 2;
         margin-top: 1mm;
-        color: #5c6b64;
+        color: #c3c3cd;
         font-size: 7.5pt;
         line-height: 1.35;
     }
@@ -1581,7 +1583,7 @@ svg {
     }
 
     .side-title::after {
-        background: #d9d3c7;
+        background: #2a2a33;
     }
 
     .contact-list {
@@ -1596,9 +1598,9 @@ svg {
     .contact-icon {
         width: 5.5mm;
         height: 5.5mm;
-        border-color: #d9d3c7;
+        border-color: #2a2a33;
         border-radius: 1.5mm;
-        background: #faf8f2;
+        background: #16161c;
         color: var(--accent);
     }
 
@@ -1609,7 +1611,7 @@ svg {
 
     .contact-list span {
         margin-bottom: 0.4mm;
-        color: #6b7871;
+        color: #8d8d9b;
         font-size: 6.5pt;
     }
 
@@ -1636,10 +1638,10 @@ svg {
 
     .chip {
         padding: 0.6mm 1.2mm;
-        border-color: #d9d3c7;
+        border-color: #2a2a33;
         border-radius: 1mm;
-        background: #faf8f2;
-        color: #34443d;
+        background: #16161c;
+        color: #c3c3cd;
         font-size: 6.2pt;
     }
 
@@ -1664,7 +1666,7 @@ svg {
 
     .level i {
         height: 0.8mm;
-        background: #d9d3c7;
+        background: #2a2a33;
     }
 
     .level i.on {
@@ -1673,7 +1675,7 @@ svg {
 
     .lang-note {
         margin-top: 1mm;
-        color: #6b7871;
+        color: #8d8d9b;
         font-size: 6.5pt;
         line-height: 1.35;
     }
@@ -1681,7 +1683,7 @@ svg {
     .license-block {
         margin-top: 3mm;
         padding-top: 2.5mm;
-        border-top-color: #e6e0d4;
+        border-top-color: #202027;
     }
 
     .side-subtitle {
@@ -1693,9 +1695,9 @@ svg {
     .license {
         width: 9mm;
         height: 6.5mm;
-        border-color: #d9d3c7;
+        border-color: #2a2a33;
         border-radius: 1.5mm;
-        background: #faf8f2;
+        background: #16161c;
         color: var(--ink);
         font-size: 7pt;
     }
@@ -1706,12 +1708,12 @@ svg {
 
     .main {
         padding: 5mm 0 0;
-        background: #ffffff;
+        background: var(--card);
     }
 
     .hero {
         padding-bottom: 3mm;
-        border-bottom-color: #e6e0d4;
+        border-bottom-color: #202027;
     }
 
     .eyebrow {
@@ -1919,7 +1921,7 @@ svg {
     .cv-footer {
         margin-top: 4mm;
         padding-top: 2.5mm;
-        border-top-color: #e6e0d4;
+        border-top-color: #202027;
         break-inside: avoid;
     }
 
